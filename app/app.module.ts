@@ -18,7 +18,8 @@ import { AppComponent,
   UrlNewComponent, 
   UrlRemoveComponent, 
   UrlMgrComponent,
-  angular2DataTableComponent
+  angular2DataTableComponent,
+  ExComponent
 } from './components/index';
 
 import {
@@ -49,7 +50,8 @@ import { HttpDataService, ConfigService } from './services/index';
         FirstFeedPipe,
         DataFilterPipe,
         FeedParserPipe,
-        angular2DataTableComponent
+        angular2DataTableComponent,
+        ExComponent
      ],
   providers: [
     UrlService, 
