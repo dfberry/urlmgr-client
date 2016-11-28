@@ -29,7 +29,7 @@ module.exports = function(config) {
     files: [
       // System.js for module loading
       'node_modules/systemjs/dist/system.src.js',
-      'node_modules/systemjs/dist/system-Polyfills.js',
+      'node_modules/systemjs/dist/system-polyfills.js',
 
       // Polyfills
       'node_modules/core-js/client/shim.js',
@@ -97,7 +97,7 @@ module.exports = function(config) {
 
     port: 9876,
     colors: true,
-    logLevel: config.LOG_INFO,
+    logLevel: config.LOG_DEBUG,
     autoWatch: true,
     browsers: ['PhantomJS'],
     singleRun: false
