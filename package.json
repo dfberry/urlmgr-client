@@ -1,0 +1,53 @@
+{
+  "name": "urlmgr-client",
+  "version": "0.1.0",
+  "description": "Url Mgr for favorites and blogs, ng2 on client, configs in /app/config.",
+  "scripts": {
+    "start": "tsc && concurrently \"tsc -w\" \"lite-server\"  ",
+    "lint": "tslint ./app/**/*.ts -t verbose",
+    "tsc": "tsc",
+    "tsc:w": "tsc -w"
+  },
+  "keywords": [],
+  "author": "DFBerry",
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/angular/angular.io/blob/master/LICENSE"
+    }
+  ],
+  "dependencies": {
+    "@angular/common": "2.0.2",
+    "@angular/compiler": "2.0.2",
+    "@angular/core": "2.0.2",
+    "@angular/forms": "2.0.2",
+    "@angular/http": "2.0.2",
+    "@angular/platform-browser": "2.0.2",
+    "@angular/platform-browser-dynamic": "2.0.2",
+    "@angular/router": "3.0.2",
+    "@angular/upgrade": "2.0.2",
+    "@ngrx/core": "1.2.0",
+    "@ngrx/store": "2.2.1",
+    "angular2-datatable": "^0.5.2",
+    "bootstrap": "https://registry.npmjs.org/bootstrap/-/bootstrap-3.3.7.tgz",
+    "core-js": "2.4.1",
+    "jquery": "^3.1.1",
+    "lodash": "https://registry.npmjs.org/lodash/-/lodash-4.16.4.tgz",
+    "reflect-metadata": "0.1.8",
+    "rxjs": "5.0.0-beta.12",
+    "systemjs": "0.19.39",
+    "valid-url": "https://registry.npmjs.org/valid-url/-/valid-url-1.0.9.tgz",
+    "zone.js": "0.6.25"
+  },
+  "devDependencies": {
+    "concurrently": "3.1.0",
+    "lite-server": "2.2.2",
+    "typescript": "2.0.3",
+    "typings": "1.4.0",
+    "canonical-path": "0.0.2",
+    "tslint": "3.15.1",
+    "lodash": "4.16.4",
+    "rimraf": "2.5.4"
+  },
+  "repository": {}
+}

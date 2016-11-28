@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Blog Mgr</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://npmcdn.com/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://npmcdn.com/bootstrap/dist/css/bootstrap-theme.min.css">
+
+    <!-- Polyfill(s) for older browsers -->
+    <script src="node_modules/core-js/client/shim.min.js"></script>
+
+    <script src="node_modules/zone.js/dist/zone.js"></script>
+    <script src="node_modules/reflect-metadata/Reflect.js"></script>
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+
+<script>
+"use strict"
+var imports = {};
+var systemNormalize = System.normalize;
+System.normalize = function(path, importFrom) {
+  var promise = systemNormalize.apply(this, arguments)
+  promise.then(function(normalizedPath) {
+    imports[normalizedPath] = {
+      importPath: path,
+      path: normalizedPath,
+      from: importFrom,
+      deps: []
+    };
+  });
+  return promise;
+}
+var systemInstantiate = System.instantiate;
+System.instantiate = function(load) {
+  var instantiateResult;
+  return systemInstantiate.call(this, load)
+    .then(function(result) {
+      var importData = imports[load.name];
+      importData.metadata = load.metadata;
+      var fromData = imports[importData.from];
+      if(fromData) {
+        fromData.deps.push(importData);
+      }
+      return result;
+    });
+};
+function logImport(importData) {
+  console.groupCollapsed(importData.importPath);
+  console.log('path: ', importData.path);
+  var metadata = importData.metadata;
+  for(let metaKey in metadata) {
+    if(metaKey == 'deps') continue;
+    var metaValue =  metadata[metaKey];
+    if(metaValue !== undefined) {
+      console.log(metaKey+': ',metaValue)
+    }
+  }
+  console.groupCollapsed('  deps : ',importData.deps.length);
+  for(let depData of importData.deps) {
+    logImport(depData);
+  }
+  console.groupEnd();
+  console.groupEnd();
+}
+function logImports() {
+  console.group("Imports");
+  for(let index in imports) {
+    var importData = imports[index];
+    // root imports?
+    if(importData.from === undefined) {
+      logImport(importData);
+    }
+  }
+  console.groupEnd();
+}
+</script>
+
+    <script src="systemjs.config.js"></script>
+    <script>
+      System.import('app')
+      .then(function(){
+        //logImports();
+      })
+      .catch(function(err){ console.error(err); });
+    </script>
+  </head>
+
+  <body>
+    <my-app>Loading...</my-app>
+  </body>
+</html>
