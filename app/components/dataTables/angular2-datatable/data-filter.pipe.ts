@@ -12,6 +12,7 @@ export class DataFilterPipe implements PipeTransform {
         }
         return array;
     }
+
 }
 
 @Pipe({
@@ -53,23 +54,29 @@ export class FeedParserPipe implements PipeTransform {
         }
     }
 
-    transform(feedJson: any[], feedProperty: string, arrNum: number): any {
+    transform(item:any, feedProperty: string, arrNum: number): any {
 
         switch (feedProperty){
             case 'found': // feed found == true?
                 // assumes if feeds is there then it must have children
 
-                let feedsFound  =  (feedJson && feedJson.length>0) ? true : false;
+                let feedsFound  =  (item.feeds && item.feeds.length>0) ? true : false;
                 console.log("feedsFound = " + feedsFound);
                 return feedsFound;
             case 'title':
-                let current = this.feedProperty(feedJson, arrNum, feedProperty);
-                let newTitle = this.feedPropertyTitle(current);
-                newTitle = !newTitle ? '<null>' : newTitle;
-                console.log('pipe title = ' + newTitle);
-                return this.feedPropertyTitle(newTitle);
+                if (item.feeds && item.feeds.length>0 ){
+                    let current = this.feedProperty(item.feeds, arrNum, feedProperty);
+                    let newTitle = this.feedPropertyTitle(current);
+                    newTitle = !newTitle ? '<null>' : newTitle;
+                    console.log('pipe title = ' + newTitle);
+                    return this.feedPropertyTitle(newTitle);
+                } else {
+                    console.log('pipe title from item '  + item.url);
+                    return item.url
+                }
+                
             case 'href':
-                let href = this.feedProperty(feedJson, arrNum, feedProperty);
+                let href = this.feedProperty(item.feeds, arrNum, feedProperty);
                 console.log('pipe href = ' + href);
                 return href;
             default:

@@ -57,6 +57,21 @@ module.exports = function(config) {
       { pattern: 'systemjs.config.extras.js', included: false, watched: false },
       'karma-test-shim.js',
 
+      // 3rd party libs
+      { pattern: 'node_modules/@ngrx/core/**/*.js', included: false, watched: false},
+      { pattern: 'node_modules/@ngrx/core/**/*.js.map', included: false, watched: false},
+      { pattern: 'node_modules/@ngrx/store/**/*.js', included: false, watched: false},
+      { pattern: 'node_modules/@ngrx/store/**/*.js.map', included: false, watched: false},
+
+      { pattern: 'node_modules/valid-url/**/*.js', included: false, watched: false},
+      { pattern: 'node_modules/jquery/**/*.js', included: false, watched: false},
+      { pattern: 'node_modules/bootstramp/**/*.js', included: false, watched: false},
+      { pattern: 'node_modules/angular2-datatable/**/*.js', included: false, watched: false},
+      { pattern: 'node_modules/lodash/**/*.js', included: false, watched: false},
+      { pattern: 'bin/json/**/*.js', included: false, watched: false},
+
+ 
+
       // transpiled application & spec code paths loaded via module imports
       { pattern: appBase + '**/*.js', included: false, watched: true },
       { pattern: testBase + '**/*.js', included: false, watched: true },
@@ -97,7 +112,7 @@ module.exports = function(config) {
 
     port: 9876,
     colors: true,
-    logLevel: config.LOG_DEBUG,
+    //logLevel: config.LOG_INFO,
     autoWatch: true,
     browsers: ['PhantomJS'],
     singleRun: false

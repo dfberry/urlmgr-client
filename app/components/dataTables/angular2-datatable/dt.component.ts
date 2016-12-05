@@ -174,9 +174,9 @@ export class UrlRemoveComponent {
                         <url-remove [url]="item">x</url-remove>
                     </td>
                     <td>{{ item.createdAt | date:"MM/dd/yy" }}</td>
-                    <td>{{ item.feeds | feedParser:"found" }}</td>
+                    <td>{{ item | feedParser:"found" }}</td>
                     <td>
-                    <a href='{{item.url}}'>{{ item.feeds | feedParser:"title":1 }}</a>
+                    <a href='{{item.url}}'>{{ item | feedParser:"title":1 }}</a>
                     <!--
                     {{ item.feeds | json }}
                     -->
