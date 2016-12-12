@@ -10,3 +10,5 @@ _temp
 *.map
 app/**/.map
 app/**/*.js
+config.json
+**/**/config.json
