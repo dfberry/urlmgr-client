@@ -12,7 +12,7 @@ export class ConfigService {
   load() {
     console.log('Inside Load');
     return new Promise((resolve) => {
-      this.http.get('app/config/config.development.json').map(res => res.json())
+      this.http.get('app/config/config.json').map(res => res.json())
         .subscribe(config => {
           console.log('Configuration loaded...........');
           console.log(config);
