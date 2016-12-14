@@ -11,6 +11,7 @@ import { ConfigService } from '../services/index';
     moduleId: module.id, //system js variable name for relative path
     selector: 'my-app',
     template: ` 
+        <ngrx-store-log-monitor toggleCommand="ctrl-h" positionCommand="ctrl-m"></ngrx-store-log-monitor>
         <url-mgr [urls]="urls"></url-mgr>
     `,
     providers: [UrlService],

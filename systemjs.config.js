@@ -29,6 +29,9 @@
       'rxjs':          'npm:rxjs',
       '@ngrx/core':    'npm:@ngrx/core',
       '@ngrx/store':   'npm:@ngrx/store',
+      '@ngrx/store-devtools': 'npm:@ngrx/store-devtools',
+      '@ngrx/store-log-monitor': 'npm:@ngrx/store-log-monitor',
+      
       'valid-url':     'npm:valid-url',
       'jquery':        'npm:jquery',
       'bootstrap':    "npm:bootstrap",
@@ -56,6 +59,14 @@
                   main: 'bundles/store.min.umd.js',
                   format: 'cjs'
               },
+                '@ngrx/store-devtools': {
+                  main: 'bundles/store-devtools.min.umd.js',
+                  format: 'cjs'
+              },               
+              '@ngrx/store-log-monitor': {
+                  main: 'bundles/store-log-monitor.min.umd.js',
+                  format: 'cjs'
+              },              
                 'valid-url':{
                   main: './index.js',
                   defaultExtension:'js'

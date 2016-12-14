@@ -120,6 +120,20 @@ export class UrlService{
     // delete item
     removeItem(item:Url){
         console.log("item deleted = " + item.url);
-        return;
+        return this._httpDataService.delete(this.baseUrl + '/' + item.id, null)
+            .then((data) => {
+                
+                // TODO: what should happen if there is an error on the server/api side
+                // how would I should the error? 
+                console.log("url.ts::remoteItem - returned data = " + JSON.stringify(data));
+                this.loadItems();  
+                return data;  
+            
+            })
+            .catch((err) => {
+                console.log(err);
+                return err;
+            });
+
     }
 }

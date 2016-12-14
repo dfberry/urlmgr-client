@@ -5,6 +5,8 @@ import { UrlService } from '../reducers/index';
 
 describe('Service: UrlService', () => {
   
+    let urlService:UrlService;
+
     beforeEach(() => {
 
     TestBed.configureTestingModule({

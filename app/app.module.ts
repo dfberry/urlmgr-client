@@ -8,8 +8,12 @@ import { CommonModule } from '@angular/common';
 
 // ng 3rd party
 import 'rxjs/Rx';
-import { Store, StoreModule } from '@ngrx/store';
+
 import '@ngrx/core';
+import { Store, StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { StoreLogMonitorModule, useLogMonitor } from '@ngrx/store-log-monitor';
+
 import { DataTableModule } from "angular2-datatable";
 
 
@@ -40,7 +44,14 @@ import { HttpDataService, ConfigService } from './services/index';
     ReactiveFormsModule,
     HttpModule,
     DataTableModule,
-    StoreModule.provideStore({urls: urlReducer})
+    StoreModule.provideStore({urls: urlReducer}),
+    StoreDevtoolsModule.instrumentStore({
+          monitor: useLogMonitor({
+            visible: true,
+            position: 'right'
+          })
+        }),
+        StoreLogMonitorModule
     ],
   declarations: [ 
         AppComponent,  

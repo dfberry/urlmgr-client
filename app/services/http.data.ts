@@ -52,6 +52,25 @@ export class HttpDataService{
                 return Promise.reject(err.message)
             });
     }
+    delete(url, options ){
+        console.log("HttpDataService::delete url = " + url);
+ 
+        return this._http.delete(url, options )
+           .map(res =>  res.json())
+           .toPromise()
+            .catch((err: any) => {
+                console.log('http::data-delete err ' + err);
+                return Promise.reject(err.message)
+            });
+    }
+    /*
+        // Delete a comment
+    removeComment (id:string): Observable<Comment[]> {
+        return this.http.delete(`${this.commentsUrl}/${id}`) // ...using put request
+                         .map((res:Response) => res.json()) // ...and calling .json() on the response to return data
+                         .catch((error:any) => Observable.throw(error.json().error || 'Server error')); //...errors if any
+    }
+    */
 
     getDefaultPostOptions(){
         var headers = new Headers();
