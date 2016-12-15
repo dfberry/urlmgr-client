@@ -62,6 +62,10 @@ module.exports = function(config) {
       { pattern: 'node_modules/@ngrx/core/**/*.js.map', included: false, watched: false},
       { pattern: 'node_modules/@ngrx/store/**/*.js', included: false, watched: false},
       { pattern: 'node_modules/@ngrx/store/**/*.js.map', included: false, watched: false},
+      { pattern: 'node_modules/@ngrx/store-devtools/**/*.js', included: false, watched: false},
+      { pattern: 'node_modules/@ngrx/store-devtools/**/*.js.map', included: false, watched: false},
+      { pattern: 'node_modules/@ngrx/store-log-monitor/**/*.js', included: false, watched: false},
+      { pattern: 'node_modules/@ngrx/store-log-monitor/**/*.js.map', included: false, watched: false},
 
       { pattern: 'node_modules/valid-url/**/*.js', included: false, watched: false},
       { pattern: 'node_modules/jquery/**/*.js', included: false, watched: false},
