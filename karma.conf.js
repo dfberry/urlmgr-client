@@ -13,6 +13,7 @@ module.exports = function(config) {
     frameworks: ['jasmine'],
     plugins: [
       require('karma-jasmine'),
+      require('karma-chrome-launcher'),
       require('karma-phantomjs-launcher'),
       require('karma-jasmine-html-reporter'), // click "Debug" in browser to see it
       require('karma-htmlfile-reporter') // crashing w/ strange socket error
@@ -102,21 +103,21 @@ module.exports = function(config) {
     exclude: [],
     preprocessors: {},
     // disabled HtmlReporter; suddenly crashing w/ strange socket error
-    reporters: ['progress', 'kjhtml'],//'html'],
+    reporters: ['progress', 'kjhtml','html'],
 
     // HtmlReporter configuration
     htmlReporter: {
       // Open this file to see results in browser
-      outputFile: '_test-output/tests.html',
+      outputFile: 'test/jasmine.html',
 
       // Optional
       pageTitle: 'Unit Tests',
       subPageTitle: __dirname
     },
 
-    port: 9876,
+    port: 3005,
     colors: true,
-    //logLevel: config.LOG_INFO,
+    logLevel: config.LOG_DEBUG,
     autoWatch: true,
     browsers: ['PhantomJS'],
     singleRun: false

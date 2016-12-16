@@ -33,11 +33,11 @@ describe('Url Store Devtools', () => {
       fixture.cleanup();
     });
 
-    fit('should alias devtools unlifted state to Store\'s state', () => {
+    it('should alias devtools unlifted state to Store\'s state', () => {
       expect(devtools.state).toBe(fixture.state);
     });
 
-    fit('should perform actions', () => {
+    it('should perform actions', () => {
 
       let newItem = new Url();
       let expectedState = [];
