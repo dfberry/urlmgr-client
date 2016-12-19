@@ -1,9 +1,9 @@
 // ng
-import { NgModule, APP_INITIALIZER }      from '@angular/core';
+import { NgModule, APP_INITIALIZER, ValueProvider }      from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
 // ng 3rd party
@@ -17,13 +17,18 @@ import { StoreLogMonitorModule, useLogMonitor } from '@ngrx/store-log-monitor';
 import { DataTableModule } from "angular2-datatable";
 
 
+
 // this app
 import { AppComponent,  
   UrlNewComponent, 
   UrlRemoveComponent, 
   UrlMgrComponent,
   angular2DataTableComponent,
-  ExComponent
+  ExComponent,
+  FeedMgrComponent,
+  UrlFeedDetailLinkComponent,
+  NavigationComponent,
+  DashboardComponent
 } from './components/index';
 
 import {
@@ -32,11 +37,18 @@ import {
 
 import { DataFilterPipe,FeedParserPipe }   from './components/dataTables/angular2-datatable/data-filter.pipe';
 
-import { urlReducer, UrlService} from './reducers/index';
+import { urlReducer, UrlService, FeedService, feedReducer, FeedMgr, Article} from './reducers/index';
 import { HttpDataService, ConfigService } from './services/index';
+
+const appRoutes: Routes = [
+  { path: 'feed/:id/:url', component: FeedMgrComponent },
+  { path: 'url', component: UrlMgrComponent },
+  { path: '', component: DashboardComponent}
+];
 
 @NgModule({
   imports: [
+    RouterModule.forRoot(appRoutes),
     CommonModule,
     RouterModule,
     BrowserModule, 
@@ -44,7 +56,7 @@ import { HttpDataService, ConfigService } from './services/index';
     ReactiveFormsModule,
     HttpModule,
     DataTableModule,
-    StoreModule.provideStore({urls: urlReducer}),
+    StoreModule.provideStore({urls: urlReducer, feeds: feedReducer}),
     StoreDevtoolsModule.instrumentStore({
           monitor: useLogMonitor({
             visible: true,
@@ -62,9 +74,14 @@ import { HttpDataService, ConfigService } from './services/index';
         DataFilterPipe,
         FeedParserPipe,
         angular2DataTableComponent,
-        ExComponent
+        ExComponent,
+        FeedMgrComponent,
+        UrlFeedDetailLinkComponent,
+        NavigationComponent,
+        DashboardComponent
      ],
   providers: [
+    FeedService,
     UrlService, 
     HttpDataService, 
     ConfigService, 

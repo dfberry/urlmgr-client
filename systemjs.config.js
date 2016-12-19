@@ -38,6 +38,7 @@
       'angular2-datatable': 'npm:angular2-datatable',
       'lodash':       'npm:lodash',
 
+
       // my libraries - commonjs
       'json':         'bin:utils'
     },

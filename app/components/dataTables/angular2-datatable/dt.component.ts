@@ -48,6 +48,9 @@ export class UrlNewComponent {
     });
     this.httpUrlValue = this.newForm.controls['httpUrlValue'];
   }
+  ngOnInit() {
+      console.log("UrlNewComponent ngOnInit");
+  }
 
   validForm(){
     console.log("validForm this.httpUrlValue.valid = " + this.httpUrlValue.valid);
@@ -80,7 +83,7 @@ export class UrlNewComponent {
 }
 /**************************************************************************
  * 
- * Insert New Url
+ * Remove Url
  * 
  * 
 */
@@ -174,7 +177,7 @@ export class UrlRemoveComponent {
                         <url-remove [url]="item">x</url-remove>
                     </td>
                     <td>{{ item.createdAt | date:"MM/dd/yy" }}</td>
-                    <td>{{ item | feedParser:"found" }}</td>
+                    <td><url-feed-detail-link [url]="item"></url-feed-detail-link></td>
                     <td>
                     <a href='{{item.url}}'>{{ item | feedParser:"title":1 }}</a>
                     <!--
@@ -205,7 +208,9 @@ export class angular2DataTableComponent {
     public sortOrder = "asc";
 
   constructor(){}
-  ngOnInit(){}
+  ngOnInit(){
+      console.log("dataTable");
+  }
   ngOnChanges(changes: SimpleChanges) {}
 
     public toInt(num: string) {

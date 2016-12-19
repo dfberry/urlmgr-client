@@ -12,3 +12,4 @@ app/**/.map
 app/**/*.js
 config.json
 **/**/config.json
+app/config/config.json

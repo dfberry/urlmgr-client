@@ -18,14 +18,17 @@ export const DELETE_URL = 'DELETE_URL';
 export interface IUrl{
     id: number;
     url: string;
+
     status: string;
     statusDate: string;
     createdAt: string;
     updatedAt: string;
 }
-export class Url implements Url{
+export class Url implements IUrl{
     id: number;
     url: string;
+    feeds;
+    title: string;
     status: string; 
     statusDate: string;
     createdAt: string;
@@ -85,9 +88,13 @@ export class UrlService{
         this._httpDataService.getJsonPromise(this.baseUrl)
             .then(data => {
                 let thisUrls = data;
-                let len = thisUrls.length;
-                let next = len + 1;
-                this.store.dispatch({type: ADD_URLS, payload: thisUrls});
+                
+                if(data){
+                    console.log(thisUrls);
+                    this.store.dispatch({type: ADD_URLS, payload: thisUrls});
+                } else {
+                    console.log("url.ts::loadItems - data is empty");
+                }
         }).catch((err) => {
                 console.log(err);
         });

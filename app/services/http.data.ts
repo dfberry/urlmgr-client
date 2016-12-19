@@ -6,7 +6,8 @@ import { Observable } from 'rxjs/Rx';
 @Injectable()
 export class HttpDataService{
     
-    constructor(private _http: Http){}
+    constructor(
+        private _http: Http){}
 
     getJsonObservable(url){
         return this._http.get(url)
@@ -18,6 +19,7 @@ export class HttpDataService{
         //throw(err);
         return Observable.of(err); // pass back for ux
     }
+    /*
     getTitle(url){
         this.getJsonPromise(url)
         .then(response => {
@@ -31,9 +33,14 @@ export class HttpDataService{
             return Promise.reject(err.message)
         });
     }
+    */
     getJsonPromise(url){
+        console.log("getJsonPromise url = " + url);
         return this._http.get(url)
-            .map((response:Response) => response.json())
+            .map((response:Response) => {
+                console.log(response.json());
+                return response.json();
+            })
             .toPromise()
             .catch((err: any) => {
                 console.log("http::data-getJsonPromise err " + err);
