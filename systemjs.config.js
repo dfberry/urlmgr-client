@@ -31,6 +31,7 @@
       '@ngrx/store':   'npm:@ngrx/store',
       '@ngrx/store-devtools': 'npm:@ngrx/store-devtools',
       '@ngrx/store-log-monitor': 'npm:@ngrx/store-log-monitor',
+      'reselect': 'npm:reselect',
       
       'valid-url':     'npm:valid-url',
       'jquery':        'npm:jquery',
@@ -67,7 +68,10 @@
               '@ngrx/store-log-monitor': {
                   main: 'bundles/store-log-monitor.min.umd.js',
                   format: 'cjs'
-              },              
+              },    
+              'reselect': {
+                  main: 'dist/reselect.js'
+              },          
                 'valid-url':{
                   main: './index.js',
                   defaultExtension:'js'
