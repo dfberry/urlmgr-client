@@ -2,21 +2,25 @@
 import {Injectable} from '@angular/core';
 import { ActionReducer, Action, Store } from '@ngrx/store';
 import { Http, Response, URLSearchParams, Headers} from '@angular/http';
-import { HttpDataService} from '../services/index';
 import { Observable } from 'rxjs/Rx';
+import { createSelector } from 'reselect';
+
+import { type } from '../utils/index';
+import { HttpDataService, ConfigService} from '../services/index';
 import { AppState } from './index';
-import { ConfigService } from '../services/index';
+import { Feed, FeedResponse, FeedDefinition , FeedResponseService} from './feed';
 
 export const ADD_URL = 'ADD_URL';
 export const ADD_URLS = 'ADD_URLS';
 export const DELETE_URL = 'DELETE_URL';
+export const UPDATE_URL = 'UPDATE_URL';
 
 /** Url definition
  * id: currently next numeric value
  * url: string - currently no checking for valid url string
  */
 export interface IUrl{
-    id: number;
+    id: string;
     url: string;
 
     status: string;
@@ -24,24 +28,19 @@ export interface IUrl{
     createdAt: string;
     updatedAt: string;
 }
+
 export class Url implements IUrl{
-    id: number;
+    id: string;
     url: string;
-    feeds;
+    feeds: FeedDefinition[];  
+    feedResponse: FeedResponse ;
     title: string;
     status: string; 
     statusDate: string;
     createdAt: string;
     updatedAt: string;   
 }
-/** 
 
-    Url NGRX reducer
-    @constructor - initialized to empty array
-    @param {array} Url - array of current Urls 
-    @param {object} action - type of action to apply to current state
-
-*/
 export const urlReducer: ActionReducer<Url[]> = (state: Url[] = [], action: Action) => {
 
     console.log("urlReducer " + action.type);
@@ -58,10 +57,7 @@ export const urlReducer: ActionReducer<Url[]> = (state: Url[] = [], action: Acti
             return state;
     }
 }
-/**
- * Represents Url state
- * this should be the only entry/exit point for manipulating state
- */
+
 @Injectable()
 export class UrlService{
 
@@ -144,3 +140,4 @@ export class UrlService{
 
     }
 }
+

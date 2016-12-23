@@ -18,6 +18,7 @@ let validUrl = require('valid-url');
 @Component({
   selector: 'url-mgr',
   template: `
+    <navigation></navigation>
     <span>url-mgr</span>
     <angular2DataTable [rows]="urls"></angular2DataTable>
   `,

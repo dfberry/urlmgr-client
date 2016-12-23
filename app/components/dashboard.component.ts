@@ -15,7 +15,9 @@ import { ConfigService } from '../services/index';
   selector: 'dashboard',
   template: `
    <span>dashboard<span>
+   <navigation></navigation>
    <url-mgr></url-mgr>
+   <feed-mgr></feed-mgr>
   `,
   changeDetection: ChangeDetectionStrategy.Default
 })

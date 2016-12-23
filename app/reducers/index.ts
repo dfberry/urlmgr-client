@@ -1,13 +1,16 @@
-import { Url } from './url';
-import { FeedMgr } from './feed';
+import { Feed} from './feed';
+import { Url} from './url';
 
 export * from './feed';
 export * from './url';
 
-
 export interface AppState {
   urls : Url[];
-  nextUrlId: number;
-  feeds: FeedMgr[];
+  feeds: Feed[];
 }
+
+
+
+
+
 

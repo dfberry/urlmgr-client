@@ -1,79 +1,54 @@
 import { Injectable} from '@angular/core';
 import { ActionReducer, Action, Store } from '@ngrx/store';
 import '@ngrx/core/add/operator/select';
-import { Http, Response, URLSearchParams, Headers} from '@angular/http';
-import { HttpDataService, ConfigService} from '../services/index';
 import {Observable} from 'rxjs/Rx';
+import { Http, Response, URLSearchParams, Headers} from '@angular/http';
+
+import { HttpDataService, ConfigService} from '../services/index';
+
+
 import { Url} from './index';
 import { AppState } from './index';
-
 export const ADD_FEED = 'ADD_FEED';
 export const ADD_FEEDS = 'ADD_FEEDS';
 export const DELETE_FEED = 'DELETE_FEED';
-export const FIND_BY_PARENT_URL = 'FIND_BY_PARENT_URL';
+export const FIND_FEEDS = 'FIND_FEEDS';
 
-
-
-export interface IFeed{
-    id: number;
-    url: string;
-    parentUrl:string ;
-    raw: string;
+export class Feed {
+  feedDefinition: FeedDefinition;
+  feedResponse: FeedResponse;
+}
+export class FeedDefinition {
+    title: string;
     type: string;
-
+    href: string;
 }
-export interface FeedEntry {
-  title: string,
-  link: string,
-  guid: string,
-  pubDate: Date,
-  categories: Array<string>,
-  author: string,
-  thumbnail: string,
-  description: string,
-  content: string
+export class FeedResponse {
+  status: string;
+  feed: FeedInfo;
+  items: Array<Article>;
 }
-export interface FeedInfo {
-  title: string,
-  link: string,
-  author: string,
-  description: string,
-  image: string
-}
-export interface FeedResponse {
-  status: string,
-  feed: FeedInfo,
-  items: Array<FeedEntry>
-}
-
-export class Feed implements IFeed{
-    id: number;
-    url: string;
-    raw: string;
-    type: string; 
-    parentUrl:string ;
-}
-
-export class Article{
+export class Article {
   title: string;
-  pubDate: string;
   link: string;
   guid: string;
+  pubDate: Date;
+  categories: Array<string>;
   author: string;
   thumbnail: string;
   description: string;
-
+  content: string;
 }
-
-export class FeedMgr {
+export class FeedInfo {
   title: string;
-  parentId: string;
-  url: string;
-  articles: Article[]
+  link: string;
+  author: string;
+  description: string;
+  image: string;
+  type: string;
 }
 
-
-export const feedReducer: ActionReducer<FeedMgr[]> = (state: FeedMgr[] = [], action: Action) => {
+export const feedReducer: ActionReducer<Feed[]> = (state: Feed[] = [], action: Action) => {
 
     console.log("feedReducer " + action.type);
     console.log(state);
@@ -87,21 +62,26 @@ export const feedReducer: ActionReducer<FeedMgr[]> = (state: FeedMgr[] = [], act
           ];       
         case ADD_FEEDS:
 
-          return action.payload;   
+          return action.payload;  
+        case FIND_FEEDS:
+          return action.payload; 
         default:
             return state;
     }
 }
+@Injectable()
+export class FeedDefinitionService{
 
+}
 
 /**
  * Represents Feed
  * https://www.becompany.ch/en/blog/tech/2016/09/19/angular2-rss-reader.html
  */
 @Injectable()
-export class FeedService{
+export class FeedResponseService{
 
-  items:Observable <FeedMgr[]>;
+  items:Observable <FeedResponse[]>;
   public count: Observable<number>;
   public next: Observable<number>;
   url: string;
@@ -113,7 +93,7 @@ export class FeedService{
         private configService: ConfigService,
         private store:Store<AppState>    ){
 
-        this.items = store.select(state => state.feeds);
+        //this.items = store.select(state => state.feeds);
         
     }
 
@@ -133,39 +113,33 @@ export class FeedService{
             .then(data => {
                 console.log(data);
 
-                //data.push['urlParent'] = url;
-                let feedMgrList: FeedMgr[]=[];
+                //let feedMgrList: FeedResponse[]=[];
 
-                let feedMgrItem = new FeedMgr();
-                feedMgrItem.title = data.feed.title;
-                feedMgrItem.parentId = id;
-                feedMgrItem.url = url;
-                feedMgrItem.articles = data.items;
+                let feed: Feed = new Feed();
+                let feedResponseItem: FeedResponse= new FeedResponse();
+                console.log(feedResponseItem);
+                feedResponseItem.status = data.status;
+                feedResponseItem.items = data.items;
+                feedResponseItem.feed = data.feed;
 
-                feedMgrList.push(feedMgrItem);
+                console.log(feedResponseItem);
+                feed.feedResponse = feedResponseItem;
+                //feedMgrItem.title = data.feed.title;
+                //feedMgrItem.parentId = id;
+                //feedMgrItem.url = url;
+                //feedMgrItem.articles = data.items;
 
-                console.log(feedMgrItem);
+                //feedMgrList.push(feedResponseItem);
+                //tempUrl.id = id;
+                //tempUrl.feedResponse = feedResponseItem;
 
-                this.store.dispatch({type: ADD_FEEDS, payload: feedMgrList});
+                //console.log(tempUrl);
+           
+
+                this.store.dispatch({type: ADD_FEED, payload: feed});
         }).catch((err) => {
                 console.log(err);
         });
       }
   }
-  findByUrlId(url: Url): FeedMgr[]{
-
-    // need to create an item of same type for reducer to use
-    let tempFeed: FeedMgr = [{
-      parentId: url.id,
-      title: null,
-      articles: null,
-      url: null
-    }];
-
-    FeedMgr
-
-    let foundFeedMgr = this.store.dispatch({type: FIND_FEEDS, payload: tempFeed});
-    return foundFeedMgr;
-  }
-
 }

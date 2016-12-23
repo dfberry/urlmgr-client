@@ -25,6 +25,8 @@ import { AppComponent,
   UrlMgrComponent,
   angular2DataTableComponent,
   ExComponent,
+  FeedResponseComponent,
+  FeedListComponent,
   FeedMgrComponent,
   UrlFeedDetailLinkComponent,
   NavigationComponent,
@@ -37,11 +39,12 @@ import {
 
 import { DataFilterPipe,FeedParserPipe }   from './components/dataTables/angular2-datatable/data-filter.pipe';
 
-import { urlReducer, UrlService, FeedService, feedReducer, FeedMgr, Article} from './reducers/index';
+import { AppState, urlReducer, UrlService, FeedResponseService, feedReducer, FeedDefinition, FeedResponse, Feed, Article} from './reducers/index';
 import { HttpDataService, ConfigService } from './services/index';
 
 const appRoutes: Routes = [
-  { path: 'feed/:id/:url', component: FeedMgrComponent },
+  { path: 'feed/:id/:url', component: FeedResponseComponent },
+  { path: 'feed', component: FeedMgrComponent},
   { path: 'url', component: UrlMgrComponent },
   { path: '', component: DashboardComponent}
 ];
@@ -75,13 +78,15 @@ const appRoutes: Routes = [
         FeedParserPipe,
         angular2DataTableComponent,
         ExComponent,
+        FeedResponseComponent,
+        FeedListComponent,
         FeedMgrComponent,
         UrlFeedDetailLinkComponent,
         NavigationComponent,
         DashboardComponent
      ],
   providers: [
-    FeedService,
+    FeedResponseService,
     UrlService, 
     HttpDataService, 
     ConfigService, 
