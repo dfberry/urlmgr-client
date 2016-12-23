@@ -13,3 +13,4 @@ app/**/*.js
 config.json
 **/**/config.json
 app/config/config.json
+currentWork.txt
