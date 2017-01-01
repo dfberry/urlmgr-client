@@ -38,7 +38,7 @@ export class UrlMgrComponent {
     private store: Store<AppState>){}
 
   ngOnInit(){
-    console.log("UrlMgrComponent ngOnInit");
+    //console.log("UrlMgrComponent ngOnInit");
     // get from http, put in state
     this.urlService.loadItems();
 
@@ -56,7 +56,7 @@ export class UrlMgrComponent {
     // DEBUG
     private printOutState(arrName:string, arr: Url[]){
         for(let i =0; i < arr.length; i++){
-            console.log("app.component " + arrName + " " + i + " = " + JSON.stringify(arr[i]));
+            //console.log("app.component " + arrName + " " + i + " = " + JSON.stringify(arr[i]));
         }
     }
   
@@ -124,7 +124,7 @@ export class UrlListComponent {
 
   constructor(private store: Store<AppState>){}
   ngOnInit(){
-    console.log("UrlListComponent::ngOnInit - urls.length = " + this.urls.length);
+    //console.log("UrlListComponent::ngOnInit - urls.length = " + this.urls.length);
   }
   ngOnChanges(changes: SimpleChanges) {
   for (let propName in changes) {
@@ -132,7 +132,7 @@ export class UrlListComponent {
     let cur  = JSON.stringify(chng.currentValue);
     let prev = JSON.stringify(chng.previousValue);
 
-    console.log(`UrlListComponent::ngOnChanges - ${propName}: currentValue = ${cur}, previousValue = ${prev}`);
+    //console.log(`UrlListComponent::ngOnChanges - ${propName}: currentValue = ${cur}, previousValue = ${prev}`);
   }
 }
 }

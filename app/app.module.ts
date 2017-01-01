@@ -39,7 +39,7 @@ import {
 
 import { DataFilterPipe,FeedParserPipe }   from './components/dataTables/angular2-datatable/data-filter.pipe';
 
-import { AppState, urlReducer, UrlService, FeedResponseService, feedReducer, FeedDefinition, FeedResponse, Feed, Article} from './reducers/index';
+import { AppState, urlReducer, UrlService, FeedResponseService, feedReducer, selectedFeedReducer, FeedDefinition, FeedResponse, Feed, Article} from './reducers/index';
 import { HttpDataService, ConfigService } from './services/index';
 
 const appRoutes: Routes = [
@@ -51,7 +51,7 @@ const appRoutes: Routes = [
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(appRoutes),
+    RouterModule.forRoot(appRoutes, { useHash: true }),
     CommonModule,
     RouterModule,
     BrowserModule, 
@@ -59,7 +59,7 @@ const appRoutes: Routes = [
     ReactiveFormsModule,
     HttpModule,
     DataTableModule,
-    StoreModule.provideStore({urls: urlReducer, feeds: feedReducer}),
+    StoreModule.provideStore({urls: urlReducer, feeds: feedReducer, selectedFeed: selectedFeedReducer}),
     StoreDevtoolsModule.instrumentStore({
           monitor: useLogMonitor({
             visible: true,

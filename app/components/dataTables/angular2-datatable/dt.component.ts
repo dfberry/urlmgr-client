@@ -42,27 +42,27 @@ export class UrlNewComponent {
 
 
   constructor(private urlService: UrlService, private builder: FormBuilder){
-    console.log('UrlNewComponent::constructor');
+    //console.log('UrlNewComponent::constructor');
     this.newForm = this.builder.group({
       httpUrlValue: ['', Validators.compose([Validators.required, this.checkIfUrl])]
     });
     this.httpUrlValue = this.newForm.controls['httpUrlValue'];
   }
   ngOnInit() {
-      console.log("UrlNewComponent ngOnInit");
+      //console.log("UrlNewComponent ngOnInit");
   }
 
   validForm(){
-    console.log("validForm this.httpUrlValue.valid = " + this.httpUrlValue.valid);
+    //console.log("validForm this.httpUrlValue.valid = " + this.httpUrlValue.valid);
     if(this.httpUrlValue.valid) return true;
   }
 
   save(){
     if (this.validForm()){
-      console.log('UrlNewComponent::save');
+      //console.log('UrlNewComponent::save');
       this.url.url = this.httpUrlValue.value;
 
-      console.log('this.url ' + JSON.stringify(this.url));
+      //console.log('this.url ' + JSON.stringify(this.url));
 
       // insert new url name via service
       this.urlService.insertItem(this.url)
@@ -73,10 +73,10 @@ export class UrlNewComponent {
   // valid url
   checkIfUrl(fieldControl: FormControl){
       let thisUrl = fieldControl.value;
-      console.log('UrlNewComponent::checkValidUrl ' + thisUrl);
+      //console.log('UrlNewComponent::checkValidUrl ' + thisUrl);
 
       let isValid = validUrl.isUri(thisUrl);
-      console.log(thisUrl + " isValid = " + isValid);
+      //console.log(thisUrl + " isValid = " + isValid);
       return isValid ? null : { invalidUrl: true }; 
     }
 
@@ -101,7 +101,7 @@ export class UrlRemoveComponent {
 
   remove(){
     if (this.url.id){
-      console.log('UrlNewComponent::remove');
+      //console.log('UrlNewComponent::remove');
       this.urlService.removeItem(this.url);
       //.then(data => console.log("save data = " + JSON.stringify(data)))
       //.catch(err => console.log("save err = " + JSON.stringify(err)));
@@ -209,7 +209,7 @@ export class angular2DataTableComponent {
 
   constructor(){}
   ngOnInit(){
-      console.log("dataTable");
+      //console.log("dataTable");
   }
   ngOnChanges(changes: SimpleChanges) {}
 

@@ -1,6 +1,7 @@
 {
     "clientHost": "localhost:3000",
-    "apiUrl": "http://localhost:3005/",
+    "apiUrl": "http://104.131.155.194:3005/",
     "debugging": true,
-    "test":"hello"
+    "test":"hello",
+    "rssProxy": "http://api.rss2json.com/v1/api.json?rss_url="
 }

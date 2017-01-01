@@ -35,10 +35,10 @@ export class HttpDataService{
     }
     */
     getJsonPromise(url){
-        console.log("getJsonPromise url = " + url);
+        //console.log("getJsonPromise url = " + url);
         return this._http.get(url)
             .map((response:Response) => {
-                console.log(response.json());
+                //console.log(response.json());
                 return response.json();
             })
             .toPromise()
@@ -48,8 +48,8 @@ export class HttpDataService{
             });
     }
     postJsonData(url, body, options ){
-        console.log("HttpDataService::postJsonData url = " + url);
-        console.log("HttpDataService::postJsonData body = " + body);
+        //console.log("HttpDataService::postJsonData url = " + url);
+        //console.log("HttpDataService::postJsonData body = " + body);
 
         return this._http.post(url, body, options ? options : this.getDefaultPostOptions())
            .map(res =>  res.json())
@@ -60,7 +60,7 @@ export class HttpDataService{
             });
     }
     delete(url, options ){
-        console.log("HttpDataService::delete url = " + url);
+        //console.log("HttpDataService::delete url = " + url);
  
         return this._http.delete(url, options )
            .map(res =>  res.json())

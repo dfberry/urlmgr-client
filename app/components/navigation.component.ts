@@ -23,6 +23,6 @@ export class NavigationComponent {
 
   constructor(private store: Store<AppState>){}
   ngOnInit(){
-    console.log("NavigationComponent::ngOnInit " );
+    //console.log("NavigationComponent::ngOnInit " );
   }
 }

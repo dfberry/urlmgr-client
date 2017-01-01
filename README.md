@@ -15,10 +15,11 @@ the file are below. The file is ignored by .gitignore.
 
 ```
 {
-     "clientHost": "localhost:3000",
-     "apiUrl": "http://localhost:3001/",
-     "debugging": true
- }
+    "clientHost": "localhost:3000",
+    "apiUrl": "http://104.131.155.194:3005/",
+    "debugging": true,
+    "test":"hello"
+}
 ```
 
 An example of state is in the ./example_state.json file.

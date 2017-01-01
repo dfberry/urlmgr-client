@@ -7,6 +7,7 @@ export * from './url';
 export interface AppState {
   urls : Url[];
   feeds: Feed[];
+  selectedFeed: Feed;
 }
 
 

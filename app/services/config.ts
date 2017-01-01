@@ -10,12 +10,12 @@ export class ConfigService {
   constructor(private http: Http) {}
 
   load() {
-    console.log('Inside Load');
+    //console.log('Inside Load');
     return new Promise((resolve) => {
       this.http.get('app/config/config.json').map(res => res.json())
         .subscribe(config => {
-          console.log('Configuration loaded...........');
-          console.log(config);
+          //console.log('Configuration loaded...........');
+          //console.log(config);
           this.config = config;
           resolve();
         });

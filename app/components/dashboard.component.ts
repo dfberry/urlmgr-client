@@ -24,7 +24,7 @@ import { ConfigService } from '../services/index';
 export class DashboardComponent {
   constructor(private store: Store<AppState>){}
   ngOnInit(){
-    console.log("UrlFeedDetailComponent::ngOnInit " );
+    //console.log("UrlFeedDetailComponent::ngOnInit " );
   }
   ngOnChanges(changes: SimpleChanges) {
     

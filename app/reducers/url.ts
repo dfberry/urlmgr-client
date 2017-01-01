@@ -10,10 +10,10 @@ import { HttpDataService, ConfigService} from '../services/index';
 import { AppState } from './index';
 import { Feed, FeedResponse, FeedDefinition , FeedResponseService} from './feed';
 
-export const ADD_URL = 'ADD_URL';
-export const ADD_URLS = 'ADD_URLS';
-export const DELETE_URL = 'DELETE_URL';
-export const UPDATE_URL = 'UPDATE_URL';
+export const ADD_URL = '[Url] add 1';
+export const ADD_URLS = '[Url] add N';
+export const DELETE_URL = '[Url] delete';
+export const UPDATE_URL = '[Url] update';
 
 /** Url definition
  * id: currently next numeric value
@@ -43,7 +43,7 @@ export class Url implements IUrl{
 
 export const urlReducer: ActionReducer<Url[]> = (state: Url[] = [], action: Action) => {
 
-    console.log("urlReducer " + action.type);
+    //console.log("urlReducer " + action.type);
 
      switch (action.type) {
         case ADD_URL:
@@ -86,10 +86,10 @@ export class UrlService{
                 let thisUrls = data;
                 
                 if(data){
-                    console.log(thisUrls);
+                    //console.log(thisUrls);
                     this.store.dispatch({type: ADD_URLS, payload: thisUrls});
                 } else {
-                    console.log("url.ts::loadItems - data is empty");
+                    //console.log("url.ts::loadItems - data is empty");
                 }
         }).catch((err) => {
                 console.log(err);
@@ -104,7 +104,7 @@ export class UrlService{
                 
                 // TODO: what should happen if there is an error on the server/api side
                 // how would I should the error? 
-                console.log("url.ts::insertItem - returned data = " + JSON.stringify(data));
+                //console.log("url.ts::insertItem - returned data = " + JSON.stringify(data));
                 this.loadItems();  
                 return data;  
             
@@ -122,13 +122,13 @@ export class UrlService{
 
     // delete item
     removeItem(item:Url){
-        console.log("item deleted = " + item.url);
+        //console.log("item deleted = " + item.url);
         return this._httpDataService.delete(this.baseUrl + '/' + item.id, null)
             .then((data) => {
                 
                 // TODO: what should happen if there is an error on the server/api side
                 // how would I should the error? 
-                console.log("url.ts::remoteItem - returned data = " + JSON.stringify(data));
+                //console.log("url.ts::remoteItem - returned data = " + JSON.stringify(data));
                 this.loadItems();  
                 return data;  
             

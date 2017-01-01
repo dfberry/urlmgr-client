@@ -19,7 +19,7 @@ export class AppComponent {
 
     ngOnInit() {
         this.config =  this.configService.config;
-        console.log("config object in app component");
-        console.log(this.config);   
+        //console.log("config object in app component");
+        //console.log(this.config);   
      }
 }

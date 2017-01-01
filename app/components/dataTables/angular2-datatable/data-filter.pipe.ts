@@ -61,26 +61,26 @@ export class FeedParserPipe implements PipeTransform {
                 // assumes if feeds is there then it must have children
 
                 let feedsFound  =  (item.feeds && item.feeds.length>0) ? true : false;
-                console.log("feedsFound = " + feedsFound);
+                //console.log("feedsFound = " + feedsFound);
                 return feedsFound;
             case 'title':
                 if (item.feeds && item.feeds.length>0 ){
                     let current = this.feedProperty(item.feeds, arrNum, feedProperty);
                     let newTitle = this.feedPropertyTitle(current);
                     newTitle = !newTitle ? '<null>' : newTitle;
-                    console.log('pipe title = ' + newTitle);
+                    //console.log('pipe title = ' + newTitle);
                     return this.feedPropertyTitle(newTitle);
                 } else {
-                    console.log('pipe title from item '  + item.url);
+                    //console.log('pipe title from item '  + item.url);
                     return item.url
                 }
                 
             case 'href':
                 let href = this.feedProperty(item.feeds, arrNum, feedProperty);
-                console.log('pipe href = ' + href);
+                //console.log('pipe href = ' + href);
                 return href;
             default:
-                console.log('returned nothing from data-filter.pipe');
+                //console.log('returned nothing from data-filter.pipe');
                 return;
         }
 
