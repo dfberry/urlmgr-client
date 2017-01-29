@@ -1,6 +1,6 @@
 ![data](./UX.png)
 
-This is a url manager. The client is written in angular 2 with 
+This is the client UX for  url manager. The client is written in angular 2 with 
 state maintained by a remote datasource, returning JSON managed 
 by ngrx. 
 
@@ -16,7 +16,7 @@ the file are below. The file is ignored by .gitignore.
 ```
 {
     "clientHost": "localhost:3000",
-    "apiUrl": "http://104.131.155.194:3005/",
+    "apiUrl": "http://localhost:3005/",
     "debugging": true,
     "test":"hello"
 }
