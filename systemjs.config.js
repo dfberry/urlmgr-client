@@ -39,9 +39,10 @@
       'angular2-datatable': 'npm:angular2-datatable',
       'lodash':       'npm:lodash',
 
-
+      'cheerio': 'npm:cheerio',
       // my libraries - commonjs
-      'json':         'bin:utils'
+      'json':         'bin:utils',
+      'json-loader': 'npm:json-loader'
     },
     // packages tells the System loader how to load when no filename and/or no extension
     packages: {
@@ -95,7 +96,21 @@
               'angular2-datatable':{
                 main:'./index.js',
                 defaultExtension:'js'
-              }
+              },
+              'json-loader':{
+                main:'./index.js',
+                defaultExtension:'js'
+              },
+               'cheerio':{
+                main:'./index.js',
+                defaultExtension:'js',
+                format: 'cjs',
+                 meta:{  
+                  "*.json":{  
+                    loader:"json-loader"
+                  }
+                 }
+               }
     }
 
   });

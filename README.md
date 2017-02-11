@@ -39,3 +39,4 @@ An example of state is in the ./example_state.json file.
 [https://github.com/btroncone/ngrx-examples](https://github.com/btroncone/ngrx-examples)
 [https://github.com/onehungrymind/fem-ng2-ngrx-app](https://github.com/onehungrymind/fem-ng2-ngrx-app)
 
+hard-coded /node_modules/cheerio's version in the index.js
