@@ -8,10 +8,12 @@ _temp
 
 #config.*.json
 *.map
-app/**/.map
+app/**/*.map
 app/**/*.js
 config.json
 **/**/config.json
 app/config/config.json
 currentWork.txt
 dist
+src/**/*.js
+src/**/*.map

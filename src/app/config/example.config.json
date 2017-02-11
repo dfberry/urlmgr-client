@@ -1,7 +1,0 @@
-{
-    "clientHost": "localhost:3000",
-    "apiUrl": "http://localhost:3005/",
-    "debugging": true,
-    "test":"hello",
-    "rssProxy": "http://api.rss2json.com/v1/api.json?rss_url="
-}
