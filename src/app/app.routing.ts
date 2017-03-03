@@ -1,12 +1,15 @@
 import { ModuleWithProviders } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { Home } from './app/home/home';
-import { About } from './app/about/about';
+import { UrlMgrComponent, DashboardComponent } from './components/index';
 
-export const ROUTES: Routes = [
-  { path: '',      component: Home },
-  { path: 'about', component: About }
+
+
+const appRoutes: Routes = [
+  //{ path: 'feed/:id/:url', component: FeedResponseComponent },
+  //{ path: 'feed', component: FeedMgrComponent},
+  { path: 'url', component: UrlMgrComponent },
+  { path: '', component: DashboardComponent}
 ];
 
-export const ROUTING: ModuleWithProviders = RouterModule.forRoot(ROUTES);
+export const AppRoutes: ModuleWithProviders = RouterModule.forRoot(appRoutes);

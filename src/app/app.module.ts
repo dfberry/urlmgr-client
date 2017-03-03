@@ -30,30 +30,25 @@ import { AppComponent,
   UrlFeedDetailLinkComponent,
   NavigationComponent,
   DashboardComponent
-} from './app/components/index';
+} from './components/index';
 
 import {
   FirstFeedPipe
-} from './app/pipes/index';
+} from './pipes/index';
 
-import { DataFilterPipe,FeedParserPipe }   from './app/components/dataTables/angular2-datatable/data-filter.pipe';
+import { DataFilterPipe,FeedParserPipe }   from './components/dataTables/angular2-datatable/data-filter.pipe';
 
 import { AppState, urlReducer, UrlService, 
   FeedResponseService, feedReducer, selectedFeedReducer, 
   FeedDefinitionService,
-  FeedDefinition, FeedResponse, Feed, Article} from './app/reducers/index';
-import { HttpDataService, ConfigService } from './app/services/index';
+  FeedDefinition, FeedResponse, Feed, Article} from './reducers/index';
+import { HttpDataService, ConfigService } from './services/index';
 
-const appRoutes: Routes = [
-  { path: 'feed/:id/:url', component: FeedResponseComponent },
-  { path: 'feed', component: FeedMgrComponent},
-  { path: 'url', component: UrlMgrComponent },
-  { path: '', component: DashboardComponent}
-];
+import { AppRoutes } from './app.routing';
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(appRoutes, { useHash: true }),
+    AppRoutes,
     CommonModule,
     RouterModule,
     BrowserModule, 
