@@ -40,3 +40,11 @@ An example of state is in the ./example_state.json file.
 [https://github.com/onehungrymind/fem-ng2-ngrx-app](https://github.com/onehungrymind/fem-ng2-ngrx-app)
 
 hard-coded /node_modules/cheerio's version in the index.js
+https://medium.com/@daviddentoom/angular-2-lazy-loading-with-webpack-d25fe71c29c1#.8ks1li2kr
+https://webpack.github.io/docs/code-splitting.html
+https://damienbod.com/2017/01/14/angular-2-lazy-loading-with-webpack-2/
+https://vsavkin.com/angular-router-understanding-redirects-2826177761fc#.dm6kntbhf
+http://stackoverflow.com/questions/40834840/angular-2-feature-module-routing-example
+https://github.com/webpack/webpack/issues/358
+http://stackoverflow.com/questions/31322525/typescript-confusing-duplicate-identifier-error-message
+https://webpack.js.org/guides/migrating/

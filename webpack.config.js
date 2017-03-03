@@ -47,7 +47,7 @@ module.exports = {
     new CommonsChunkPlugin({name: 'vendor', filename: 'vendor.bundle.js', minChunks: Infinity}),
     new DefinePlugin({'webpack': {'ENV': JSON.stringify(metadata.env)}}),
     new CopyWebpackPlugin([{from: './src/index.html', to: 'index.html'}]),
-    new CopyWebpackPlugin([{from: './src/config.json', to: 'config.json'}]),
+    new CopyWebpackPlugin([{from: './src/app/config/config.json', to: 'config.json'}]),
     new CopyWebpackPlugin([{from: './src/styles.css', to: 'styles.css'}]),
     new ContextReplacementPlugin(
       // needed as a workaround for the Angular's internal use System.import()
