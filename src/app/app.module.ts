@@ -18,7 +18,7 @@ import { DataTableModule } from "angular2-datatable";
 
 
 // this app
-import { AppComponent,  
+import {   
   UrlNewComponent, 
   UrlRemoveComponent, 
   UrlMgrComponent,
@@ -44,11 +44,15 @@ import { AppState, urlReducer, UrlService,
   FeedDefinition, FeedResponse, Feed, Article} from './reducers/index';
 import { HttpDataService, ConfigService } from './services/index';
 
+import { AppComponent } from './app.component';
 import { AppRoutes } from './app.routing';
+import { UserModule } from './user/user.module';
+import { AlertModule } from './alert/alert.module';
 
 @NgModule({
   imports: [
     AppRoutes,
+    UserModule,
     CommonModule,
     RouterModule,
     BrowserModule, 
@@ -66,7 +70,7 @@ import { AppRoutes } from './app.routing';
         StoreLogMonitorModule
     ],
   declarations: [ 
-        AppComponent,  
+        AppComponent,
         UrlNewComponent, 
         UrlRemoveComponent,
         UrlMgrComponent,

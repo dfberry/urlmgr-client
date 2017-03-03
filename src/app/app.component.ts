@@ -1,5 +1,5 @@
 import { Injectable, Component, Output, Input, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
-import { ConfigService } from '../services/index';
+import { ConfigService } from '../app/services/index';
 import { RouterModule, Routes } from '@angular/router';
 
 //<ngrx-store-log-monitor toggleCommand="ctrl-h" positionCommand="ctrl-m"></ngrx-store-log-monitor>
@@ -8,7 +8,7 @@ import { RouterModule, Routes } from '@angular/router';
 @Component({
     selector: 'my-app',
     template: ` 
-       
+        <login></login>
         <router-outlet></router-outlet>
     `,
     changeDetection: ChangeDetectionStrategy.Default
