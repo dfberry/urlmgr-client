@@ -8,14 +8,14 @@ import { Http, Response, URLSearchParams, Headers, RequestOptions} from '@angula
     template: ` 
       <div class="col-md-6 col-md-offset-3">
           <h2>Login</h2>
-          <form name="form" (ngSubmit)="login()">
+          <form (submit)="login()">
               <div class="form-group" >
                   <label for="username">User</label>
-                  <input type="text" class="form-control" name="username" required />
+                  <input type="text" class="form-control" name="username" placeholder="Your email here" required />
               </div>
               <div class="form-group" >
                   <label for="password">Password</label>
-                  <input type="password" class="form-control" name="password" required />
+                  <input type="password" class="form-control" name="password" placeholder="Your password here" required />
               </div>
               <div class="form-group">
                   <button [disabled]="loading" class="btn btn-primary">Login</button>
@@ -23,10 +23,14 @@ import { Http, Response, URLSearchParams, Headers, RequestOptions} from '@angula
               </div>
           </form>
       </div>
+      {{ username }}<br>
+      {{ password }}<br>
     `
 })
 export class LoginComponent {
     config: any;
+    username: string;
+    password: string;
 
     constructor(private http: Http){}
 
