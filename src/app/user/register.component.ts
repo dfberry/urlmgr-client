@@ -5,11 +5,19 @@ import { Http, Response, URLSearchParams, Headers, RequestOptions} from '@angula
 import { Observable } from 'rxjs/Rx';
 
 @Component({
-    selector: 'login',
+    selector: 'register',
     template: ` 
       <div class="col-md-6 col-md-offset-3">
-          <h2>Login</h2>
-          <form (submit)="login()">
+          <h2>Register</h2>
+          <form (submit)="register()">
+              <div class="form-group" >
+                  <label for="firstname">First Name</label>
+                  <input type="text" class="form-control" [(ngModel)]="firstname" name="firstname" placeholder="Your first name here" required />
+              </div>
+              <div class="form-group" >
+                  <label for="lastname">Last Name</label>
+                  <input type="text"  class="form-control" [(ngModel)]="lastname" name="lastname" placeholder="Your last name here" required />
+              </div>
               <div class="form-group" >
                   <label for="username">User</label>
                   <input type="text" class="form-control" [(ngModel)]="username" name="username" placeholder="Your email here" required />
@@ -19,16 +27,18 @@ import { Observable } from 'rxjs/Rx';
                   <input type="password"  class="form-control" [(ngModel)]="password" name="password" placeholder="Your password here" required />
               </div>
               <div class="form-group">
-                  <button [disabled]="loading" class="btn btn-primary">Login</button>
+                  <button [disabled]="loading" class="btn btn-primary">Register</button>
                   <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
               </div>
           </form>
       </div>
     `
 })
-export class LoginComponent {
+export class RegisterComponent {
     config: any;
     newForm: FormGroup;
+    lastname="";
+    firstname="";
     username="";
     password="";
 
@@ -38,18 +48,22 @@ export class LoginComponent {
     ngOnInit() {  
      }
 
-    login() {
+    register() {
       
       console.log("login function");
       console.log("username " + this.username);
       console.log("password " + this.password);
+      console.log("lastname " + this.lastname);
+      console.log("firstname " + this.firstname);
 
       let postForm = {
           email: this.username,
-          password: this.password
+          password: this.password,
+          lastname: this.lastname,
+          firstname: this.firstname
       };
 
-      console.log("postForm");
+      console.log("postForm = " + JSON.stringify(postForm));
 
  /*       return this.http.post('http://urlmgrapi.dfberry.io/v1/auth', JSON.stringify({ username: this.username, password: this.password }))
         .map((response: Response) => {
@@ -63,9 +77,9 @@ export class LoginComponent {
             }
         }).catch(this._handleErrorObservable);
 */
-        return this.http.post('http://urlmgrapi.dfberry.io/v1/auth', postForm)
+        return this.http.post('http://urlmgrapi.dfberry.io/v1/users', postForm)
             .map((response:Response) => {
-                //console.log(response.json());
+                console.log(response.json());
                 return response.text();
             })
             .toPromise()
@@ -75,10 +89,5 @@ export class LoginComponent {
             });
 
 
-    }
- 
-    logout() {
-        // remove user from local storage to log user out
-        localStorage.removeItem('currentUser');
     }
 }

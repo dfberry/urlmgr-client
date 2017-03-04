@@ -9,6 +9,7 @@ import { RouterModule, Routes } from '@angular/router';
     selector: 'my-app',
     template: ` 
         <login></login>
+        <register></register>
         <router-outlet></router-outlet>
     `,
     changeDetection: ChangeDetectionStrategy.Default
