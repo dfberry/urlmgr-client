@@ -8,8 +8,6 @@ import { RouterModule, Routes } from '@angular/router';
 @Component({
     selector: 'my-app',
     template: ` 
-        <login></login>
-        <register></register>
         <router-outlet></router-outlet>
     `,
     changeDetection: ChangeDetectionStrategy.Default
@@ -17,11 +15,13 @@ import { RouterModule, Routes } from '@angular/router';
 export class AppComponent {
     config: any;
 
-    constructor(private configService: ConfigService){}
+    constructor(private configService: ConfigService){
+        console.log("AppComponent ctor");
+    }
 
     ngOnInit() {
         this.config =  this.configService.config;
         //console.log("config object in app component");
-        //console.log(this.config);   
+        console.log("AppComponent ngOnInit");   
      }
 }

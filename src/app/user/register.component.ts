@@ -65,26 +65,14 @@ export class RegisterComponent {
 
       console.log("postForm = " + JSON.stringify(postForm));
 
- /*       return this.http.post('http://urlmgrapi.dfberry.io/v1/auth', JSON.stringify({ username: this.username, password: this.password }))
-        .map((response: Response) => {
-            // login successful if there's a jwt token in the response
-            let user = response.json();
-            console.log("user = " + user);
-            console.log("user token = " + user.token);
-            if (user && user.token) {
-                // store user details and jwt token in local storage to keep user logged in between page refreshes
-                localStorage.setItem('currentUser', JSON.stringify(user));
-            }
-        }).catch(this._handleErrorObservable);
-*/
         return this.http.post('http://urlmgrapi.dfberry.io/v1/users', postForm)
             .map((response:Response) => {
-                console.log(response.json());
+                console.log("register success " + response.json());
                 return response.text();
             })
             .toPromise()
             .catch((err: any) => {
-                console.log("http::data-getJsonPromise err " + err);
+                console.log("register error " + err);
                 return Promise.reject(err.message)
             });
 

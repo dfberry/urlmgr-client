@@ -1,7 +1,7 @@
 import { Component} from '@angular/core';
 import { AbstractControl, FormGroup, FormControl, Validators, FormBuilder, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router'; 
-import { Http, Response, URLSearchParams, Headers, RequestOptions} from '@angular/http';
+import { Http, Response, URLSearchParams, Headers, RequestOptions, RequestOptionsArgs} from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 
 @Component({
@@ -40,32 +40,25 @@ export class LoginComponent {
 
     login() {
       
-      console.log("login function");
-      console.log("username " + this.username);
-      console.log("password " + this.password);
+        console.log("login function");
+        console.log("username " + this.username);
+        console.log("password " + this.password);
 
-      let postForm = {
-          email: this.username,
-          password: this.password
-      };
+        let postForm = {
+            email: this.username,
+            password: this.password
+        };
 
-      console.log("postForm");
+        console.log("postForm");
 
- /*       return this.http.post('http://urlmgrapi.dfberry.io/v1/auth', JSON.stringify({ username: this.username, password: this.password }))
-        .map((response: Response) => {
-            // login successful if there's a jwt token in the response
-            let user = response.json();
-            console.log("user = " + user);
-            console.log("user token = " + user.token);
-            if (user && user.token) {
-                // store user details and jwt token in local storage to keep user logged in between page refreshes
-                localStorage.setItem('currentUser', JSON.stringify(user));
-            }
-        }).catch(this._handleErrorObservable);
-*/
         return this.http.post('http://urlmgrapi.dfberry.io/v1/auth', postForm)
             .map((response:Response) => {
-                //console.log(response.json());
+                console.log(response.json());
+                let user = response.json();
+                if (user && user.token) {
+                    // store user details and jwt token in local storage to keep user logged in between page refreshes
+                    localStorage.setItem('currentUser', JSON.stringify(user));
+                }
                 return response.text();
             })
             .toPromise()
@@ -77,8 +70,4 @@ export class LoginComponent {
 
     }
  
-    logout() {
-        // remove user from local storage to log user out
-        localStorage.removeItem('currentUser');
-    }
 }
