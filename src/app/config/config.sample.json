@@ -1,0 +1,4 @@
+{
+  "clientHost": "localhost:3000",
+  "apiUrl": "http://api.xyz.com/v1/"
+}
