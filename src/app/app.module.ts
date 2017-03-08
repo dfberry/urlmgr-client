@@ -48,18 +48,26 @@ import { AppComponent } from './app.component';
 import { AppRoutes } from './app.routing';
 import { UserModule } from './user/user.module';
 import { AlertModule } from './alert/alert.module';
+import { HomeModule } from './home/home.module';
 
 @NgModule({
   imports: [
+    // my code
     AppRoutes,
-    UserModule,
+    UserModule.forRoot(),
+    HomeModule,
+
+    // 3rd party code
+    DataTableModule,
+
+    // angular code
     CommonModule,
     RouterModule,
     BrowserModule, 
     FormsModule, 
     ReactiveFormsModule,
     HttpModule,
-    DataTableModule,
+
     StoreModule.provideStore({urls: urlReducer, feeds: feedReducer, selectedFeed: selectedFeedReducer}),
     StoreDevtoolsModule.instrumentStore({
           monitor: useLogMonitor({

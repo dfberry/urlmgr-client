@@ -4,6 +4,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { Http, Response, URLSearchParams, Headers, RequestOptions, RequestOptionsArgs} from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 
+import { AuthenticationService } from './auth.service';
+
 @Component({
     selector: 'login',
     template: ` 
@@ -33,7 +35,10 @@ export class LoginComponent {
     password="";
 
 
-    constructor(private http: Http){}
+    constructor(
+        private http: Http,
+        private authService: AuthenticationService)
+    {}
 
     ngOnInit() {  
      }
@@ -57,7 +62,7 @@ export class LoginComponent {
                 let user = response.json();
                 if (user && user.token) {
                     // store user details and jwt token in local storage to keep user logged in between page refreshes
-                    localStorage.setItem('currentUser', JSON.stringify(user));
+                    this.authService.setCurrentUser(user);
                 }
                 return response.text();
             })
@@ -66,8 +71,6 @@ export class LoginComponent {
                 console.log("http::data-getJsonPromise err " + err);
                 return Promise.reject(err.message)
             });
-
-
     }
  
 }

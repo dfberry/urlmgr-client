@@ -7,7 +7,6 @@ import { AuthenticationComponent } from './auth.component';
 import { ProfileComponent } from './profile.component';
 
 const userRoutes: Routes = [
-  { path: '', component: AuthenticationComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
   { path: 'profile', component: ProfileComponent }

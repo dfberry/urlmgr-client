@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule }   from '@angular/forms';
 import 'rxjs/Rx';
@@ -8,6 +8,8 @@ import { LoginComponent } from './login.component';
 import { RegisterComponent } from './register.component';
 import { ProfileComponent } from './profile.component';
 import { UserRoutes } from './user.routes';
+import { AuthenticationService } from './auth.service';
+import { AuthGuard } from './auth.guard.service';
 
 
 @NgModule({
@@ -22,6 +24,28 @@ import { UserRoutes } from './user.routes';
     ProfileComponent,
     AuthenticationComponent
   ],
-  exports: [LoginComponent, RegisterComponent, ProfileComponent, AuthenticationComponent]
+  providers: [
+    AuthGuard,
+    AuthenticationService
+    
+  ],
+  exports: [
+    LoginComponent, 
+    RegisterComponent, 
+    ProfileComponent, 
+    AuthenticationComponent
+  ]
 })
-export class UserModule {}
+export class UserModule {
+
+  // singleton regardless of lazy loading
+  static forRoot(): ModuleWithProviders {
+    return {
+      ngModule: UserModule,
+      providers: [
+        AuthGuard,
+        AuthenticationService
+      ]
+    }
+  }
+}  

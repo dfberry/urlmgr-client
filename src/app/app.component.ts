@@ -8,6 +8,7 @@ import { RouterModule, Routes } from '@angular/router';
 @Component({
     selector: 'my-app',
     template: ` 
+        <navigation></navigation>
         <router-outlet></router-outlet>
     `,
     changeDetection: ChangeDetectionStrategy.Default

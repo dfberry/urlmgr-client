@@ -4,6 +4,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { Http, Response, URLSearchParams, Headers, RequestOptions, RequestOptionsArgs} from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 
+import { AuthenticationService } from './auth.service';
+
 @Component({
     selector: 'profile',
     template: ` 
@@ -21,15 +23,14 @@ import { Observable } from 'rxjs/Rx';
 export class ProfileComponent {
 
     user={};
-    constructor(private http: Http){}
+    constructor(
+        private http: Http,
+        private authService: AuthenticationService
+    ){}
 
     ngOnInit() {  
-        let localStor = localStorage.getItem('currentUser');
-        if (localStor) {
-          this.user =JSON.parse(localStor);
-          console.log(this.user);
-          console.log(this.user["email"]);
-        }
+
+          this.user = this.authService.getCurrentUser();
      }
  
     logout() {
@@ -47,7 +48,7 @@ export class ProfileComponent {
         };
 
         // remove user from local storage to log user out
-        localStorage.removeItem('currentUser');
+        this.authService.removeCurrentUser();
         this.user = {};
 
         return this.http.delete('http://urlmgrapi.dfberry.io/v1/users/' + postForm.user + '/tokens', options)
