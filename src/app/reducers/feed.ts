@@ -2,9 +2,13 @@ import { Injectable} from '@angular/core';
 import { ActionReducer, Action, Store } from '@ngrx/store';
 import '@ngrx/core/add/operator/select';
 import {Observable} from 'rxjs/Rx';
-import { Http, Response, URLSearchParams, Headers} from '@angular/http';
+import { Http, Response, URLSearchParams, Headers, RequestOptionsArgs} from '@angular/http';
 
-import { HttpDataService, ConfigService} from '../services/index';
+
+import { ConfigService } from '../config/config.service';
+import { AuthenticationService } from '../user/auth.service';
+
+import { HttpDataService} from '../services/index';
 import { Url} from './index';
 import { AppState } from './index';
 
@@ -137,7 +141,6 @@ export class FeedDefinitionService{
 
     constructor(
         private _httpDataService: HttpDataService,
-        private configService: ConfigService,
         private store:Store<AppState>    ){
 
         //this.items = store.select(state => state.feeds);
@@ -168,14 +171,21 @@ export class FeedResponseService{
   public count: Observable<number>;
   public next: Observable<number>;
   url: string;
+  baseUrl;
+  user;
 
-    private rssToJsonServiceBaseUrl: string = this.configService.config.rssProxy;
+    //TODO: fix config
+    //private rssToJsonServiceBaseUrl: string = this.configService.config.rssProxy;
+    private rssToJsonServiceBaseUrl: string;
 
     constructor(
         private _httpDataService: HttpDataService,
-        private configService: ConfigService,
-        private store:Store<AppState>    ){
+        private store:Store<AppState>   ,
+        private authService: AuthenticationService,
+        private configService: ConfigService ){
 
+        this.baseUrl = this.configService.get('apiUrl');
+        this.user = this.authService.getCurrentUser();
         //this.items = store.select(state => state.feeds);
         
     }
@@ -205,9 +215,16 @@ export class FeedResponseService{
       // if feed is already in store, don't go fetch it
       if(existingFeed) return;
 
+        // add user auth token to header
+        let headers = new Headers();
+        headers.set('x-access-token', this.user['token']);
+        let options:RequestOptionsArgs = {
+            headers : headers,
+            body: { user : this.user['id']}
+        };
 
       // get feeds
-      this._httpDataService.getJsonPromise(this.rssToJsonServiceBaseUrl + url)
+      this._httpDataService.getJsonPromise(this.rssToJsonServiceBaseUrl + url, options)
           .then(data => {
             //console.log(this.rssToJsonServiceBaseUrl + url);
 

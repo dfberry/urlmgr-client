@@ -17,7 +17,7 @@ export class AuthenticationService{
     }
     public isAuthenticated() {
       let tempUser = this.getCurrentUser();
-      console.log("tempUser = " + tempUser);
+      console.log("tempUser = " + JSON.stringify(tempUser));
       return (tempUser && tempUser["token"]) ? true : false;
         
     }

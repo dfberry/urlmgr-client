@@ -1,7 +1,7 @@
 import { Injectable, Component, Output, Input, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
-import { ConfigService } from '../app/services/index';
 import { RouterModule, Routes } from '@angular/router';
-
+import { AppState } from './reducers/index';
+import { Store } from '@ngrx/store';
 //<ngrx-store-log-monitor toggleCommand="ctrl-h" positionCommand="ctrl-m"></ngrx-store-log-monitor>
        
 
@@ -16,13 +16,14 @@ import { RouterModule, Routes } from '@angular/router';
 export class AppComponent {
     config: any;
 
-    constructor(private configService: ConfigService){
+    constructor(
+        private store: Store<AppState>
+        ){
         console.log("AppComponent ctor");
     }
 
     ngOnInit() {
-        this.config =  this.configService.config;
         //console.log("config object in app component");
-        console.log("AppComponent ngOnInit");   
+        console.log("AppComponent ngOnInit"); 
      }
 }

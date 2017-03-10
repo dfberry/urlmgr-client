@@ -3,6 +3,7 @@ import { AbstractControl, FormGroup, FormControl, Validators, FormBuilder, React
 import { RouterModule, Routes } from '@angular/router'; 
 import { Http, Response, URLSearchParams, Headers, RequestOptions} from '@angular/http';
 import { Observable } from 'rxjs/Rx';
+import { ConfigService } from '../config/config.service';
 
 @Component({
     selector: 'register',
@@ -20,6 +21,7 @@ import { Observable } from 'rxjs/Rx';
               </div>
               <div class="form-group" >
                   <label for="username">User</label>
+                  <span *ngIf="asyncErrors.username.error" class="has-error"><span class="control-label">User is taken</span></span>
                   <input type="text" class="form-control" [(ngModel)]="username" name="username" placeholder="Your email here" required />
               </div>
               <div class="form-group" >
@@ -41,9 +43,21 @@ export class RegisterComponent {
     firstname="";
     username="";
     password="";
+    baseUrl;
+    
+    asyncErrors = {
+        username: {
+            error: false,
+            message: "user is taken"
+        }
+    };
 
 
-    constructor(private http: Http){}
+    constructor(private http: Http,
+    private configService: ConfigService){
+        this.baseUrl = this.configService.get('apiUrl');
+
+    }
 
     ngOnInit() {  
      }
@@ -65,13 +79,19 @@ export class RegisterComponent {
 
       console.log("postForm = " + JSON.stringify(postForm));
 
-        return this.http.post('http://urlmgrapi.dfberry.io/v1/users', postForm)
+        this.http.post(this.baseUrl + 'users', postForm)
             .map((response:Response) => {
                 console.log("register success " + response.json());
                 return response.text();
             })
             .toPromise()
             .catch((err: any) => {
+                // duplicate error
+                if(err.status == 403) {
+                    console.log("duplicate email entered");
+                    this.asyncErrors.username.error = true;
+                    return Promise.reject("duplicate email entered");
+                }
                 console.log("register error " + err);
                 return Promise.reject(err.message)
             });

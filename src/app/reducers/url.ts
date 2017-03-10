@@ -1,14 +1,16 @@
 // url.ts
-import {Injectable} from '@angular/core';
+import {Injectable, OnInit} from '@angular/core';
 import { ActionReducer, Action, Store } from '@ngrx/store';
-import { Http, Response, URLSearchParams, Headers} from '@angular/http';
+import { Http, Response, URLSearchParams, Headers, RequestOptionsArgs} from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 import { createSelector } from 'reselect';
 
 import { type } from '../utils/index';
-import { HttpDataService, ConfigService} from '../services/index';
+import { HttpDataService} from '../services/index';
 import { AppState } from './index';
 import { Feed, FeedResponse, FeedDefinition , FeedDefinitionService, FeedResponseService} from './feed';
+import { ConfigService } from '../config/config.service';
+import { AuthenticationService } from '../user/auth.service';
 
 export const ADD_URL = '[Url] add 1';
 export const ADD_URLS = '[Url] add N';
@@ -59,58 +61,79 @@ export const urlReducer: ActionReducer<Url[]> = (state: Url[] = [], action: Acti
 }
 
 @Injectable()
-export class UrlService{
+export class UrlService  {
 
     items:Observable <Url[]>;
     public count: Observable<number>;
     public next: Observable<number>;
 
-    baseUrl = this.configService.config.apiUrl + "urls";
+    currentConfig;
+    baseUrl;
+    user={};
 
     constructor(
         private store:Store<AppState>, 
         private _httpDataService: HttpDataService,
-        private configService: ConfigService,
-        private _FeedDefinitionService: FeedDefinitionService
+        private _FeedDefinitionService: FeedDefinitionService,
+        private authService: AuthenticationService,
+        private configService: ConfigService
     ){
+        console.log("url.ts - ctor");
         this.items = store.select(state => state.urls);
+        this.baseUrl = this.configService.get('apiUrl');
+        this.user = this.authService.getCurrentUser();
     }
 
-    // get list from local sails api server aka ../src-api
-    //     host: 104.131.155.194
-    //     port: 27000
-    loadItems(){
-        let initialItems: Url[];
+    getTokenedHeaders(){
+        // add user auth token to header
+        let headers = new Headers();
+        headers.set('x-access-token', this.user['token']);
+        let options:RequestOptionsArgs = {
+            headers : headers
+        };
+        return options;
+    }
+    getQueryStringWithUserId(){
+        let params: URLSearchParams = new URLSearchParams();
+        params.set("user", this.user['id']);
+        return params;
+    }
+    getBodyWithUserId(){
+        return {user: this.user['id']};
+    }
 
-        this._httpDataService.getJsonPromise(this.baseUrl)
+    loadItems(){
+        console.log("url.ts - loadItems");
+
+        let initialItems: Url[];
+        let options = this.getTokenedHeaders();
+        options.search = this.getQueryStringWithUserId();
+
+        this._httpDataService.getJsonPromise(this.baseUrl + "urls", options)
             .then(data => {
-                let thisUrls = data;
-                
-                if(data){
-                    //console.log(thisUrls);
-                    this.store.dispatch({type: ADD_URLS, payload: thisUrls});
-                } else {
-                    //console.log("url.ts::loadItems - data is empty");
-                }
+                if(data) this.store.dispatch({type: ADD_URLS, payload: data});
         }).catch((err) => {
                 console.log(err);
         });
     }
     // if response from post is equal to url
     // then it was successful
-    insertItem(item: Url){
+    insertItem(item: any){
 
-        return this._httpDataService.postJsonData(this.baseUrl, item, null)
+        let initialItems: Url[];
+        let options = this.getTokenedHeaders();
+        item.user = this.user['id'];
+
+        return this._httpDataService.postJsonData(this.baseUrl + "urls", item, options)
             .then((data) => {
                 
-                this._FeedDefinitionService.getFeedUrl(item);
+                //this._FeedDefinitionService.getFeedUrl(item);
 
                 // TODO: what should happen if there is an error on the server/api side
                 // how would I should the error? 
                 //console.log("url.ts::insertItem - returned data = " + JSON.stringify(data));
                 this.loadItems();  
                 return data;  
-            
             })
             .catch((err) => {
                 console.log(err);
@@ -125,10 +148,14 @@ export class UrlService{
 
     // delete item
     removeItem(item:Url){
-        //console.log("item deleted = " + item.url);
-        return this._httpDataService.delete(this.baseUrl + '/' + item.id, null)
+        console.log("url.ts removeItem, item to delet = " + JSON.stringify(item));
+
+        let options = this.getTokenedHeaders();
+        options.search = this.getQueryStringWithUserId();
+
+        return this._httpDataService.delete(this.baseUrl + "urls/" + item.id, options)
             .then((data) => {
-                
+                console.log("url.ts removeItem http service delete success");
                 // TODO: what should happen if there is an error on the server/api side
                 // how would I should the error? 
                 //console.log("url.ts::remoteItem - returned data = " + JSON.stringify(data));

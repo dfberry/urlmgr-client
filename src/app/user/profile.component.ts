@@ -5,6 +5,7 @@ import { Http, Response, URLSearchParams, Headers, RequestOptions, RequestOption
 import { Observable } from 'rxjs/Rx';
 
 import { AuthenticationService } from './auth.service';
+import { ConfigService } from '../config/config.service';
 
 @Component({
     selector: 'profile',
@@ -23,10 +24,17 @@ import { AuthenticationService } from './auth.service';
 export class ProfileComponent {
 
     user={};
+    baseUrl;
+
     constructor(
         private http: Http,
-        private authService: AuthenticationService
-    ){}
+        private authService: AuthenticationService,
+        private configService: ConfigService
+
+    ){
+        this.baseUrl = this.configService.get('apiUrl');
+
+    }
 
     ngOnInit() {  
 
@@ -51,7 +59,7 @@ export class ProfileComponent {
         this.authService.removeCurrentUser();
         this.user = {};
 
-        return this.http.delete('http://urlmgrapi.dfberry.io/v1/users/' + postForm.user + '/tokens', options)
+        return this.http.delete(this.baseUrl + 'users/' + postForm.user + '/tokens', options)
             .map((response:Response) => {
                 // nothing returned but 200
                 console.log("logout success "); 

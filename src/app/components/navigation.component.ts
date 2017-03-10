@@ -55,7 +55,7 @@ export class NavigationComponent {
     this.isAuthenticated = this.authService.isAuthenticated(); 
     if(this.isAuthenticated) this.currentUser = this.authService.getCurrentUser();
 
-    console.log(this.currentUser);
-    console.log(this.isAuthenticated);
+    console.log("currentUser = " + JSON.stringify(this.currentUser));
+    console.log("isAuthenticated = " + this.isAuthenticated);
   }
 }

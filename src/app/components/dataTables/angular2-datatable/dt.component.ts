@@ -17,7 +17,7 @@ let validUrl = require('valid-url');
   <form [formGroup]="newForm" (submit)="save()">
       <input id="httpUrlValue" type="text" formControlName="httpUrlValue" placeholder="Add a url" />
       <div *ngIf="(!httpUrlValue.valid && !httpUrlValue.pristine)">
-        <p *ngIf="httpUrlValue.hasError('required')">httpUrlValue is required</p>
+        <p *ngIf="httpUrlValue.hasError('required')">Url is required</p>
         <p *ngIf="httpUrlValue.hasError('invalidUrl')">Url is not valid</p>
       </div>
       <button type="submit" [disabled]="!newForm.valid">Add</button>
@@ -100,7 +100,9 @@ export class UrlRemoveComponent {
   constructor(private urlService: UrlService, private builder: FormBuilder){}
 
   remove(){
+    console.log("remove ");
     if (this.url.id){
+        console.log("remove " + this.url.id);
       //console.log('UrlNewComponent::remove');
       this.urlService.removeItem(this.url);
       //.then(data => console.log("save data = " + JSON.stringify(data)))

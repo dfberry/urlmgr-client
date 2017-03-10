@@ -10,7 +10,7 @@ import { AlertService } from './alert.service';
     `
 })
  
-export class AlertComponent {
+export class AlertComponent implements OnInit{
     message: any;
  
     constructor(private alertService: AlertService) { }

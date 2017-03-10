@@ -47,9 +47,9 @@ export class HttpDataService{
                 return Promise.reject(err.message)
             });
     }
-    getJsonPromise(url){
-        //console.log("getJsonPromise url = " + url);
-        return this._http.get(url)
+    getJsonPromise(url, options){
+        console.log("getJsonPromise url = " + url);
+        return this._http.get(url,options)
             .map((response:Response) => {
                 //console.log(response.json());
                 return response.json();
@@ -61,8 +61,8 @@ export class HttpDataService{
             });
     }
     postJsonData(url, body, options ){
-        //console.log("HttpDataService::postJsonData url = " + url);
-        //console.log("HttpDataService::postJsonData body = " + body);
+        console.log("HttpDataService::postJsonData url = " + url);
+        console.log("HttpDataService::postJsonData body = " + body);
 
         return this._http.post(url, body, options ? options : this.getDefaultPostOptions())
            .map(res =>  res.json())

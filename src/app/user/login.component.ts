@@ -5,6 +5,7 @@ import { Http, Response, URLSearchParams, Headers, RequestOptions, RequestOption
 import { Observable } from 'rxjs/Rx';
 
 import { AuthenticationService } from './auth.service';
+import { ConfigService } from '../config/config.service';
 
 @Component({
     selector: 'login',
@@ -33,12 +34,16 @@ export class LoginComponent {
     newForm: FormGroup;
     username="";
     password="";
+    baseUrl;
 
 
     constructor(
         private http: Http,
-        private authService: AuthenticationService)
-    {}
+        private authService: AuthenticationService,
+        private configService: ConfigService)
+    {
+         this.baseUrl = this.configService.get('apiUrl');       
+    }
 
     ngOnInit() {  
      }
@@ -56,7 +61,7 @@ export class LoginComponent {
 
         console.log("postForm");
 
-        return this.http.post('http://urlmgrapi.dfberry.io/v1/auth', postForm)
+        return this.http.post(this.baseUrl + 'auth', postForm)
             .map((response:Response) => {
                 console.log(response.json());
                 let user = response.json();

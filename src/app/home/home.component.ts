@@ -1,4 +1,5 @@
 import { Component, OnInit} from '@angular/core';
+import { ConfigService } from '../config/config.service';
 
 
 @Component({
@@ -9,8 +10,10 @@ import { Component, OnInit} from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-    constructor(){}
+    constructor(private configService: ConfigService){}
 
     ngOnInit() {  
+        let currentConfig = this.configService.getAll();
+        console.log("currentConfig = " + JSON.stringify(currentConfig));
      }
 }

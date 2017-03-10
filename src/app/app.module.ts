@@ -42,13 +42,14 @@ import { AppState, urlReducer, UrlService,
   FeedResponseService, feedReducer, selectedFeedReducer, 
   FeedDefinitionService,
   FeedDefinition, FeedResponse, Feed, Article} from './reducers/index';
-import { HttpDataService, ConfigService } from './services/index';
+import { HttpDataService } from './services/index';
 
 import { AppComponent } from './app.component';
 import { AppRoutes } from './app.routing';
 import { UserModule } from './user/user.module';
 import { AlertModule } from './alert/alert.module';
 import { HomeModule } from './home/home.module';
+import { ConfigService } from './config/config.service';
 
 @NgModule({
   imports: [
@@ -68,7 +69,10 @@ import { HomeModule } from './home/home.module';
     ReactiveFormsModule,
     HttpModule,
 
-    StoreModule.provideStore({urls: urlReducer, feeds: feedReducer, selectedFeed: selectedFeedReducer}),
+    StoreModule.provideStore({
+      urls: urlReducer, 
+      feeds: feedReducer
+    }),
     StoreDevtoolsModule.instrumentStore({
           monitor: useLogMonitor({
             visible: true,
@@ -99,8 +103,10 @@ import { HomeModule } from './home/home.module';
     FeedDefinitionService,
     UrlService, 
     HttpDataService, 
-    ConfigService, 
-    { provide: APP_INITIALIZER, useFactory: (config: ConfigService) => () => config.load(), deps: [ConfigService], multi: true }
+    ConfigService,
+    // http://stackoverflow.com/questions/37611549/how-to-pass-parameters-rendered-from-backend-to-angular2-bootstrap-method/37611614#37611614
+    // {provide: APP_INITIALIZER, useFactory: (sites:SitesService) => () => sites.load(), deps:[SitesService, HTTP_PROVIDERS], multi: true}),
+    { provide: APP_INITIALIZER, useFactory: (config: ConfigService) => () => config.load(), deps: [ConfigService, HttpModule], multi: true }
   ],
   bootstrap: [ AppComponent]
 })
