@@ -1,6 +1,6 @@
 import { Component} from '@angular/core';
 import { AbstractControl, FormGroup, FormControl, Validators, FormBuilder, ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { RouterModule, Routes } from '@angular/router'; 
+import { RouterModule, Routes, Router } from '@angular/router'; 
 import { Http, Response, URLSearchParams, Headers, RequestOptions} from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 import { ConfigService } from '../config/config.service';
@@ -54,7 +54,8 @@ export class RegisterComponent {
 
 
     constructor(private http: Http,
-    private configService: ConfigService){
+    private configService: ConfigService,
+    private router: Router){
         this.baseUrl = this.configService.get('apiUrl');
 
     }
@@ -82,6 +83,7 @@ export class RegisterComponent {
         this.http.post(this.baseUrl + 'users', postForm)
             .map((response:Response) => {
                 console.log("register success " + response.json());
+                this.router.navigate([ '/login' ]);
                 return response.text();
             })
             .toPromise()

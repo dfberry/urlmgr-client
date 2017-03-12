@@ -1,6 +1,6 @@
 import { Component} from '@angular/core';
 import { AbstractControl, FormGroup, FormControl, Validators, FormBuilder, ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { RouterModule, Routes } from '@angular/router'; 
+import { RouterModule, Routes, Router  } from '@angular/router'; 
 import { Http, Response, URLSearchParams, Headers, RequestOptions, RequestOptionsArgs} from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 
@@ -29,7 +29,8 @@ export class ProfileComponent {
     constructor(
         private http: Http,
         private authService: AuthenticationService,
-        private configService: ConfigService
+        private configService: ConfigService,
+        private router: Router
 
     ){
         this.baseUrl = this.configService.get('apiUrl');
@@ -63,6 +64,7 @@ export class ProfileComponent {
             .map((response:Response) => {
                 // nothing returned but 200
                 console.log("logout success "); 
+                this.router.navigate([ '/' ]);
                 return;
             })
             .toPromise()
