@@ -1,14 +1,15 @@
 // url.ts
 import {Injectable} from '@angular/core';
 import { ActionReducer, Action, Store } from '@ngrx/store';
-import { Http, Response, URLSearchParams, Headers} from '@angular/http';
+import { Http, Response, URLSearchParams, Headers, RequestOptionsArgs} from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 import { createSelector } from 'reselect';
 
 import { type } from '../utils/index';
 import { HttpDataService, ConfigService} from '../services/index';
-import { AppState } from './index';
+import { AppState } from '../app.state';
 import { Feed, FeedResponse, FeedDefinition , FeedDefinitionService, FeedResponseService} from './feed';
+import { User } from '../user/user.model';
 
 export const ADD_URL = '[Url] add 1';
 export const ADD_URLS = '[Url] add N';
@@ -64,6 +65,7 @@ export class UrlService{
     items:Observable <Url[]>;
     public count: Observable<number>;
     public next: Observable<number>;
+    user: User;
 
     baseUrl = this.configService.config.apiUrl + "urls";
 
@@ -76,13 +78,20 @@ export class UrlService{
         this.items = store.select(state => state.urls);
     }
 
-    // get list from local sails api server aka ../src-api
-    //     host: 104.131.155.194
-    //     port: 27000
-    loadItems(){
+    loadItems(user){
         let initialItems: Url[];
 
-        this._httpDataService.getJsonPromise(this.baseUrl)
+        if(!user || !user.id) return;
+        this.user = user;
+
+        let headers = new Headers();
+        headers.set('x-access-token', user['token']);
+
+        let options:RequestOptionsArgs = {
+            headers : headers
+        };
+
+        this._httpDataService.getJsonPromise(this.baseUrl + "?user=" + user["id"], options)
             .then(data => {
                 let thisUrls = data;
                 
@@ -98,17 +107,29 @@ export class UrlService{
     }
     // if response from post is equal to url
     // then it was successful
-    insertItem(item: Url){
+    insertItem(user: User, item: Url){
 
-        return this._httpDataService.postJsonData(this.baseUrl, item, null)
+        if(!user || !user.id) return;
+        this.user = user;
+
+        item["user"] = this.user.id
+
+        let headers = new Headers();
+        headers.set('x-access-token', user['token']);
+
+        let options:RequestOptionsArgs = {
+            headers : headers
+        };
+
+        return this._httpDataService.postJsonData(this.baseUrl, item, headers)
             .then((data) => {
                 
-                this._FeedDefinitionService.getFeedUrl(item);
+                //this._FeedDefinitionService.getFeedUrl(item);
 
                 // TODO: what should happen if there is an error on the server/api side
                 // how would I should the error? 
                 //console.log("url.ts::insertItem - returned data = " + JSON.stringify(data));
-                this.loadItems();  
+                this.loadItems(this.user);  
                 return data;  
             
             })
@@ -124,15 +145,31 @@ export class UrlService{
     }
 
     // delete item
-    removeItem(item:Url){
+    removeItem(user, item:Url){
         //console.log("item deleted = " + item.url);
-        return this._httpDataService.delete(this.baseUrl + '/' + item.id, null)
+
+        if(!user || !user.id) return;
+        this.user = user;
+
+        let postForm = {
+            user: this.user['id'],
+        };
+
+        let headers = new Headers();
+        headers.set('x-access-token', this.user['token']);
+
+        let options:RequestOptionsArgs = {
+            headers : headers,
+            body : postForm
+        };
+
+        return this._httpDataService.delete(this.baseUrl + '/' + item.id, options)
             .then((data) => {
                 
                 // TODO: what should happen if there is an error on the server/api side
                 // how would I should the error? 
                 //console.log("url.ts::remoteItem - returned data = " + JSON.stringify(data));
-                this.loadItems();  
+                this.loadItems(this.user);  
                 return data;  
             
             })

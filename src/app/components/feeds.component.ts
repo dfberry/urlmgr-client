@@ -1,9 +1,10 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, SimpleChanges  } from '@angular/core';
 import { AbstractControl, FormGroup, FormControl, Validators, FormBuilder, ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { IUrl, Url, AppState, ADD_URL, UrlService, Feed, FeedDefinitionService, FeedResponseService, FeedResponse,  FeedInfo } from '../reducers/index';
+import { IUrl, Url, ADD_URL, UrlService, Feed, FeedDefinitionService, FeedResponseService, FeedResponse,  FeedInfo } from '../reducers/index';
 import { Observable } from 'rxjs/Rx';
 import { Store } from '@ngrx/store';
 import { RouterModule, Routes, Router, ActivatedRoute } from '@angular/router';
+import { AppState } from '../app.state';
 
 @Component({
   selector: 'feed-mgr',

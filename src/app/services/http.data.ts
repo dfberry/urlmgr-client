@@ -47,9 +47,9 @@ export class HttpDataService{
                 return Promise.reject(err.message)
             });
     }
-    getJsonPromise(url){
+    getJsonPromise(url, options){
         //console.log("getJsonPromise url = " + url);
-        return this._http.get(url)
+        return this._http.get(url, options)
             .map((response:Response) => {
                 //console.log(response.json());
                 return response.json();

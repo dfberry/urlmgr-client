@@ -1,8 +1,10 @@
 import {Component, Input, Output, EventEmitter, ChangeDetectionStrategy, SimpleChanges} from "@angular/core";
 import { AbstractControl, FormGroup, FormControl, Validators, FormBuilder, ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { IUrl, Url, AppState, ADD_URL, UrlService } from '../../../reducers/index';
+import { IUrl, Url, ADD_URL, UrlService } from '../../../reducers/index';
 import { Observable } from 'rxjs/Rx';
 import { Store } from '@ngrx/store';
+import { AppState } from '../../../app.state';
+import { User } from '../../../user/user.model';
 
 let validUrl = require('valid-url');
 /**************************************************************************
@@ -35,7 +37,8 @@ let validUrl = require('valid-url');
 export class UrlNewComponent {
   //name:string = '';
   //itemtype:string = "Url";
-
+  @Input() user: User;
+  
   newForm: FormGroup;
   url: Url = new Url();
   httpUrlValue: AbstractControl;
@@ -51,6 +54,9 @@ export class UrlNewComponent {
   ngOnInit() {
       //console.log("UrlNewComponent ngOnInit");
   }
+  ngOnChanges(changes: SimpleChanges) {
+      console.log(this.user);
+  }
 
   validForm(){
     //console.log("validForm this.httpUrlValue.valid = " + this.httpUrlValue.valid);
@@ -65,7 +71,7 @@ export class UrlNewComponent {
       //console.log('this.url ' + JSON.stringify(this.url));
 
       // insert new url name via service
-      this.urlService.insertItem(this.url)
+      this.urlService.insertItem(this.user, this.url)
       .then(data => console.log("save data = " + JSON.stringify(data)))
       .catch(err => console.log("save err = " + JSON.stringify(err)));
     }
@@ -95,17 +101,23 @@ export class UrlNewComponent {
   providers: []
 })
 export class UrlRemoveComponent {
-@Input() url: Url;
+
+  @Input() url: Url;
+  @Input() user: User;
 
   constructor(private urlService: UrlService, private builder: FormBuilder){}
 
   remove(){
-    if (this.url.id){
+    if (this.url && this.user){
       //console.log('UrlNewComponent::remove');
-      this.urlService.removeItem(this.url);
+      this.urlService.removeItem(this.user, this.url);
       //.then(data => console.log("save data = " + JSON.stringify(data)))
       //.catch(err => console.log("save err = " + JSON.stringify(err)));
     }
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+      console.log(this.user);
   }
 }
 /****************************************************************
@@ -161,7 +173,7 @@ export class UrlRemoveComponent {
                 <tbody>
                 <tr *ngFor="let item of mf.data">
                     <td>
-                        <url-remove [url]="item">x</url-remove>
+                        <url-remove [user]="user" [url]="item">x</url-remove>
                     </td>
                     <!--
                     <td>{{ item.createdAt | date:"MM/dd/yy" }}</td>
@@ -188,6 +200,8 @@ export class UrlRemoveComponent {
 export class angular2DataTableComponent {
     
     @Input() rows: any[];
+    @Input() user: User;
+
     public filterQuery = "";
     public rowsOnPage = 10;
     public sortBy = "email";
@@ -197,7 +211,9 @@ export class angular2DataTableComponent {
   ngOnInit(){
       //console.log("dataTable");
   }
-  ngOnChanges(changes: SimpleChanges) {}
+  ngOnChanges(changes: SimpleChanges) {
+      console.log(this.user);
+  }
 
     public toInt(num: string) {
         return +num;

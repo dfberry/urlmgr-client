@@ -1,9 +1,11 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, SimpleChanges  } from '@angular/core';
 import { AbstractControl, FormGroup, FormControl, Validators, FormBuilder, ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { IUrl, Url, AppState, ADD_URL, UrlService } from '../reducers/index';
+import { IUrl, Url, ADD_URL, UrlService } from '../reducers/index';
 import { Observable } from 'rxjs/Rx';
 import { Store } from '@ngrx/store';
 import 'rxjs/add/operator/toArray';
+import { AppState } from '../app.state';
+import { User } from '../user/user.model';
 
 import { RouterModule, Routes } from '@angular/router';
 
@@ -19,7 +21,7 @@ let validUrl = require('valid-url');
   selector: 'url-mgr',
   template: `
     <!--url-mgr begin -->
-    <angular2DataTable [rows]="urls"></angular2DataTable>
+    <angular2DataTable  [rows]="urls"></angular2DataTable>
     <!--url-mgr end -->
   `,
   styles:[`
@@ -32,25 +34,36 @@ let validUrl = require('valid-url');
 export class UrlMgrComponent {
 
   urls: Url[];
+  user: User;
 
   constructor(
     private urlService: UrlService, 
-    private store: Store<AppState>){}
+    private store: Store<AppState>){
+
+    }
 
   ngOnInit(){
-    //console.log("UrlMgrComponent ngOnInit");
-    // get from http, put in state
-    this.urlService.loadItems();
-
-    // get out of state
+    console.log("url component ngOnInit");
+    /*
     this.store.select(state => state.urls)
       .distinctUntilChanged()
       .subscribe(data => this.onUrlsEmitted(data));
+  
+    this.store.select(state => state.user)
+      .distinctUntilChanged()
+      .subscribe(data => this.onUserEmitted(data));
+      */
   }
   // executed once user data arrives from the store
   public onUrlsEmitted(data:Url[]){
     this.urls = data;
-    //this.printOutState("urls", this.urls);
+  }
+  public onUserEmitted(user:User){
+    console.log("urls.onUserEmitted");
+    this.user = user;
+    this.urlService.loadItems(user);
+    // get out of state
+
   }
 
     // DEBUG
@@ -70,69 +83,4 @@ export class UrlMgrComponent {
       //console.log(`UrlMgrComponent::ngOnChanges - ${propName}: currentValue = ${cur}, previousValue = ${prev}`);
     }
   }
-}
-
-/**************************************************************************
- * 
- * Show Individual Url values
- * 
- * 
-*/
-@Component({
-  selector: 'url-detail',
-  template: `
-    <span >{{url.url}}</span>
-    <span >{{url.statusDate | date : mediumDate : '-0800'}}</span>
-    <span >{{url.status}}</span>
-  `
-})
-export class UrlItemComponent {
-  @Input() url: Url;
-}
-
-/**************************************************************************
- * 
- * Show Url list
- * 
- * 
-*/
-@Component({
-  selector: 'url-list',
-  template: `
-
-  
-
-    <div class="styledurls">
-      <br>
-      <b>Urls</b>
-      <div *ngFor="let item of urls">
-          <url-detail [url]='item'></url-detail>
-      </div>
-        
-    
-    <url-new></url-new>  
-    </div>
-  `,
-  styles:[`
-    div { width: 100%; }
-    .styledurls { background-color: #ffb3b3; }
-  `],
-  changeDetection: ChangeDetectionStrategy.Default
-})
-export class UrlListComponent {
-  @Input() urls: Url[];
-
-  constructor(private store: Store<AppState>){}
-  ngOnInit(){
-    //console.log("UrlListComponent::ngOnInit - urls.length = " + this.urls.length);
-  }
-  ngOnChanges(changes: SimpleChanges) {
-  for (let propName in changes) {
-    let chng = changes[propName];
-    let cur  = JSON.stringify(chng.currentValue);
-    let prev = JSON.stringify(chng.previousValue);
-
-    //console.log(`UrlListComponent::ngOnChanges - ${propName}: currentValue = ${cur}, previousValue = ${prev}`);
-  }
-}
 }

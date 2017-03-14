@@ -8,6 +8,7 @@ import { RouterModule, Routes } from '@angular/router';
 @Component({
     selector: 'my-app',
     template: ` 
+    <ngrx-store-log-monitor toggleCommand="ctrl-h" positionCommand="ctrl-m"></ngrx-store-log-monitor>
         <navigation></navigation>
         <router-outlet></router-outlet>
     `,
@@ -15,9 +16,13 @@ import { RouterModule, Routes } from '@angular/router';
 })
 export class AppComponent {
     config: any;
+    currentUser: any;
 
     constructor(private configService: ConfigService){
         console.log("AppComponent ctor");
+
+        // TODO:subscribe to current user
+        
     }
 
     ngOnInit() {
@@ -26,3 +31,4 @@ export class AppComponent {
         console.log("AppComponent ngOnInit");   
      }
 }
+

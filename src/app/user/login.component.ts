@@ -1,9 +1,11 @@
 import { Component} from '@angular/core';
 import { AbstractControl, FormGroup, FormControl, Validators, FormBuilder, ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { RouterModule, Routes } from '@angular/router'; 
+import { RouterModule, Routes,Router } from '@angular/router'; 
 import { Http, Response, URLSearchParams, Headers, RequestOptions, RequestOptionsArgs} from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 
+import { User } from './user.model';
+import { UserEvent } from './user.broadcaster';
 import { AuthenticationService } from './auth.service';
 
 @Component({
@@ -37,7 +39,9 @@ export class LoginComponent {
 
     constructor(
         private http: Http,
-        private authService: AuthenticationService)
+        private authService: AuthenticationService,
+        private router: Router,
+        private userEvent: UserEvent)
     {}
 
     ngOnInit() {  
@@ -61,10 +65,16 @@ export class LoginComponent {
                 console.log(response.json());
                 let user = response.json();
                 if (user && user.token) {
-                    // store user details and jwt token in local storage to keep user logged in between page refreshes
-                    this.authService.setCurrentUser(user);
+
+                    let authenticatedUser = new User();
+                    authenticatedUser.transform(user);
+
+                    authenticatedUser["isAuthenticated"]=true;
+
+                    this.authService.setCurrentUser(authenticatedUser);
+                    this.userEvent.fire('USER_LOGON');
+                    this.router.navigate(['/dashboard']);
                 }
-                return response.text();
             })
             .toPromise()
             .catch((err: any) => {

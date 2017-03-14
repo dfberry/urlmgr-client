@@ -38,23 +38,31 @@ import {
 
 import { DataFilterPipe,FeedParserPipe }   from './components/dataTables/angular2-datatable/data-filter.pipe';
 
-import { AppState, urlReducer, UrlService, 
+import { urlReducer, UrlService, 
   FeedResponseService, feedReducer, selectedFeedReducer, 
   FeedDefinitionService,
   FeedDefinition, FeedResponse, Feed, Article} from './reducers/index';
-import { HttpDataService, ConfigService } from './services/index';
+import { 
+  HttpDataService, 
+  ConfigService,
+  Broadcaster 
+} from './services/index';
 
 import { AppComponent } from './app.component';
 import { AppRoutes } from './app.routing';
-import { UserModule } from './user/user.module';
+import { AppState, UserState, UserStates } from './app.state';
+
+import { UserModule} from './user/user.module';
 import { AlertModule } from './alert/alert.module';
 import { HomeModule } from './home/home.module';
+
+let userModule = UserModule.forRoot();
 
 @NgModule({
   imports: [
     // my code
     AppRoutes,
-    UserModule.forRoot(),
+    userModule,
     HomeModule,
 
     // 3rd party code
@@ -68,7 +76,7 @@ import { HomeModule } from './home/home.module';
     ReactiveFormsModule,
     HttpModule,
 
-    StoreModule.provideStore({urls: urlReducer, feeds: feedReducer, selectedFeed: selectedFeedReducer}),
+    StoreModule.provideStore({urls: urlReducer, feeds: feedReducer, selectedFeed: selectedFeedReducer, user: UserState}),
     StoreDevtoolsModule.instrumentStore({
           monitor: useLogMonitor({
             visible: true,
@@ -100,6 +108,7 @@ import { HomeModule } from './home/home.module';
     UrlService, 
     HttpDataService, 
     ConfigService, 
+    Broadcaster,
     { provide: APP_INITIALIZER, useFactory: (config: ConfigService) => () => config.load(), deps: [ConfigService], multi: true }
   ],
   bootstrap: [ AppComponent]

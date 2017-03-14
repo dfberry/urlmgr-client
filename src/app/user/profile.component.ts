@@ -1,9 +1,10 @@
 import { Component} from '@angular/core';
 import { AbstractControl, FormGroup, FormControl, Validators, FormBuilder, ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { RouterModule, Routes } from '@angular/router'; 
+import { RouterModule, Routes, Router } from '@angular/router'; 
 import { Http, Response, URLSearchParams, Headers, RequestOptions, RequestOptionsArgs} from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 
+import { UserEvent } from './user.broadcaster';
 import { AuthenticationService } from './auth.service';
 
 @Component({
@@ -25,7 +26,9 @@ export class ProfileComponent {
     user={};
     constructor(
         private http: Http,
-        private authService: AuthenticationService
+        private authService: AuthenticationService,
+        private userEvent: UserEvent,
+        private router: Router
     ){}
 
     ngOnInit() {  
@@ -48,6 +51,7 @@ export class ProfileComponent {
         };
 
         // remove user from local storage to log user out
+        this.userEvent.fire('USER_CLEAR');
         this.authService.removeCurrentUser();
         this.user = {};
 
@@ -55,6 +59,7 @@ export class ProfileComponent {
             .map((response:Response) => {
                 // nothing returned but 200
                 console.log("logout success "); 
+                this.router.navigate(['/']);
                 return;
             })
             .toPromise()

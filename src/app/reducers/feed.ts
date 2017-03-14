@@ -6,7 +6,7 @@ import { Http, Response, URLSearchParams, Headers} from '@angular/http';
 
 import { HttpDataService, ConfigService} from '../services/index';
 import { Url} from './index';
-import { AppState } from './index';
+import { AppState } from '../app.state';
 
 let cheerio = require("cheerio");
 
@@ -205,9 +205,11 @@ export class FeedResponseService{
       // if feed is already in store, don't go fetch it
       if(existingFeed) return;
 
+      // TODO: fix this
+      let options = undefined;
 
       // get feeds
-      this._httpDataService.getJsonPromise(this.rssToJsonServiceBaseUrl + url)
+      this._httpDataService.getJsonPromise(this.rssToJsonServiceBaseUrl + url, options)
           .then(data => {
             //console.log(this.rssToJsonServiceBaseUrl + url);
 

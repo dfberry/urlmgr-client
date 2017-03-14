@@ -9,8 +9,8 @@ import { RegisterComponent } from './register.component';
 import { ProfileComponent } from './profile.component';
 import { UserRoutes } from './user.routes';
 import { AuthenticationService } from './auth.service';
-import { AuthGuard } from './auth.guard.service';
-
+import { User } from './user.model';
+import { UserEvent } from './user.broadcaster';
 
 @NgModule({
   imports: [
@@ -25,8 +25,9 @@ import { AuthGuard } from './auth.guard.service';
     AuthenticationComponent
   ],
   providers: [
-    AuthGuard,
-    AuthenticationService
+    AuthenticationService,
+    User,
+    UserEvent
     
   ],
   exports: [
@@ -43,8 +44,9 @@ export class UserModule {
     return {
       ngModule: UserModule,
       providers: [
-        AuthGuard,
-        AuthenticationService
+        AuthenticationService,
+        User,
+        UserEvent
       ]
     }
   }
