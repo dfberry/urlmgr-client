@@ -24,7 +24,7 @@ import { UserEvent } from '../user/user.broadcaster';
             <div class="row">
                 <div class="col-xs-5 col-sm-3">
                   <div *ngIf="!currentUser.isAuthenticated"><a routerLink="/login" routerLinkActive="active">Login</a></div>
-                  <div *ngIf="currentUser.isAuthenticated"><a routerLink="/profile" routerLinkActive="active">{{ currentUser.email }} Profile</a> | <a routerLink="/logout" routerLinkActive="active">Logout</a></div>
+                  <div *ngIf="currentUser.isAuthenticated"><a routerLink="/profile" routerLinkActive="active">{{ currentUser.email }}</a> | <a routerLink="/profile" [queryParams]="{logout: 'true'}" routerLinkActive="active">Logout</a></div>
                 </div>
                 <div class="col-xs-1 col-sm-1">
                     &nbsp;

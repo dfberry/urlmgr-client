@@ -1,6 +1,6 @@
 import { Component} from '@angular/core';
 import { AbstractControl, FormGroup, FormControl, Validators, FormBuilder, ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { RouterModule, Routes, Router } from '@angular/router'; 
+import { RouterModule, Routes, Router, ActivatedRoute } from '@angular/router'; 
 import { Http, Response, URLSearchParams, Headers, RequestOptions, RequestOptionsArgs} from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 
@@ -15,7 +15,7 @@ import { Configuration } from './config';
           <h2>Profile</h2>
           <form (submit)="logout()">
             <div>
-                  <div>{{user.email}}</div>
+                  <div>{{user | json }}</div>
                   <button [disabled]="loading" class="btn btn-primary">Logout</button>
             </div>
           </form>
@@ -29,12 +29,19 @@ export class ProfileComponent {
         private http: Http,
         private authService: AuthenticationService,
         private userEvent: UserEvent,
-        private router: Router
+        private router: Router,
+        private activatedRoute: ActivatedRoute
     ){}
 
     ngOnInit() {  
+        this.user = this.authService.getCurrentUser();
 
-          this.user = this.authService.getCurrentUser();
+        // if ?logout=true, then logout
+        this.activatedRoute.queryParams.subscribe( data => {
+            console.log('queryParams', data['logout']);
+            if(data['logout']) this.logout();
+        });
+          
      }
  
     logout() {
