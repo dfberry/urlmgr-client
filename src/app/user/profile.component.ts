@@ -11,15 +11,33 @@ import { Configuration } from './config';
 @Component({
     selector: 'profile',
     template: ` 
-      <div class="col-md-6 col-md-offset-3">
-          <h2>Profile</h2>
-          <form (submit)="logout()">
-            <div>
-                  <div>{{user | json }}</div>
-                  <button [disabled]="loading" class="btn btn-primary">Logout</button>
-            </div>
-          </form>
-      </div>
+<div >
+   <h2>Profile</h2>
+   <form (submit)="logout()">
+      <div class="container">
+
+              <div class="form-group" >
+                  <label for="firstname">First Name</label>
+                  <input readonly type="text" class="form-control" value="{{user.firstName}}" />
+              </div>
+              <div class="form-group" >
+                  <label for="lastname">Last Name</label>
+                  <input readonly  type="text"  class="form-control" value="{{user.lastName}}" />
+              </div>
+              <div class="form-group" >
+                  <label for="username">Email</label>
+                  <input readonly  type="text" class="form-control" value="{{user.email}}" />
+              </div>
+
+              <div class="form-group" >
+                  <label for="lastLogin">Last Login</label>
+                  <input readonly type="text" class="form-control" value="{{user.lastLogin}}" />
+              </div>
+
+               <button [disabled]="loading" class="btn btn-primary">Logout</button>
+        </div>
+   </form>
+</div>
     `
 })
 export class ProfileComponent {

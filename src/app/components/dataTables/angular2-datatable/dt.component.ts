@@ -130,7 +130,7 @@ export class UrlRemoveComponent {
   selector: 'angular2DataTable',
   template: `
 <div class="container-fluid">
-    <div class="col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
+    <div class="col-xs-12 col-md-10 col-lg-8 ">
 
         <div class="page-header">
         </div>

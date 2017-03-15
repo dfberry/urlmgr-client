@@ -18,24 +18,18 @@ import { UserEvent } from '../user/user.broadcaster';
 @Component({
   selector: 'navigation',
   template: `
-<div class="container" style="background-color:#00ccff">
-    <div class="row">
-        <div class="col-xs-11 col-sm-7">
-            <div class="row">
-                <div class="col-xs-5 col-sm-3">
-                  <div *ngIf="!currentUser.isAuthenticated"><a routerLink="/login" routerLinkActive="active">Login</a></div>
-                  <div *ngIf="currentUser.isAuthenticated"><a routerLink="/profile" routerLinkActive="active">{{ currentUser.email }}</a> | <a routerLink="/profile" [queryParams]="{logout: 'true'}" routerLinkActive="active">Logout</a></div>
-                </div>
-                <div class="col-xs-1 col-sm-1">
-                    &nbsp;
-                </div>
-                <div class="col-xs-5 col-sm-3">
-                  <div *ngIf="!currentUser.isAuthenticated"> <a routerLink="/register" routerLinkActive="active">Register</a></div>
-                  <div *ngIf="currentUser.isAuthenticated"> <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a></div>
-                </div>           
-              </div>
+    <div class="container">
+        <div class="row">
+          <div class="col-md-3">
+            <span *ngIf="!currentUser.isAuthenticated"><a routerLink="/login" routerLinkActive="active">Login</a></span>
+            <span *ngIf="currentUser.isAuthenticated"><a routerLink="/profile" routerLinkActive="active">{{ currentUser.email }}</a> | <a routerLink="/profile" [queryParams]="{logout: 'true'}" routerLinkActive="active">Logout</a></span>
+          </div>
+          <div class="col-md-2">
+            <span *ngIf="!currentUser.isAuthenticated"> <a routerLink="/register" routerLinkActive="active">Register</a></span>
+            <span *ngIf="currentUser.isAuthenticated"> <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a></span>
+          </div>           
         </div>
-</div>
+    </div>
 
   `
 })

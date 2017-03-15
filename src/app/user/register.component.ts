@@ -1,6 +1,6 @@
 import { Component} from '@angular/core';
 import { AbstractControl, FormGroup, FormControl, Validators, FormBuilder, ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { RouterModule, Routes } from '@angular/router'; 
+import { RouterModule, Routes, Router } from '@angular/router'; 
 import { Http, Response, URLSearchParams, Headers, RequestOptions} from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 import { Configuration } from './config';
@@ -8,7 +8,7 @@ import { Configuration } from './config';
 @Component({
     selector: 'register',
     template: ` 
-      <div class="col-md-6 col-md-offset-3">
+      <div class="col-md-6">
           <h2>Register</h2>
           <form (submit)="register()">
               <div class="form-group" >
@@ -44,7 +44,10 @@ export class RegisterComponent {
     password="";
 
 
-    constructor(private http: Http){}
+    constructor(
+        private http: Http,
+        private router: Router
+    ){}
 
     ngOnInit() {  
      }
@@ -69,7 +72,7 @@ export class RegisterComponent {
         return this.http.post(Configuration.urls.base + '/users', postForm)
             .map((response:Response) => {
                 console.log("register success " + response.json());
-                return response.text();
+                this.router.navigate(['/login']);
             })
             .toPromise()
             .catch((err: any) => {

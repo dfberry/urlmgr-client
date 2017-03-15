@@ -12,7 +12,7 @@ import { Configuration } from './config';
 @Component({
     selector: 'login',
     template: ` 
-      <div class="col-md-6 col-md-offset-3">
+      <div class="col-md-6">
           <h2>Login</h2>
           <form (submit)="login()">
               <div class="form-group" >
