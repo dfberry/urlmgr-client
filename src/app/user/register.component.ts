@@ -3,6 +3,7 @@ import { AbstractControl, FormGroup, FormControl, Validators, FormBuilder, React
 import { RouterModule, Routes } from '@angular/router'; 
 import { Http, Response, URLSearchParams, Headers, RequestOptions} from '@angular/http';
 import { Observable } from 'rxjs/Rx';
+import { Configuration } from './config';
 
 @Component({
     selector: 'register',
@@ -65,7 +66,7 @@ export class RegisterComponent {
 
       console.log("postForm = " + JSON.stringify(postForm));
 
-        return this.http.post('http://urlmgrapi.dfberry.io/v1/users', postForm)
+        return this.http.post(Configuration.urls.base + '/users', postForm)
             .map((response:Response) => {
                 console.log("register success " + response.json());
                 return response.text();

@@ -11,6 +11,7 @@ import { UserRoutes } from './user.routes';
 import { AuthenticationService } from './auth.service';
 import { User } from './user.model';
 import { UserEvent } from './user.broadcaster';
+import { Configuration } from './config';
 
 @NgModule({
   imports: [
@@ -27,7 +28,8 @@ import { UserEvent } from './user.broadcaster';
   providers: [
     AuthenticationService,
     User,
-    UserEvent
+    UserEvent,
+    Configuration
     
   ],
   exports: [

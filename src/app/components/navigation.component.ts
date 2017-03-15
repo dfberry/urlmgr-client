@@ -20,23 +20,18 @@ import { UserEvent } from '../user/user.broadcaster';
   template: `
 <div class="container" style="background-color:#00ccff">
     <div class="row">
-        <div class="col-xs-11 col-sm-6">
+        <div class="col-xs-11 col-sm-7">
             <div class="row">
-                <div class="col-xs-3 col-sm-2">
+                <div class="col-xs-5 col-sm-3">
                   <div *ngIf="!currentUser.isAuthenticated"><a routerLink="/login" routerLinkActive="active">Login</a></div>
-                  <div *ngIf="currentUser.isAuthenticated"><a routerLink="/profile" routerLinkActive="active">{{ currentUser.email }} Profile</a></div>
+                  <div *ngIf="currentUser.isAuthenticated"><a routerLink="/profile" routerLinkActive="active">{{ currentUser.email }} Profile</a> | <a routerLink="/logout" routerLinkActive="active">Logout</a></div>
                 </div>
                 <div class="col-xs-1 col-sm-1">
                     &nbsp;
                 </div>
-                <div class="col-xs-3 col-sm-2">
-                   <a routerLink="/register" routerLinkActive="active">Register</a>
-                </div> 
-                <div class="col-xs-1 col-sm-1">
-                    &nbsp;
-                </div>
-                <div class="col-xs-3 col-sm-2">
-                   <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+                <div class="col-xs-5 col-sm-3">
+                  <div *ngIf="!currentUser.isAuthenticated"> <a routerLink="/register" routerLinkActive="active">Register</a></div>
+                  <div *ngIf="currentUser.isAuthenticated"> <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a></div>
                 </div>           
               </div>
         </div>

@@ -7,6 +7,7 @@ import { Observable } from 'rxjs/Rx';
 import { User } from './user.model';
 import { UserEvent } from './user.broadcaster';
 import { AuthenticationService } from './auth.service';
+import { Configuration } from './config';
 
 @Component({
     selector: 'login',
@@ -60,7 +61,7 @@ export class LoginComponent {
 
         console.log("postForm");
 
-        return this.http.post('http://urlmgrapi.dfberry.io/v1/auth', postForm)
+        return this.http.post(Configuration.urls.base + "/auth", postForm)
             .map((response:Response) => {
                 console.log(response.json());
                 let user = response.json();

@@ -6,6 +6,7 @@ import { Observable } from 'rxjs/Rx';
 
 import { UserEvent } from './user.broadcaster';
 import { AuthenticationService } from './auth.service';
+import { Configuration } from './config';
 
 @Component({
     selector: 'profile',
@@ -55,7 +56,7 @@ export class ProfileComponent {
         this.authService.removeCurrentUser();
         this.user = {};
 
-        return this.http.delete('http://urlmgrapi.dfberry.io/v1/users/' + postForm.user + '/tokens', options)
+        return this.http.delete(Configuration.urls.base + '/users/' + postForm.user + '/tokens', options)
             .map((response:Response) => {
                 // nothing returned but 200
                 console.log("logout success "); 
