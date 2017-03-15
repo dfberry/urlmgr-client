@@ -51,7 +51,7 @@ import {
 import { AppComponent } from './app.component';
 import { AppRoutes } from './app.routing';
 import { AppState, UserState, UserStates } from './app.state';
-
+import { AuthGuard} from './app.routing.authguard';
 import { UserModule} from './user/user.module';
 import { AlertModule } from './alert/alert.module';
 import { HomeModule } from './home/home.module';
@@ -109,6 +109,7 @@ let userModule = UserModule.forRoot();
     HttpDataService, 
     ConfigService, 
     Broadcaster,
+    AuthGuard,
     { provide: APP_INITIALIZER, useFactory: (config: ConfigService) => () => config.load(), deps: [ConfigService], multi: true }
   ],
   bootstrap: [ AppComponent]
