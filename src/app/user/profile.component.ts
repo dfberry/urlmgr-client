@@ -76,9 +76,13 @@ export class ProfileComponent {
             body : postForm
         };
 
-        // remove user from local storage to log user out
+        // remove user from ngrx storage
         this.userEvent.fire('USER_CLEAR');
+
+        // remove user from local storage to log user out
         this.authService.removeCurrentUser();
+
+        // clear local variable
         this.user = {};
 
         return this.http.delete(Configuration.urls.base + '/users/' + postForm.user + '/tokens', options)
