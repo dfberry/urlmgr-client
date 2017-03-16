@@ -12,16 +12,16 @@ import { Configuration } from './config';
           <h2>Register</h2>
           <form (submit)="register()">
               <div class="form-group" >
-                  <label for="firstname">First Name</label>
-                  <input type="text" class="form-control" [(ngModel)]="firstname" name="firstname" placeholder="Your first name here" required />
+                  <label for="firstName">First Name</label>
+                  <input type="text" class="form-control" [(ngModel)]="firstName" name="firstname" placeholder="Your first name here" required />
               </div>
               <div class="form-group" >
-                  <label for="lastname">Last Name</label>
-                  <input type="text"  class="form-control" [(ngModel)]="lastname" name="lastname" placeholder="Your last name here" required />
+                  <label for="lastName">Last Name</label>
+                  <input type="text"  class="form-control" [(ngModel)]="lastName" name="lastname" placeholder="Your last name here" required />
               </div>
               <div class="form-group" >
-                  <label for="username">User</label>
-                  <input type="text" class="form-control" [(ngModel)]="username" name="username" placeholder="Your email here" required />
+                  <label for="email">Email</label>
+                  <input type="text" class="form-control" [(ngModel)]="email" name="username" placeholder="Your email here" required />
               </div>
               <div class="form-group" >
                   <label for="password">Password</label>
@@ -38,9 +38,9 @@ import { Configuration } from './config';
 export class RegisterComponent {
     config: any;
     newForm: FormGroup;
-    lastname="";
-    firstname="";
-    username="";
+    lastName="";
+    firstName="";
+    email="";
     password="";
 
 
@@ -55,16 +55,16 @@ export class RegisterComponent {
     register() {
       
       console.log("login function");
-      console.log("username " + this.username);
+      console.log("email " + this.email);
       console.log("password " + this.password);
-      console.log("lastname " + this.lastname);
-      console.log("firstname " + this.firstname);
+      console.log("lastName " + this.lastName);
+      console.log("firstName " + this.firstName);
 
       let postForm = {
-          email: this.username,
+          email: this.email,
           password: this.password,
-          lastname: this.lastname,
-          firstname: this.firstname
+          lastName: this.lastName,
+          firstName: this.firstName
       };
 
       console.log("postForm = " + JSON.stringify(postForm));
