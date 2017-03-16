@@ -6,11 +6,10 @@ import { Observable } from 'rxjs/Rx';
 import { createSelector } from 'reselect';
 
 import { type } from '../utils/index';
-import { HttpDataService} from '../services/index';
-import { AppState } from './index';
+import { HttpDataService, ConfigService} from '../services/index';
+import { AppState } from '../app.state';
 import { Feed, FeedResponse, FeedDefinition , FeedDefinitionService, FeedResponseService} from './feed';
-import { ConfigService } from '../config/config.service';
-import { AuthenticationService } from '../user/auth.service';
+import { User } from '../user/user.model';
 
 export const ADD_URL = '[Url] add 1';
 export const ADD_URLS = '[Url] add N';
@@ -66,22 +65,19 @@ export class UrlService  {
     items:Observable <Url[]>;
     public count: Observable<number>;
     public next: Observable<number>;
+    user: User;
 
     currentConfig;
     baseUrl;
-    user={};
 
     constructor(
         private store:Store<AppState>, 
         private _httpDataService: HttpDataService,
         private _FeedDefinitionService: FeedDefinitionService,
-        private authService: AuthenticationService,
         private configService: ConfigService
     ){
         console.log("url.ts - ctor");
         this.items = store.select(state => state.urls);
-        this.baseUrl = this.configService.get('apiUrl');
-        this.user = this.authService.getCurrentUser();
     }
 
     getTokenedHeaders(){
@@ -102,37 +98,64 @@ export class UrlService  {
         return {user: this.user['id']};
     }
 
-    loadItems(){
-        console.log("url.ts - loadItems");
+
+    loadItems(user){
 
         let initialItems: Url[];
-        let options = this.getTokenedHeaders();
-        options.search = this.getQueryStringWithUserId();
 
-        this._httpDataService.getJsonPromise(this.baseUrl + "urls", options)
+        if(!user || !user.id) return;
+        this.user = user;
+
+        let headers = new Headers();
+        headers.set('x-access-token', user['token']);
+
+        let options:RequestOptionsArgs = {
+            headers : headers
+        };
+
+        this._httpDataService.getJsonPromise(this.baseUrl + "?user=" + user["id"], options)
             .then(data => {
-                if(data) this.store.dispatch({type: ADD_URLS, payload: data});
+                let thisUrls = data;
+                
+                if(data){
+                    //console.log(thisUrls);
+                    this.store.dispatch({type: ADD_URLS, payload: thisUrls});
+                } else {
+                    //console.log("url.ts::loadItems - data is empty");
+                }
         }).catch((err) => {
                 console.log(err);
         });
     }
     // if response from post is equal to url
     // then it was successful
-    insertItem(item: any){
 
-        let initialItems: Url[];
-        let options = this.getTokenedHeaders();
-        item.user = this.user['id'];
+    insertItem(user: User, item: Url){
 
-        return this._httpDataService.postJsonData(this.baseUrl + "urls", item, options)
-            .then((data) => {
+        if(!user || !user.id) return;
+        this.user = user;
+
+        item["user"] = this.user.id
+
+        let headers = new Headers();
+        headers.set('x-access-token', user['token']);
+        headers.set('Content-Type', 'application/json');
+
+        let options:RequestOptionsArgs = {
+            headers : headers
+        };
+
+        console.log("url insert item = " + JSON.stringify(item));
+        console.log("url insert options = " + JSON.stringify(options))
+
+        return this._httpDataService.postJsonData(this.baseUrl, item, options).then((data) => {
                 
                 //this._FeedDefinitionService.getFeedUrl(item);
 
                 // TODO: what should happen if there is an error on the server/api side
                 // how would I should the error? 
                 //console.log("url.ts::insertItem - returned data = " + JSON.stringify(data));
-                this.loadItems();  
+                this.loadItems(this.user);  
                 return data;  
             })
             .catch((err) => {
@@ -147,19 +170,44 @@ export class UrlService  {
     }
 
     // delete item
-    removeItem(item:Url){
-        console.log("url.ts removeItem, item to delet = " + JSON.stringify(item));
 
-        let options = this.getTokenedHeaders();
-        options.search = this.getQueryStringWithUserId();
+    removeItem(user, item:Url){
+        //console.log("item deleted = " + item.url);
 
-        return this._httpDataService.delete(this.baseUrl + "urls/" + item.id, options)
+        if(!user || !user.id) {
+            console.log("UrlService::removeItem, user is empty");
+            return;
+        }
+        this.user = user;
+
+        let urlId = item["id"] ? item["id"] : item["_id"];
+        if (!urlId) {
+            console.log("UrlService::removeItem, urlId is empty");
+            return;
+        }
+
+        let postForm = {
+            user: this.user['id'],
+        };
+
+        let headers = new Headers();
+        headers.set('x-access-token', this.user['token']);
+
+        let options:RequestOptionsArgs = {
+            headers : headers,
+            body : postForm
+        };
+
+        console.log("UrlService::removeItem, options = " + JSON.stringify(options));
+
+        return this._httpDataService.delete(this.baseUrl + '/' + urlId, options)
+
             .then((data) => {
                 console.log("url.ts removeItem http service delete success");
                 // TODO: what should happen if there is an error on the server/api side
                 // how would I should the error? 
                 //console.log("url.ts::remoteItem - returned data = " + JSON.stringify(data));
-                this.loadItems();  
+                this.loadItems(this.user);  
                 return data;  
             
             })

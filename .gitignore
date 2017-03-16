@@ -17,3 +17,5 @@ currentWork.txt
 dist
 src/**/*.js
 src/**/*.map
+config.ts
+

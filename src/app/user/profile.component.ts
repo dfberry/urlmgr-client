@@ -1,24 +1,43 @@
 import { Component} from '@angular/core';
 import { AbstractControl, FormGroup, FormControl, Validators, FormBuilder, ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { RouterModule, Routes, Router  } from '@angular/router'; 
+import { RouterModule, Routes, Router, ActivatedRoute } from '@angular/router'; 
 import { Http, Response, URLSearchParams, Headers, RequestOptions, RequestOptionsArgs} from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 
+import { UserEvent } from './user.broadcaster';
 import { AuthenticationService } from './auth.service';
-import { ConfigService } from '../config/config.service';
+import { Configuration } from './config';
 
 @Component({
     selector: 'profile',
     template: ` 
-      <div class="col-md-6 col-md-offset-3">
-          <h2>Profile</h2>
-          <form (submit)="logout()">
-            <div>
-                  <div>{{user.email}}</div>
-                  <button [disabled]="loading" class="btn btn-primary">Logout</button>
-            </div>
-          </form>
-      </div>
+<div >
+   <h2>Profile</h2>
+   <form (submit)="logout()">
+      <div class="container">
+
+              <div class="form-group" >
+                  <label for="firstname">First Name</label>
+                  <input readonly type="text" class="form-control" value="{{user.firstName}}" />
+              </div>
+              <div class="form-group" >
+                  <label for="lastname">Last Name</label>
+                  <input readonly  type="text"  class="form-control" value="{{user.lastName}}" />
+              </div>
+              <div class="form-group" >
+                  <label for="username">Email</label>
+                  <input readonly  type="text" class="form-control" value="{{user.email}}" />
+              </div>
+
+              <div class="form-group" >
+                  <label for="lastLogin">Last Login</label>
+                  <input readonly type="text" class="form-control" value="{{user.lastLogin}}" />
+              </div>
+
+               <button [disabled]="loading" class="btn btn-primary">Logout</button>
+        </div>
+   </form>
+</div>
     `
 })
 export class ProfileComponent {
@@ -29,17 +48,20 @@ export class ProfileComponent {
     constructor(
         private http: Http,
         private authService: AuthenticationService,
-        private configService: ConfigService,
-        private router: Router
-
-    ){
-        this.baseUrl = this.configService.get('apiUrl');
-
-    }
+        private userEvent: UserEvent,
+        private router: Router,
+        private activatedRoute: ActivatedRoute
+    ){}
 
     ngOnInit() {  
+        this.user = this.authService.getCurrentUser();
 
-          this.user = this.authService.getCurrentUser();
+        // if ?logout=true, then logout
+        this.activatedRoute.queryParams.subscribe( data => {
+            console.log('queryParams', data['logout']);
+            if(data['logout']) this.logout();
+        });
+          
      }
  
     logout() {
@@ -56,15 +78,20 @@ export class ProfileComponent {
             body : postForm
         };
 
+        // remove user from ngrx storage
+        this.userEvent.fire('USER_CLEAR');
+
         // remove user from local storage to log user out
         this.authService.removeCurrentUser();
+
+        // clear local variable
         this.user = {};
 
-        return this.http.delete(this.baseUrl + 'users/' + postForm.user + '/tokens', options)
+        return this.http.delete(Configuration.urls.base + '/users/' + postForm.user + '/tokens', options)
             .map((response:Response) => {
                 // nothing returned but 200
                 console.log("logout success "); 
-                this.router.navigate([ '/' ]);
+                this.router.navigate(['/']);
                 return;
             })
             .toPromise()

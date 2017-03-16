@@ -4,13 +4,15 @@ import { RouterModule, Routes, Router } from '@angular/router';
 import { Http, Response, URLSearchParams, Headers, RequestOptions, RequestOptionsArgs} from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 
+import { User } from './user.model';
+import { UserEvent } from './user.broadcaster';
 import { AuthenticationService } from './auth.service';
-import { ConfigService } from '../config/config.service';
+import { Configuration } from './config';
 
 @Component({
     selector: 'login',
     template: ` 
-      <div class="col-md-6 col-md-offset-3">
+      <div class="col-md-6">
           <h2>Login</h2>
           <form (submit)="login()">
               <div class="form-group" >
@@ -40,11 +42,9 @@ export class LoginComponent {
     constructor(
         private http: Http,
         private authService: AuthenticationService,
-        private configService: ConfigService,
-        private router: Router)
-    {
-         this.baseUrl = this.configService.get('apiUrl');       
-    }
+        private router: Router,
+        private userEvent: UserEvent)
+    {}
 
     ngOnInit() {  
      }
@@ -62,17 +62,21 @@ export class LoginComponent {
 
         console.log("postForm");
 
-        return this.http.post(this.baseUrl + 'auth', postForm)
+        return this.http.post(Configuration.urls.base + "/auth", postForm)
             .map((response:Response) => {
                 console.log(response.json());
                 let user = response.json();
                 if (user && user.token) {
-                    // store user details and jwt token in local storage to keep user logged in between page refreshes
-                    this.authService.setCurrentUser(user);
-                    this.router.navigate([ '/dashboard' ]);
+
+                    let authenticatedUser = new User();
+                    authenticatedUser.transform(user);
+
+                    authenticatedUser["isAuthenticated"]=true;
+
+                    this.authService.setCurrentUser(authenticatedUser);
+                    this.userEvent.fire('USER_LOGON');
+                    this.router.navigate(['/dashboard']);
                 }
-                
-                return Promise.resolve();
             })
             .toPromise()
             .catch((err: any) => {

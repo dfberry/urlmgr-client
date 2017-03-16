@@ -3,26 +3,26 @@ import { AbstractControl, FormGroup, FormControl, Validators, FormBuilder, React
 import { RouterModule, Routes, Router } from '@angular/router'; 
 import { Http, Response, URLSearchParams, Headers, RequestOptions} from '@angular/http';
 import { Observable } from 'rxjs/Rx';
-import { ConfigService } from '../config/config.service';
+
+import { Configuration } from './config';
 
 @Component({
     selector: 'register',
     template: ` 
-      <div class="col-md-6 col-md-offset-3">
+      <div class="col-md-6">
           <h2>Register</h2>
           <form (submit)="register()">
               <div class="form-group" >
-                  <label for="firstname">First Name</label>
-                  <input type="text" class="form-control" [(ngModel)]="firstname" name="firstname" placeholder="Your first name here" required />
+                  <label for="firstName">First Name</label>
+                  <input type="text" class="form-control" [(ngModel)]="firstName" name="firstname" placeholder="Your first name here" required />
               </div>
               <div class="form-group" >
-                  <label for="lastname">Last Name</label>
-                  <input type="text"  class="form-control" [(ngModel)]="lastname" name="lastname" placeholder="Your last name here" required />
+                  <label for="lastName">Last Name</label>
+                  <input type="text"  class="form-control" [(ngModel)]="lastName" name="lastname" placeholder="Your last name here" required />
               </div>
               <div class="form-group" >
-                  <label for="username">User</label>
-                  <span *ngIf="asyncErrors.username.error" class="has-error"><span class="control-label">User is taken</span></span>
-                  <input type="text" class="form-control" [(ngModel)]="username" name="username" placeholder="Your email here" required />
+                  <label for="email">Email</label>
+                  <input type="text" class="form-control" [(ngModel)]="email" name="username" placeholder="Your email here" required />
               </div>
               <div class="form-group" >
                   <label for="password">Password</label>
@@ -39,9 +39,9 @@ import { ConfigService } from '../config/config.service';
 export class RegisterComponent {
     config: any;
     newForm: FormGroup;
-    lastname="";
-    firstname="";
-    username="";
+    lastName="";
+    firstName="";
+    email="";
     password="";
     baseUrl;
     
@@ -52,13 +52,10 @@ export class RegisterComponent {
         }
     };
 
-
-    constructor(private http: Http,
-    private configService: ConfigService,
-    private router: Router){
-        this.baseUrl = this.configService.get('apiUrl');
-
-    }
+    constructor(
+        private http: Http,
+        private router: Router
+    ){}
 
     ngOnInit() {  
      }
@@ -66,25 +63,24 @@ export class RegisterComponent {
     register() {
       
       console.log("login function");
-      console.log("username " + this.username);
+      console.log("email " + this.email);
       console.log("password " + this.password);
-      console.log("lastname " + this.lastname);
-      console.log("firstname " + this.firstname);
+      console.log("lastName " + this.lastName);
+      console.log("firstName " + this.firstName);
 
       let postForm = {
-          email: this.username,
+          email: this.email,
           password: this.password,
-          lastname: this.lastname,
-          firstname: this.firstname
+          lastName: this.lastName,
+          firstName: this.firstName
       };
 
       console.log("postForm = " + JSON.stringify(postForm));
 
-        this.http.post(this.baseUrl + 'users', postForm)
+        return this.http.post(Configuration.urls.base + '/users', postForm)
             .map((response:Response) => {
                 console.log("register success " + response.json());
-                this.router.navigate([ '/login' ]);
-                return response.text();
+                this.router.navigate(['/login']);
             })
             .toPromise()
             .catch((err: any) => {

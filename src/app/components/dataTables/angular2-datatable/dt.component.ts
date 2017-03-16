@@ -1,8 +1,10 @@
-import {Component, Input, Output, EventEmitter, ChangeDetectionStrategy, SimpleChanges} from "@angular/core";
+import {Component, Input, Output, EventEmitter, ChangeDetectionStrategy, SimpleChanges, OnChanges, DoCheck, KeyValueDiffers} from "@angular/core";
 import { AbstractControl, FormGroup, FormControl, Validators, FormBuilder, ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { IUrl, Url, AppState, ADD_URL, UrlService } from '../../../reducers/index';
+import { IUrl, Url, ADD_URL, UrlService } from '../../../reducers/index';
 import { Observable } from 'rxjs/Rx';
 import { Store } from '@ngrx/store';
+import { AppState } from '../../../app.state';
+import { User } from '../../../user/user.model';
 
 let validUrl = require('valid-url');
 /**************************************************************************
@@ -21,53 +23,65 @@ let validUrl = require('valid-url');
         <p *ngIf="httpUrlValue.hasError('invalidUrl')">Url is not valid</p>
       </div>
       <button type="submit" [disabled]="!newForm.valid">Add</button>
+      <!--
+      <div *ngIf="user" >user.id = {{user.id}}</div>
+      <div *ngIf="!user" >user is empty</div>
+      -->
   </form>
-  <!--
-   <pre> newForm.value = {{ newForm.value | json }} </pre>
-   <pre> httpUrlValue.valid = {{ httpUrlValue.valid }} </pre>
-  <div>Valid ={{httpUrlValue.valid}}</div>
-        <div>Pristine ={{httpUrlValue.pristine}}</div>
-        <div>Touch ={{httpUrlValue.touched}}</div>
-  -->
   `,
   providers: []
 })
-export class UrlNewComponent {
+export class UrlNewComponent  implements OnChanges{
   //name:string = '';
   //itemtype:string = "Url";
-
+  @Input() user: User;
+  
+  differ: any;
   newForm: FormGroup;
   url: Url = new Url();
   httpUrlValue: AbstractControl;
 
 
-  constructor(private urlService: UrlService, private builder: FormBuilder){
-    //console.log('UrlNewComponent::constructor');
+  constructor(
+      private urlService: UrlService, 
+      private builder: FormBuilder,
+      private differs: KeyValueDiffers
+    ){
+
     this.newForm = this.builder.group({
       httpUrlValue: ['', Validators.compose([Validators.required, this.checkIfUrl])]
     });
     this.httpUrlValue = this.newForm.controls['httpUrlValue'];
   }
   ngOnInit() {
-      //console.log("UrlNewComponent ngOnInit");
+      console.log("dt.component UrlNewComponent ngOnInit input this.user " + JSON.stringify(this.user));
+  }
+  ngOnChanges(changes: SimpleChanges) {
+    for (let propName in changes) {
+      let chng = changes[propName];
+      let cur  = JSON.stringify(chng.currentValue);
+      let prev = JSON.stringify(chng.previousValue);
+
+      console.log(`dt.component::UrlNewComponent - ngOnChanges - ${propName}: currentValue = ${cur}, previousValue = ${prev}`);
+    }
   }
 
   validForm(){
-    //console.log("validForm this.httpUrlValue.valid = " + this.httpUrlValue.valid);
     if(this.httpUrlValue.valid) return true;
   }
 
   save(){
     if (this.validForm()){
-      //console.log('UrlNewComponent::save');
+
       this.url.url = this.httpUrlValue.value;
 
-      //console.log('this.url ' + JSON.stringify(this.url));
+      if(this.url.url && this.user.id && this.user.token){
 
-      // insert new url name via service
-      this.urlService.insertItem(this.url)
-      .then(data => console.log("save data = " + JSON.stringify(data)))
-      .catch(err => console.log("save err = " + JSON.stringify(err)));
+        // insert new url name via service
+        this.urlService.insertItem(this.user, this.url)
+        .then(data => console.log("save data = " + JSON.stringify(data)))
+        .catch(err => console.log("save err = " + JSON.stringify(err)));
+      }
     }
   }
   // valid url
@@ -91,22 +105,40 @@ export class UrlNewComponent {
   selector: 'url-remove',
   template: `
     <button (click)="remove(url)" class="btn btn-danger">x</button>
+    <!--
+    <div *ngIf="user" >user.id = {{user.id}}</div>
+    <div *ngIf="!user" >user is empty</div>
+    -->
   `,
   providers: []
 })
-export class UrlRemoveComponent {
-@Input() url: Url;
+export class UrlRemoveComponent  implements OnChanges{
+
+  @Input() url: Url;
+  @Input() user: User;
 
   constructor(private urlService: UrlService, private builder: FormBuilder){}
 
   remove(){
-    console.log("remove ");
-    if (this.url.id){
-        console.log("remove " + this.url.id);
+    if (this.url && this.user && this.user.token){
       //console.log('UrlNewComponent::remove');
-      this.urlService.removeItem(this.url);
+      this.urlService.removeItem(this.user, this.url);
       //.then(data => console.log("save data = " + JSON.stringify(data)))
       //.catch(err => console.log("save err = " + JSON.stringify(err)));
+    }
+  }
+
+  ngOnInit() {
+      //console.log("UrlNewComponent ngOnInit");
+      console.log("dt.component UrlRemoveComponent ngOnInit input this.user " + JSON.stringify(this.user));
+  }
+  ngOnChanges(changes: SimpleChanges) {
+    for (let propName in changes) {
+      let chng = changes[propName];
+      let cur  = JSON.stringify(chng.currentValue);
+      let prev = JSON.stringify(chng.previousValue);
+
+      console.log(`dt.component::UrlRemoveComponent - ngOnChanges - ${propName}: currentValue = ${cur}, previousValue = ${prev}`);
     }
   }
 }
@@ -120,7 +152,7 @@ export class UrlRemoveComponent {
   selector: 'angular2DataTable',
   template: `
 <div class="container-fluid">
-    <div class="col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
+    <div class="col-xs-12 col-md-10 col-lg-8 ">
 
         <div class="page-header">
         </div>
@@ -137,7 +169,7 @@ export class UrlRemoveComponent {
             </div>
         </div>
         <div class="panel panel-default">
-            <div class="panel-heading"><url-new></url-new></div>
+            <div class="panel-heading"><url-new [user]="user"></url-new></div>
 
             <table class="table table-striped" 
                     [mfData]="rows | dataFilter : filterQuery" 
@@ -163,7 +195,7 @@ export class UrlRemoveComponent {
                 <tbody>
                 <tr *ngFor="let item of mf.data">
                     <td>
-                        <url-remove [url]="item">x</url-remove>
+                        <url-remove [user]="user" [url]="item">x</url-remove>
                     </td>
                     <!--
                     <td>{{ item.createdAt | date:"MM/dd/yy" }}</td>
@@ -185,21 +217,37 @@ export class UrlRemoveComponent {
         </div>
     </div>
 </div>
-  `
+<!--
+<div *ngIf="user" >user.id = {{user.id}}</div>
+<div *ngIf="!user" >user is empty</div>
+-->
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class angular2DataTableComponent {
+export class angular2DataTableComponent  implements OnChanges {
     
     @Input() rows: any[];
+    @Input() user: User;
+
     public filterQuery = "";
     public rowsOnPage = 10;
     public sortBy = "email";
     public sortOrder = "asc";
 
   constructor(){}
-  ngOnInit(){
-      //console.log("dataTable");
+  ngOnInit() {
+      //console.log("UrlNewComponent ngOnInit");
+      console.log("dt.component angular2DataTableComponent ngOnInit input this.user " + JSON.stringify(this.user));
   }
-  ngOnChanges(changes: SimpleChanges) {}
+  ngOnChanges(changes: SimpleChanges) {
+    for (let propName in changes) {
+      let chng = changes[propName];
+      let cur  = JSON.stringify(chng.currentValue);
+      let prev = JSON.stringify(chng.previousValue);
+
+      console.log(`dt.component::angular2DataTableComponent - ngOnChanges - ${propName}: currentValue = ${cur}, previousValue = ${prev}`);
+    }
+  }
 
     public toInt(num: string) {
         return +num;

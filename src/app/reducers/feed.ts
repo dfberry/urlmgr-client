@@ -10,7 +10,7 @@ import { AuthenticationService } from '../user/auth.service';
 
 import { HttpDataService} from '../services/index';
 import { Url} from './index';
-import { AppState } from './index';
+import { AppState } from '../app.state';
 
 let cheerio = require("cheerio");
 
@@ -215,6 +215,7 @@ export class FeedResponseService{
       // if feed is already in store, don't go fetch it
       if(existingFeed) return;
 
+
         // add user auth token to header
         let headers = new Headers();
         headers.set('x-access-token', this.user['token']);
@@ -222,6 +223,9 @@ export class FeedResponseService{
             headers : headers,
             body: { user : this.user['id']}
         };
+
+      // TODO: fix this
+      //let options = undefined;
 
       // get feeds
       this._httpDataService.getJsonPromise(this.rssToJsonServiceBaseUrl + url, options)

@@ -38,24 +38,32 @@ import {
 
 import { DataFilterPipe,FeedParserPipe }   from './components/dataTables/angular2-datatable/data-filter.pipe';
 
-import { AppState, urlReducer, UrlService, 
+import { urlReducer, UrlService, 
   FeedResponseService, feedReducer, selectedFeedReducer, 
   FeedDefinitionService,
   FeedDefinition, FeedResponse, Feed, Article} from './reducers/index';
-import { HttpDataService } from './services/index';
+
+import { 
+  HttpDataService, 
+  ConfigService,
+  Broadcaster 
+} from './services/index';
 
 import { AppComponent } from './app.component';
 import { AppRoutes } from './app.routing';
-import { UserModule } from './user/user.module';
+import { AppState, UserState, UserStates } from './app.state';
+import { AuthGuard} from './app.routing.authguard';
+import { UserModule} from './user/user.module';
 import { AlertModule } from './alert/alert.module';
 import { HomeModule } from './home/home.module';
-import { ConfigService } from './config/config.service';
+
+let userModule = UserModule.forRoot();
 
 @NgModule({
   imports: [
     // my code
     AppRoutes,
-    UserModule.forRoot(),
+    userModule,
     HomeModule,
 
     // 3rd party code
@@ -69,10 +77,7 @@ import { ConfigService } from './config/config.service';
     ReactiveFormsModule,
     HttpModule,
 
-    StoreModule.provideStore({
-      urls: urlReducer, 
-      feeds: feedReducer
-    }),
+    StoreModule.provideStore({urls: urlReducer, feeds: feedReducer, selectedFeed: selectedFeedReducer, user: UserState}),
     StoreDevtoolsModule.instrumentStore({
           monitor: useLogMonitor({
             visible: true,
@@ -103,10 +108,10 @@ import { ConfigService } from './config/config.service';
     FeedDefinitionService,
     UrlService, 
     HttpDataService, 
-    ConfigService,
-    // http://stackoverflow.com/questions/37611549/how-to-pass-parameters-rendered-from-backend-to-angular2-bootstrap-method/37611614#37611614
-    // {provide: APP_INITIALIZER, useFactory: (sites:SitesService) => () => sites.load(), deps:[SitesService, HTTP_PROVIDERS], multi: true}),
-    { provide: APP_INITIALIZER, useFactory: (config: ConfigService) => () => config.load(), deps: [ConfigService, HttpModule], multi: true }
+    ConfigService, 
+    Broadcaster,
+    AuthGuard,
+    { provide: APP_INITIALIZER, useFactory: (config: ConfigService) => () => config.load(), deps: [ConfigService], multi: true }
   ],
   bootstrap: [ AppComponent]
 })

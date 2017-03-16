@@ -1,10 +1,4 @@
-import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, SimpleChanges  } from '@angular/core';
-import { AbstractControl, FormGroup, FormControl, Validators, FormBuilder, ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { IUrl, Url, AppState, ADD_URL, UrlService } from '../reducers/index';
-import { Observable } from 'rxjs/Rx';
-import { Store } from '@ngrx/store';
-import { RouterModule, Routes } from '@angular/router';
-
+import { Component} from '@angular/core';
 /**************************************************************************
  * 
  * Show Dashboard
@@ -22,6 +16,7 @@ import { RouterModule, Routes } from '@angular/router';
 export class DashboardComponent {
   constructor(){}
   ngOnInit(){
+    console.log("dashboard component ngOnInit");
 
   }
 }
