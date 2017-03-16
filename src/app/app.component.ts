@@ -12,7 +12,7 @@ import { AppState, UserStates } from './app.state';
 @Component({
     selector: 'my-app',
     template: ` 
-    <ngrx-store-log-monitor toggleCommand="ctrl-h" positionCommand="ctrl-m"></ngrx-store-log-monitor>
+    <!--<ngrx-store-log-monitor toggleCommand="ctrl-h" positionCommand="ctrl-m"></ngrx-store-log-monitor>-->
         <navigation></navigation>
         <router-outlet></router-outlet>
     `,
