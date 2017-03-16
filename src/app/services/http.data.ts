@@ -61,8 +61,9 @@ export class HttpDataService{
             });
     }
     postJsonData(url, body, options ){
-        //console.log("HttpDataService::postJsonData url = " + url);
-        //console.log("HttpDataService::postJsonData body = " + body);
+        console.log("HttpDataService::postJsonData url = " + url);
+        console.log("HttpDataService::postJsonData body = " + JSON.stringify(body));
+        console.log("HttpDataService::postJsonData options = " + JSON.stringify(options));
 
         return this._http.post(url, body, options ? options : this.getDefaultPostOptions())
            .map(res =>  res.json())
@@ -95,7 +96,7 @@ export class HttpDataService{
     getDefaultPostOptions(){
         var headers = new Headers();
         //headers.append('Content-Type', 'application/x-www-form-urlencoded');
-        headers.append('Content-Type', 'application/json');
+        headers.set('Content-Type', 'application/json');
 
         let options = new RequestOptions({ headers: headers });
         return options;

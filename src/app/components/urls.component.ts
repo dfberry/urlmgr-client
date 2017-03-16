@@ -21,7 +21,7 @@ let validUrl = require('valid-url');
   selector: 'url-mgr',
   template: `
     <!--url-mgr begin -->
-    <angular2DataTable  [rows]="urls"></angular2DataTable>
+    <angular2DataTable [user]="user" [rows]="urls"></angular2DataTable>
     <!--url-mgr end -->
   `,
   styles:[`
@@ -44,15 +44,17 @@ export class UrlMgrComponent {
 
   ngOnInit(){
     console.log("url component ngOnInit");
-    /*
+    
+    
     this.store.select(state => state.urls)
       .distinctUntilChanged()
       .subscribe(data => this.onUrlsEmitted(data));
+    
   
     this.store.select(state => state.user)
       .distinctUntilChanged()
       .subscribe(data => this.onUserEmitted(data));
-      */
+      
   }
   // executed once user data arrives from the store
   public onUrlsEmitted(data:Url[]){
@@ -60,8 +62,13 @@ export class UrlMgrComponent {
   }
   public onUserEmitted(user:User){
     console.log("urls.onUserEmitted");
+
     this.user = user;
     this.urlService.loadItems(user);
+
+    console.log("urls.component onUserEmitted = " + JSON.stringify(user));
+    console.log("urls.component onUserEmitted, this.user = " + JSON.stringify(this.user));
+
     // get out of state
 
   }

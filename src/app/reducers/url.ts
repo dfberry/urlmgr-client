@@ -116,13 +116,16 @@ export class UrlService{
 
         let headers = new Headers();
         headers.set('x-access-token', user['token']);
+        headers.set('Content-Type', 'application/json');
 
         let options:RequestOptionsArgs = {
             headers : headers
         };
 
-        return this._httpDataService.postJsonData(this.baseUrl, item, headers)
-            .then((data) => {
+        console.log("url insert item = " + JSON.stringify(item));
+        console.log("url insert options = " + JSON.stringify(options))
+
+        return this._httpDataService.postJsonData(this.baseUrl, item, options).then((data) => {
                 
                 //this._FeedDefinitionService.getFeedUrl(item);
 
@@ -148,8 +151,17 @@ export class UrlService{
     removeItem(user, item:Url){
         //console.log("item deleted = " + item.url);
 
-        if(!user || !user.id) return;
+        if(!user || !user.id) {
+            console.log("UrlService::removeItem, user is empty");
+            return;
+        }
         this.user = user;
+
+        let urlId = item["id"] ? item["id"] : item["_id"];
+        if (!urlId) {
+            console.log("UrlService::removeItem, urlId is empty");
+            return;
+        }
 
         let postForm = {
             user: this.user['id'],
@@ -163,7 +175,9 @@ export class UrlService{
             body : postForm
         };
 
-        return this._httpDataService.delete(this.baseUrl + '/' + item.id, options)
+        console.log("UrlService::removeItem, options = " + JSON.stringify(options));
+
+        return this._httpDataService.delete(this.baseUrl + '/' + urlId, options)
             .then((data) => {
                 
                 // TODO: what should happen if there is an error on the server/api side
