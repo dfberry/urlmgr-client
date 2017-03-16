@@ -37,13 +37,13 @@ export class AppComponent {
         this.config =  this.configService.config;
         //console.log("config object in app component");
         console.log("AppComponent ngOnInit"); 
-         
+
         this.loadUserStateFromLocalStorage() 
      }
 
      loadUserStateFromLocalStorage(){
         let localStorageUser: User = this.authService.getCurrentUser();
-        if(localStorageUser.isAuthenticated){
+        if(localStorageUser && localStorageUser.isAuthenticated){
             this.store.dispatch({type: UserStates.USER_LOGIN, payload: localStorageUser});
         }
      }
