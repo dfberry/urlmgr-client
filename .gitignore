@@ -18,4 +18,6 @@ dist
 src/**/*.js
 src/**/*.map
 config.ts
-
+dist
+dist_prod
+dist_dev

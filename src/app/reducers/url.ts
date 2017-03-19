@@ -78,6 +78,7 @@ export class UrlService  {
     ){
         console.log("url.ts - ctor");
         this.items = store.select(state => state.urls);
+        this.baseUrl = configService.config.apiUrl + "urls/";
     }
 
     getTokenedHeaders(){
@@ -200,7 +201,7 @@ export class UrlService  {
 
         console.log("UrlService::removeItem, options = " + JSON.stringify(options));
 
-        return this._httpDataService.delete(this.baseUrl + '/' + urlId, options)
+        return this._httpDataService.delete(this.baseUrl + urlId, options)
 
             .then((data) => {
                 console.log("url.ts removeItem http service delete success");

@@ -45,7 +45,7 @@ module.exports = {
     ]
   },
   output: {
-    path    : path.join(__dirname, 'dist'),
+    path    : path.join(__dirname, 'dist_prod'),
     filename: 'bundle.js'
   },
   plugins: [
@@ -53,7 +53,7 @@ module.exports = {
     new DefinePlugin({'webpack': {'ENV': JSON.stringify(metadata.env)}}),
     new CompressionPlugin({regExp: /\.css$|\.html$|\.js$|\.map$/}),
     new CopyWebpackPlugin([{from: './src/index.html', to: 'index.html'}]),
-    new CopyWebpackPlugin([{from: './src/config.json', to: 'config.json'}]),
+    new CopyWebpackPlugin([{from: './src/app/config/config.json', to: 'config.json'}]),
     new CopyWebpackPlugin([{from: './src/styles.css', to: 'styles.css'}]),
     new OccurrenceOrderPlugin(true),
     new ContextReplacementPlugin(

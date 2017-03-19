@@ -9,7 +9,7 @@ var app = express();
 var port = 3000;
 
 // location of static files
-app.use(express.static('dist_dev'))
+app.use(express.static('dist_prod'))
 
 // remove expressjs from response
 app.disable('x-powered-by');
