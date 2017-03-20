@@ -39,7 +39,8 @@ export const UrlStates = {
       URL_ADD_1 : '[Url] Add 1',
       URL_ADD_N : '[Url] Add N',
       URL_DELETE : '[Url] delete',
-      URL_UPDATE : '[Url] update'
+      URL_UPDATE : '[Url] update',
+      URL_CLEAR: '[Url] Initialized'
   };
 
 export function UrlState (state = [], action) {
@@ -54,7 +55,9 @@ export function UrlState (state = [], action) {
               action.payload
           ];       
         case UrlStates.URL_ADD_N:
-          return action.payload;       
+          return action.payload; 
+        case UrlStates.URL_CLEAR:
+          return [];
         default:
             return state;
     }

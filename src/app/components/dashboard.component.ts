@@ -51,12 +51,22 @@ export class DashboardComponent {
   }
   public onUrlEvent(urlAction?){
     console.log("dashboard onUrlChange");
+
+    // if no user or any state object's action is clear  
     if(!this.user || !this.user.email) {
-      // clear all urls because user is logged off
+      this.clearUrls();
+    } else {
+      this.loadUrls();
+    }
 
-      this.store.dispatch({type: UrlStates.URL_ADD_N, payload: []});
-    } 
+    // so has user and isn't a clear action
 
+
+  }
+  clearUrls(){
+    this.store.dispatch({type: UrlStates.URL_CLEAR, payload: []});
+  }
+  loadUrls(){
     this.urlService.loadItems(this.user).then(urls => {
       console.log("dashboard - load urls into state");
       this.urls = urls;
@@ -64,7 +74,6 @@ export class DashboardComponent {
     }).catch(err => {
       console.log("dashboard::onUrlEvent - error = " + JSON.stringify(err));
     });
-
   }
   registerUrlBroadcast() {
     this.userEvent.on()
