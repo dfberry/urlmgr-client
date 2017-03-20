@@ -1,20 +1,16 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, SimpleChanges  } from '@angular/core';
 import { AbstractControl, FormGroup, FormControl, Validators, FormBuilder, ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { IUrl, Url, ADD_URL, UrlService } from '../reducers/index';
+
 import { Observable } from 'rxjs/Rx';
 import { Store } from '@ngrx/store';
 import { RouterModule, Routes } from '@angular/router';
 import { AppState, UserStates } from '../app.state';
+
 import { User } from '../user/user.model';
 
 import { AuthenticationService } from '../user/auth.service';
 import { UserEvent } from '../user/user.broadcaster';
-/**************************************************************************
- * 
- * Show Feeds for Url
- * 
- * 
-*/
+
 @Component({
   selector: 'navigation',
   template: `
@@ -40,7 +36,7 @@ export class NavigationComponent {
   constructor(
     private store: Store<AppState>,
     private authService: AuthenticationService,
-    private userEvent:UserEvent
+    private userEvent: UserEvent
   ){}
 
   ngOnInit(){
@@ -68,14 +64,12 @@ export class NavigationComponent {
             // need to set state to that user
             this.store.dispatch({type: UserStates.USER_LOGIN, payload: this.authService.getCurrentUser()});
             return;
-          case "USER_LOGOFF":
+          case "USER_CLEAR":
             // received message the user logged on
             // need to set state to that user
-            this.store.dispatch({type: UserStates.USER_LOGOFF, payload: this.authService.getCurrentUser()});
+            this.store.dispatch({type: UserStates.USER_CLEAR, payload: undefined});
             return;
-          default:
-             this.store.dispatch({type: UserStates.USER_CLEAR, payload: undefined});
-             return;
+
          }
       });
   }

@@ -19,15 +19,16 @@ import { DataTableModule } from "angular2-datatable";
 
 // this app
 import {   
-  UrlNewComponent, 
+  /*UrlNewComponent, 
   UrlRemoveComponent, 
   UrlMgrComponent,
-  angular2DataTableComponent,
+  angular2DataTableComponent,*/
   ExComponent,
+  /*
   FeedResponseComponent,
   FeedListComponent,
   FeedMgrComponent,
-  UrlFeedDetailLinkComponent,
+  UrlFeedDetailLinkComponent,*/
   NavigationComponent,
   DashboardComponent
 } from './components/index';
@@ -36,12 +37,13 @@ import {
   FirstFeedPipe
 } from './pipes/index';
 
-import { DataFilterPipe,FeedParserPipe }   from './components/dataTables/angular2-datatable/data-filter.pipe';
+//import { DataFilterPipe,FeedParserPipe }   from './components/dataTables/angular2-datatable/data-filter.pipe';
 
-import { urlReducer, UrlService, 
+/*import { urlReducer, UrlService, 
   FeedResponseService, feedReducer, selectedFeedReducer, 
   FeedDefinitionService,
   FeedDefinition, FeedResponse, Feed, Article} from './reducers/index';
+*/
 
 import { 
   HttpDataService, 
@@ -51,19 +53,22 @@ import {
 
 import { AppComponent } from './app.component';
 import { AppRoutes } from './app.routing';
-import { AppState, UserState, UserStates } from './app.state';
+import { AppState, UserState, UserStates, UrlState, UrlStates } from './app.state';
 import { AuthGuard} from './app.routing.authguard';
 import { UserModule} from './user/user.module';
+import { UrlModule } from './url/url.module';
 import { AlertModule } from './alert/alert.module';
 import { HomeModule } from './home/home.module';
 
 let userModule = UserModule.forRoot();
+let urlModule = UrlModule.forRoot();
 
 @NgModule({
   imports: [
     // my code
     AppRoutes,
     userModule,
+    urlModule,
     HomeModule,
 
     // 3rd party code
@@ -77,7 +82,7 @@ let userModule = UserModule.forRoot();
     ReactiveFormsModule,
     HttpModule,
 
-    StoreModule.provideStore({urls: urlReducer, feeds: feedReducer, selectedFeed: selectedFeedReducer, user: UserState}),
+    StoreModule.provideStore({urls: UrlState, /*feeds: feedReducer, selectedFeed: selectedFeedReducer, */user: UserState}),
     StoreDevtoolsModule.instrumentStore({
           monitor: useLogMonitor({
             visible: true,
@@ -88,25 +93,31 @@ let userModule = UserModule.forRoot();
     ],
   declarations: [ 
         AppComponent,
-        UrlNewComponent, 
-        UrlRemoveComponent,
-        UrlMgrComponent,
-        FirstFeedPipe,
-        DataFilterPipe,
-        FeedParserPipe,
-        angular2DataTableComponent,
+
+        //UrlModule
+        //UrlNewComponent, 
+        //UrlRemoveComponent,
+        //UrlMgrComponent,
+        //FirstFeedPipe,
+        //DataFilterPipe,
+        //FeedParserPipe,
+        //angular2DataTableComponent,
+        //FeedResponseComponent,
+        //FeedListComponent,
+        //FeedMgrComponent,
+        //UrlFeedDetailLinkComponent,
+
         ExComponent,
-        FeedResponseComponent,
-        FeedListComponent,
-        FeedMgrComponent,
-        UrlFeedDetailLinkComponent,
+
         NavigationComponent,
         DashboardComponent
      ],
   providers: [
-    FeedResponseService,
-    FeedDefinitionService,
-    UrlService, 
+    // UrlModule
+    //FeedResponseService,
+    //FeedDefinitionService,
+    //UrlService, 
+
     HttpDataService, 
     ConfigService, 
     Broadcaster,
