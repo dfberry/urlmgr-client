@@ -19,31 +19,9 @@ import { DataTableModule } from "angular2-datatable";
 
 // this app
 import {   
-  /*UrlNewComponent, 
-  UrlRemoveComponent, 
-  UrlMgrComponent,
-  angular2DataTableComponent,*/
-  ExComponent,
-  /*
-  FeedResponseComponent,
-  FeedListComponent,
-  FeedMgrComponent,
-  UrlFeedDetailLinkComponent,*/
   NavigationComponent,
   DashboardComponent
 } from './components/index';
-
-import {
-  FirstFeedPipe
-} from './pipes/index';
-
-//import { DataFilterPipe,FeedParserPipe }   from './components/dataTables/angular2-datatable/data-filter.pipe';
-
-/*import { urlReducer, UrlService, 
-  FeedResponseService, feedReducer, selectedFeedReducer, 
-  FeedDefinitionService,
-  FeedDefinition, FeedResponse, Feed, Article} from './reducers/index';
-*/
 
 import { 
   HttpDataService, 
@@ -93,31 +71,10 @@ let urlModule = UrlModule.forRoot();
     ],
   declarations: [ 
         AppComponent,
-
-        //UrlModule
-        //UrlNewComponent, 
-        //UrlRemoveComponent,
-        //UrlMgrComponent,
-        //FirstFeedPipe,
-        //DataFilterPipe,
-        //FeedParserPipe,
-        //angular2DataTableComponent,
-        //FeedResponseComponent,
-        //FeedListComponent,
-        //FeedMgrComponent,
-        //UrlFeedDetailLinkComponent,
-
-        ExComponent,
-
         NavigationComponent,
         DashboardComponent
      ],
   providers: [
-    // UrlModule
-    //FeedResponseService,
-    //FeedDefinitionService,
-    //UrlService, 
-
     HttpDataService, 
     ConfigService, 
     Broadcaster,
