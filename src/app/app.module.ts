@@ -53,7 +53,7 @@ import {
 
 import { AppComponent } from './app.component';
 import { AppRoutes } from './app.routing';
-import { AppState, UserState, UserStates, UrlState, UrlStates } from './app.state';
+import { AppState, UserState, UserActions, UrlState, UrlActions } from './app.state';
 import { AuthGuard} from './app.routing.authguard';
 import { UserModule} from './user/user.module';
 import { UrlModule } from './url/url.module';

@@ -4,7 +4,7 @@ import { AbstractControl, FormGroup, FormControl, Validators, FormBuilder, React
 import { Observable } from 'rxjs/Rx';
 import { Store } from '@ngrx/store';
 import { RouterModule, Routes } from '@angular/router';
-import { AppState, UserStates } from '../app.state';
+import { AppState, UserActions } from '../app.state';
 
 import { User } from '../user/user.model';
 
@@ -62,12 +62,12 @@ export class NavigationComponent {
           case "USER_LOGON":
             // received message the user logged on
             // need to set state to that user
-            this.store.dispatch({type: UserStates.USER_LOGIN, payload: this.authService.getCurrentUser()});
+            this.store.dispatch({type: UserActions.USER_LOGIN, payload: this.authService.getCurrentUser()});
             return;
           case "USER_CLEAR":
             // received message the user logged on
             // need to set state to that user
-            this.store.dispatch({type: UserStates.USER_CLEAR, payload: undefined});
+            this.store.dispatch({type: UserActions.USER_CLEAR, payload: undefined});
             return;
 
          }

@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import { UserEvent } from '../user/user.broadcaster';
 import { UrlEvent } from '../url/url.event';
 
-import { AppState, UrlStates, UserStates } from '../app.state';
+import { AppState, UrlActions, UserActions } from '../app.state';
 import { UrlService } from '../url/url.service';
 
 import { User } from '../user/user.model';
@@ -64,13 +64,13 @@ export class DashboardComponent {
 
   }
   clearUrls(){
-    this.store.dispatch({type: UrlStates.URL_CLEAR, payload: []});
+    this.store.dispatch({type: UrlActions.URL_CLEAR, payload: []});
   }
   loadUrls(){
     this.urlService.loadItems(this.user).then(urls => {
       console.log("dashboard - load urls into state");
       this.urls = urls;
-      this.store.dispatch({type: UrlStates.URL_ADD_N, payload: urls});
+      this.store.dispatch({type: UrlActions.URL_ADD_N, payload: urls});
     }).catch(err => {
       console.log("dashboard::onUrlEvent - error = " + JSON.stringify(err));
     });

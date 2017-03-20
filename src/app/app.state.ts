@@ -8,7 +8,7 @@ export interface AppState {
   user: User
 }
 
-export const UserStates = {
+export const UserActions = {
       USER_LOGIN : '[User] Authorized',
       USER_CLEAR : '[User] Initialized'
   };
@@ -21,10 +21,10 @@ export function UserState(state=new User(), action) {
       let user:User = new User();
 
       switch (action.type) {
-          case UserStates.USER_CLEAR:
+          case UserActions.USER_CLEAR:
             return new User();       
 
-          case UserStates.USER_LOGIN:
+          case UserActions.USER_LOGIN:
               user = action.payload;
               user.isAuthenticated = true;
             return user;   
@@ -35,7 +35,7 @@ export function UserState(state=new User(), action) {
   }
 
 
-export const UrlStates = {
+export const UrlActions = {
       URL_ADD_1 : '[Url] Add 1',
       URL_ADD_N : '[Url] Add N',
       URL_DELETE : '[Url] delete',
@@ -49,14 +49,14 @@ export function UrlState (state = [], action) {
       console.log("urlState action = " + JSON.stringify(action));
 
      switch (action.type) {
-        case UrlStates.URL_ADD_1:
+        case UrlActions.URL_ADD_1:
           return [
               ...state,
               action.payload
           ];       
-        case UrlStates.URL_ADD_N:
+        case UrlActions.URL_ADD_N:
           return action.payload; 
-        case UrlStates.URL_CLEAR:
+        case UrlActions.URL_CLEAR:
           return [];
         default:
             return state;

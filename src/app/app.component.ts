@@ -4,7 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthenticationService } from './user/auth.service';
 import { User } from './user/user.model';
 import { Store } from '@ngrx/store';
-import { AppState, UserStates } from './app.state';
+import { AppState, UserActions } from './app.state';
 //<ngrx-store-log-monitor toggleCommand="ctrl-h" positionCommand="ctrl-m"></ngrx-store-log-monitor>
        
 
@@ -40,7 +40,7 @@ export class AppComponent {
      loadUserStateFromLocalStorage(){
         let localStorageUser: User = this.authService.getCurrentUser();
         if(localStorageUser && localStorageUser.isAuthenticated){
-            this.store.dispatch({type: UserStates.USER_LOGIN, payload: localStorageUser});
+            this.store.dispatch({type: UserActions.USER_LOGIN, payload: localStorageUser});
         }
      }
 }
