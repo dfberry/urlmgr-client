@@ -1,3 +1,9 @@
+import { Component, Input, Output, NgModule, ModuleWithProviders, SimpleChanges } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule }   from '@angular/forms';
+
+import { Feed } from './feed.model';
+
 @Component({
   selector: 'feed-list',
   template: `
@@ -13,13 +19,12 @@
   `,
   styles:[`
     div { width: 100%; }
-  `],
-  changeDetection: ChangeDetectionStrategy.Default
+  `]
 })
 export class FeedListComponent {
   @Input() feeds: Feed[];
 
-  constructor(private store: Store<AppState>){}
+  constructor(){}
   ngOnInit(){
     if (this.feeds) {
       //console.log(this.feeds.length);

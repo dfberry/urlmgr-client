@@ -1,3 +1,10 @@
+import { Component, Input, Output, NgModule, ModuleWithProviders, SimpleChanges } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule }   from '@angular/forms';
+import { RouterModule, Routes, ActivatedRoute } from '@angular/router';
+
+import { Feed, FeedDefinition, FeedResponse, Article, FeedInfo} from './feed.model';
+import { FeedResponseService } from './feed.response.service';
 /**************************************************************************
  * 
  * Show Feeds for Url
@@ -15,8 +22,7 @@
     </div>
 
   `,
-  providers: [FeedResponseService],
-  changeDetection: ChangeDetectionStrategy.Default
+  providers: [FeedResponseService]
 })
 export class FeedResponseComponent {
   found: boolean;
@@ -25,7 +31,6 @@ export class FeedResponseComponent {
   selectedFeed: Feed = new Feed();
 
   constructor(
-    private store: Store<AppState>,
     private feedResponseService: FeedResponseService,
     private route: ActivatedRoute){
       this.found = false;
@@ -45,9 +50,9 @@ export class FeedResponseComponent {
       this.feedResponseService.addFeed(this.urlId, this.url);
     }
     // get out of state
-    this.store.select(state => state.selectedFeed)
-      .distinctUntilChanged()
-      .subscribe(data => this.onFeedsEmitted(data));
+    //this.store.select(state => state.selectedFeed)
+     // .distinctUntilChanged()
+    //  .subscribe(data => this.onFeedsEmitted(data));
       /*
     this.store.select(state => state.selectedFeed)
       .distinctUntilChanged()

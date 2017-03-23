@@ -101,7 +101,7 @@ export class UrlDataTableComponent  implements OnChanges {
   constructor(){}
   ngOnInit() {
       //console.log("UrlNewComponent ngOnInit");
-      console.log("dt.component angular2DataTableComponent ngOnInit input this.user " + JSON.stringify(this.user));
+      //console.log("dt.component angular2DataTableComponent ngOnInit input this.user " + JSON.stringify(this.user));
   }
   ngOnChanges(changes: SimpleChanges) {
     for (let propName in changes) {
@@ -109,7 +109,7 @@ export class UrlDataTableComponent  implements OnChanges {
       let cur  = JSON.stringify(chng.currentValue);
       let prev = JSON.stringify(chng.previousValue);
 
-      console.log(`dt.component::angular2DataTableComponent - ngOnChanges - ${propName}: currentValue = ${cur}, previousValue = ${prev}`);
+      //console.log(`dt.component::angular2DataTableComponent - ngOnChanges - ${propName}: currentValue = ${cur}, previousValue = ${prev}`);
     }
   }
 

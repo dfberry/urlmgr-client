@@ -25,7 +25,7 @@ import { UserEvent } from '../user/user.broadcaster';
             <span *ngIf="currentUser.isAuthenticated"> <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a></span>
           </div>           
         </div>
-    </div>
+    </div>        
 
   `
 })

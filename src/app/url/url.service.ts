@@ -7,12 +7,14 @@ import { createSelector } from 'reselect';
 
 import { type } from '../utils/index';
 import { HttpDataService, ConfigService} from '../services/index';
+import * as cheerio from 'cheerio';
 
 import { AppState } from '../app.state';
 //import { Feed, FeedResponse, FeedDefinition , FeedDefinitionService, FeedResponseService} from './feed';
 import { Url } from './url.model';
 import { User } from '../user/user.model';
 import { UrlEvent } from './url.event';
+import { FeedService } from './feed.service';
 
 @Injectable()
 export class UrlService  {
@@ -30,7 +32,8 @@ export class UrlService  {
         private _httpDataService: HttpDataService,
         //private _FeedDefinitionService: FeedDefinitionService,
         private configService: ConfigService,
-        private urlEvent: UrlEvent
+        private urlEvent: UrlEvent,
+        private feedService: FeedService
     ){
         console.log("url.ts - ctor");
         this.items = store.select(state => state.urls);
@@ -74,42 +77,77 @@ export class UrlService  {
             return this._httpDataService.getJsonPromise(this.baseUrl + "?user=" + user["id"], options)
                 .then(data => {
                     resolve(data);
+                }).catch(err => {
+                        console.log(err);
+                        reject(err);
+                });
+
+        });
+    }
+    getUrlProperties(url, user){
+        return new Promise<Object>((resolve, reject) => {
+            this.getUrlHtml(url,user)
+            .then(html => {
+                let links = this.getLinks(html);
+                let feed = this.feedService.searchMimeTypes(links);
+                let title = this.getTitle(html);
+                resolve({feed: feed, title: title});
             }).catch(err => {
+                reject(err);
+            });
+        });
+    }
+    getTitle(html){
+        let $ = cheerio.load(html);
+        let title = $("title").text();
+        return title;
+    }
+    getLinks(html){
+        let list = [];
+        let $ = cheerio.load(html);
+        $('link').each( function () {
+            let type = $(this).attr("type");
+            let href = $(this).attr("href");
+            if (type){
+                type = type.replace('\\"','');
+                type = type.replace('\\"','');
+
+                if (href){
+                    href = href.replace('\\"','');
+                    href = href.replace('\\"','');
+                }
+                list.push({type: type, href: href});
+            }
+            
+        });
+        return list.sort();
+    }
+    getUrlHtml(url, user){
+        return new Promise<string>((resolve, reject) => {
+            // post form
+            let post = {
+                url: url,
+                user: user.id
+            }
+
+            // headers
+            let headers = new Headers();
+            headers.set('x-access-token', user['token']);
+            headers.set('Content-Type', 'application/json');
+
+            let options: RequestOptionsArgs = {
+                headers : headers
+            };
+
+            return this._httpDataService.postHtmlData(this.baseUrl + "feeds/", post, options)
+                .then(data => {
+                    resolve(data || "");
+                }).catch(err => {
                     console.log(err);
                     reject(err);
-            });
-
+                });
         });
     }
-/*
-    loadItems(user) {
-
-        let initialItems: Url[];
-
-        if(!user || !user.id) {
-            console.log("urlService::loadItems - user is empty");
-            return Promise.reject("user is empty");
-        }
-        this.user = user;
-
-        let headers = new Headers();
-        headers.set('x-access-token', user['token']);
-
-        let options:RequestOptionsArgs = {
-            headers : headers
-        };
-
-        return this._httpDataService.getJsonPromise(this.baseUrl + "?user=" + user["id"], options)
-            .then(data => {
-                return Promise.resolve(data);
-        }).catch(err => {
-                console.log(err);
-                return Promise.reject(err);
-        });
-    }
-    */
-    // if response from post is equal to url
-    // then it was successful
 
     insertItem(user: User, item: Url){
 

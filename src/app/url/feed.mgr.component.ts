@@ -1,13 +1,14 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, SimpleChanges  } from '@angular/core';
 import { AbstractControl, FormGroup, FormControl, Validators, FormBuilder, ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { IUrl, Url, ADD_URL, UrlService, Feed, FeedDefinitionService, FeedResponseService, FeedResponse,  FeedInfo } from '../reducers/index';
 import { Observable } from 'rxjs/Rx';
-import { Store } from '@ngrx/store';
 import { RouterModule, Routes, Router, ActivatedRoute } from '@angular/router';
-import { AppState } from '../app.state';
+
+
+import { FeedResponseService } from './feed.response.service';
+import { Feed } from './feed.model';
 
 @Component({
-  selector: 'feed-mgr',
+  selector: 'feed-mgr-component',
   template: `
     <span>feed-mgr</span>
     
@@ -22,8 +23,8 @@ import { AppState } from '../app.state';
 })
 export class FeedMgrComponent {
 
-  feeds: Feed[];
-  selectedFeed: Feed;
+  @Input() feeds: Feed[];
+  @Input() selectedFeed: Feed;
 
   // id from state.urls
   urlId: string;
@@ -34,8 +35,7 @@ export class FeedMgrComponent {
 
   constructor(
     private feedResponseService: FeedResponseService, 
-    private route: ActivatedRoute,
-    private store: Store<AppState>){
+    private route: ActivatedRoute){
       this.selectedFeed = new Feed();
       this.feeds = new Array();
     }
@@ -56,9 +56,9 @@ export class FeedMgrComponent {
     */
 
     // get all feeds
-    this.store.select(state => state.feeds)
-        .distinctUntilChanged()
-        .subscribe(feeds => this.onEmittedFeeds(feeds));
+    //this.store.select(state => state.feeds)
+    //    .distinctUntilChanged()
+    //    .subscribe(feeds => this.onEmittedFeeds(feeds));
   }
 
   // executed once user data arrives from the store

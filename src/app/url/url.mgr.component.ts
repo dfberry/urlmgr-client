@@ -11,7 +11,7 @@ import { User } from '../user/user.model';
 
 // services
 //import { UrlService } from './url.service';
-
+import { FeedService } from './feed.service';
 // state
 //import { AppState } from '../app.state';
 
@@ -47,12 +47,13 @@ export class UrlMgrComponent {
   constructor(
     //private urlService: UrlService
     //, private store: Store<AppState>
+    private feedService: FeedService
     ){
 
     }
 
   ngOnInit(){
-    console.log("url component ngOnInit");
+    //console.log("url component ngOnInit");
     
     /*
     this.store.select(state => state.urls)
@@ -64,6 +65,7 @@ export class UrlMgrComponent {
       .distinctUntilChanged()
       .subscribe(data => this.onUserEmitted(data));
       */
+      //this.feedService.getFeedLinkFromHtml('<h2 class="title">Hello world</h2>');
   }
   // executed once user data arrives from the store
   //public onUrlsEmitted(data:Url[]){
@@ -96,7 +98,7 @@ export class UrlMgrComponent {
       let cur  = JSON.stringify(chng.currentValue);
       let prev = JSON.stringify(chng.previousValue);
 
-      console.log(`UrlMgrComponent::ngOnChanges - ${propName}: currentValue = ${cur}, previousValue = ${prev}`);
+      //console.log(`UrlMgrComponent::ngOnChanges - ${propName}: currentValue = ${cur}, previousValue = ${prev}`);
     }
   }
 }

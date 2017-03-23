@@ -1,4 +1,4 @@
-import {Component, Input, Output, EventEmitter, ChangeDetectionStrategy, SimpleChanges, OnChanges, DoCheck, KeyValueDiffers} from "@angular/core";
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, SimpleChanges, OnChanges, DoCheck, KeyValueDiffers} from "@angular/core";
 import { AbstractControl, FormGroup, FormControl, Validators, FormBuilder, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { Observable } from 'rxjs/Rx';
 
@@ -6,6 +6,7 @@ import { User } from '../user/user.model';
 import { IUrl, Url } from './url.model';
 import { UrlEvent } from './url.event';
 import { UrlService } from './url.service';
+import { FeedService } from './feed.service';
 
 let validUrl = require('valid-url');
 
@@ -41,7 +42,8 @@ export class UrlNewComponent  implements OnChanges{
   constructor(
       private urlService: UrlService, 
       private builder: FormBuilder,
-      private differs: KeyValueDiffers
+      private differs: KeyValueDiffers,
+      private feedService: FeedService
     ){
 
     this.newForm = this.builder.group({
@@ -72,11 +74,17 @@ export class UrlNewComponent  implements OnChanges{
       this.url.url = this.httpUrlValue.value;
 
       if(this.url.url && this.user.id && this.user.token){
-
         // insert new url name via service
-        this.urlService.insertItem(this.user, this.url)
-        .then(data => console.log("save data = " + JSON.stringify(data)))
-        .catch(err => console.log("save err = " + JSON.stringify(err)));
+        this.urlService.getUrlProperties(this.url.url, this.user)
+        .then(properties => {
+          
+          this.url["feeds"] = properties["feed"];
+          this.url["title"] = properties["title"];
+
+          this.urlService.insertItem(this.user, this.url)
+          .then(data => console.log("save data = " + JSON.stringify(data)))
+          .catch(err => console.log("save err = " + JSON.stringify(err)));
+        }).catch(err => console.log(err));
       }
     }
   }

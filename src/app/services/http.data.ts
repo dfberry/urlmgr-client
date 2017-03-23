@@ -34,6 +34,32 @@ export class HttpDataService{
         });
     }
     */
+    getUrlHtml(url, user){
+        return new Promise<string>((resolve, reject) => {
+            // post form
+            let post = {
+                url: url,
+                user: user.id
+            }
+
+            // headers
+            let headers = new Headers();
+            headers.set('x-access-token', user['token']);
+            headers.set('Content-Type', 'application/json');
+
+            let options: RequestOptionsArgs = {
+                headers : headers
+            };
+
+            return this.http.postHtmlData(this.baseUrl + "feeds/", post, options)
+                .then(data => {
+                    resolve(data || "");
+                }).catch(err => {
+                    console.log(err);
+                    reject(err);
+                });
+        });
+    }
     getHtmlPromise(url){
         //console.log("getJsonPromise url = " + url);
         return this._http.get(url)
@@ -44,7 +70,7 @@ export class HttpDataService{
             .toPromise()
             .catch((err: any) => {
                 console.log("http::data-getJsonPromise err " + err);
-                return Promise.reject(err.message)
+                return Promise.reject(err)
             });
     }
     getJsonPromise(url, options){
@@ -57,7 +83,15 @@ export class HttpDataService{
             .toPromise()
             .catch((err: any) => {
                 console.log("http::data-getJsonPromise err " + err);
-                return Promise.reject(err.message)
+                return Promise.reject(err)
+            });
+    }
+    postHtmlData(url, body, options ){
+        return this._http.post(url, body, options ? options : this.getDefaultPostOptions())
+            .map(res =>  res.text())
+            .toPromise()
+            .catch((err: any) => {
+                return Promise.reject(err)
             });
     }
     postJsonData(url, body, options ){
@@ -70,7 +104,7 @@ export class HttpDataService{
            .toPromise()
             .catch((err: any) => {
                 console.log('http::data-postJsonData err ' + err);
-                return Promise.reject(err.message)
+                return Promise.reject(err)
             });
     }
     delete(url, options ){
@@ -81,7 +115,7 @@ export class HttpDataService{
            .toPromise()
             .catch((err: any) => {
                 console.log('http::data-delete err ' + err);
-                return Promise.reject(err.message)
+                return Promise.reject(err)
             });
     }
     /*

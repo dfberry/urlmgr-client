@@ -81,7 +81,7 @@ export class LoginComponent {
             .toPromise()
             .catch((err: any) => {
                 console.log("http::data-getJsonPromise err " + err);
-                return Promise.reject(err.message)
+                return Promise.reject(err)
             });
     }
  

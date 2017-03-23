@@ -43,7 +43,7 @@ export class UrlRemoveComponent  implements OnChanges{
 
   ngOnInit() {
       //console.log("UrlNewComponent ngOnInit");
-      console.log("dt.component UrlRemoveComponent ngOnInit input this.user " + JSON.stringify(this.user));
+      //console.log("dt.component UrlRemoveComponent ngOnInit input this.user " + JSON.stringify(this.user));
   }
   ngOnChanges(changes: SimpleChanges) {
     for (let propName in changes) {
@@ -51,7 +51,7 @@ export class UrlRemoveComponent  implements OnChanges{
       let cur  = JSON.stringify(chng.currentValue);
       let prev = JSON.stringify(chng.previousValue);
 
-      console.log(`dt.component::UrlRemoveComponent - ngOnChanges - ${propName}: currentValue = ${cur}, previousValue = ${prev}`);
+      //console.log(`dt.component::UrlRemoveComponent - ngOnChanges - ${propName}: currentValue = ${cur}, previousValue = ${prev}`);
     }
   }
 }
