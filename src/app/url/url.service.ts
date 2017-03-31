@@ -85,12 +85,30 @@ export class UrlService  {
         });
     }
     getUrlProperties(url, user){
+        var self = this;
         return new Promise<Object>((resolve, reject) => {
-            this.getUrlHtml(url,user)
-            .then(html => {
-                let links = this.getLinks(html);
-                let feed = this.feedService.searchMimeTypes(links);
-                let title = this.getTitle(html);
+
+            let post = {
+                url: url
+            };
+
+            this._httpDataService.postWithAuthReturnText(this.baseUrl + "meta/", post, user)
+            .then(meta => {
+                let metaObj = JSON.parse(meta);
+
+                let feed=[], title;
+
+                if(metaObj && metaObj.data && metaObj.data.feeds && metaObj.data.feeds)
+                {
+                    for(var i = 0;i<metaObj.data.feeds.length; i ++){
+                    feed.push = metaObj.data.feeds[i].href;
+                    }
+                }
+                if(metaObj && metaObj.data && metaObj.data.title)
+                {
+                    title = metaObj.data.title;
+                }
+
                 resolve({feed: feed, title: title});
             }).catch(err => {
                 reject(err);

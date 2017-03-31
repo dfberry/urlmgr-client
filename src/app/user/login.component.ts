@@ -65,7 +65,7 @@ export class LoginComponent {
         return this.http.post(Configuration.urls.base + "/auth", postForm)
             .map((response:Response) => {
                 console.log(response.json());
-                let user = response.json();
+                let user = response.json().data;
                 if (user && user.token) {
 
                     let authenticatedUser = new User();

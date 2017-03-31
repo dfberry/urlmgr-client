@@ -43,15 +43,21 @@ import { User } from '../user/user.model';
                    [(mfSortOrder)]="sortOrder">
                 <thead>
                 <tr>
-                    <th colspan="5">
+                    <th>
                         Filter by name:
                         <input class="form-control" [(ngModel)]="filterQuery"/>
                     </th>
                 </tr>
                 <tr  class="panel-heading">
-                    <th colspan="1"></th>
-                    <th colspan="4">
-                        <mfDefaultSorter by="status">Status</mfDefaultSorter>
+                    <th></th>
+                    <th>
+                        <mfDefaultSorter by="title">Title</mfDefaultSorter>
+                    </th>
+                    <th>
+                        Url
+                    </th>
+                    <th>
+                        Feeds
                     </th>
                 </tr>
 
@@ -61,12 +67,16 @@ import { User } from '../user/user.model';
                     <td>
                         <url-remove [user]="user" [url]="item">x</url-remove>
                     </td>
-                    <!--
-                    <td>{{ item.createdAt | date:"MM/dd/yy" }}</td>
-                    <td><url-feed-detail-link [url]="item"></url-feed-detail-link></td>
-                    -->
+                        
+                    <td>{{ item.title }}
+                    </td>
                     <td>
-                    <a href='{{item.url}}'>{{ item | feedParser:"title":1 }}</a>
+                        <a href='{{item.url}}'>site</a>
+                    </td>
+                    <td>
+                        <div *ngFor="let feed of item.feeds; let idx = index;">
+                            <a href="{{feed}}">{{idx}} - feed</a>
+                        </div>
                     </td>
                 </tr>
                 </tbody>

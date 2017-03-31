@@ -7,14 +7,11 @@ import {Pipe, PipeTransform} from "@angular/core";
 })
 export class FeedParserPipe implements PipeTransform {
 
+    // TODO: this is a noop - remove it's use
     feedPropertyTitle(temp: string){
-        if (temp.includes(' - Atom')){
-            return temp.replace(/ - Atom/ig, "");
-        } else if (temp.includes(' - Rss')){
-            return temp.replace(/ - Rss/ig, "");
-        } else {
+
             return temp;
-        }
+
     }
 
     // validate that feed is valid array and has values

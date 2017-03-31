@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import { Http, Response, URLSearchParams, Headers, RequestOptions} from '@angular/http';
+import { Http, Response, URLSearchParams,RequestOptionsArgs, Headers, RequestOptions} from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 
 
@@ -11,7 +11,7 @@ export class HttpDataService{
 
     getJsonObservable(url){
         return this._http.get(url)
-        .map((response: Response) => response.json())
+        .map((response: Response) => response.json().data)
         .catch(this._handleErrorObservable);
     }
     _handleErrorObservable(err:any){
@@ -34,13 +34,16 @@ export class HttpDataService{
         });
     }
     */
-    getUrlHtml(url, user){
+    postWithAuthReturnText(url, post, user): Promise<string>{
         return new Promise<string>((resolve, reject) => {
+
+            console.log("url = " + url);
             // post form
-            let post = {
-                url: url,
-                user: user.id
-            }
+            //let post = {
+            //    url: url,
+            //    user: user.id
+           // }
+           post["user"] = user.id;
 
             // headers
             let headers = new Headers();
@@ -51,7 +54,7 @@ export class HttpDataService{
                 headers : headers
             };
 
-            return this.http.postHtmlData(this.baseUrl + "feeds/", post, options)
+            return this.postHtmlData(url, post, options)
                 .then(data => {
                     resolve(data || "");
                 }).catch(err => {
@@ -61,7 +64,7 @@ export class HttpDataService{
         });
     }
     getHtmlPromise(url){
-        //console.log("getJsonPromise url = " + url);
+        console.log("getJsonPromise url = " + url);
         return this._http.get(url)
             .map((response:Response) => {
                 //console.log(response.json());
@@ -78,7 +81,7 @@ export class HttpDataService{
         return this._http.get(url, options)
             .map((response:Response) => {
                 //console.log(response.json());
-                return response.json();
+                return response.json().data;
             })
             .toPromise()
             .catch((err: any) => {

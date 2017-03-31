@@ -12,7 +12,7 @@ let validUrl = require('valid-url');
 
 @Component({
   selector: 'url-new',
-  template: `
+  template: `  
   <form [formGroup]="newForm" (submit)="save()">
       <input id="httpUrlValue" type="text" formControlName="httpUrlValue" placeholder="Add a url" />
       <div *ngIf="(!httpUrlValue.valid && !httpUrlValue.pristine)">
@@ -74,7 +74,6 @@ export class UrlNewComponent  implements OnChanges{
       this.url.url = this.httpUrlValue.value;
 
       if(this.url.url && this.user.id && this.user.token){
-        // insert new url name via service
         this.urlService.getUrlProperties(this.url.url, this.user)
         .then(properties => {
           
@@ -84,7 +83,7 @@ export class UrlNewComponent  implements OnChanges{
           this.urlService.insertItem(this.user, this.url)
           .then(data => console.log("save data = " + JSON.stringify(data)))
           .catch(err => console.log("save err = " + JSON.stringify(err)));
-        }).catch(err => console.log(err));
+        }).catch(error => console.log(error));
       }
     }
   }
