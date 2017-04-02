@@ -11,7 +11,7 @@ import { AppState, UserActions } from './app.state';
 @Component({
     selector: 'my-app',
     template: ` 
-    <ngrx-store-log-monitor toggleCommand="ctrl-h" positionCommand="ctrl-m"></ngrx-store-log-monitor>
+    <ngrx-store-log-monitor *ngIf="show" toggleCommand="ctrl-h" positionCommand="ctrl-m"></ngrx-store-log-monitor>
         <navigation></navigation>
         <router-outlet></router-outlet>
     `,
@@ -20,15 +20,14 @@ import { AppState, UserActions } from './app.state';
 export class AppComponent {
     config: any;
     currentUser: any;
+    show: boolean = false;
 
     constructor(
         private store: Store<AppState>,
         private authService: AuthenticationService
     ){
         console.log("AppComponent ctor");
-
-    // TODO:subscribe to current user
-        
+        this.show = webpack.ENV=='development' ? true : false;
     }
 
     ngOnInit() {
