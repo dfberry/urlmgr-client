@@ -101,7 +101,7 @@ export class UrlService  {
                 if(metaObj && metaObj.data && metaObj.data.feeds && metaObj.data.feeds)
                 {
                     for(var i = 0;i<metaObj.data.feeds.length; i ++){
-                    feed.push = metaObj.data.feeds[i].href;
+                    feed.push(metaObj.data.feeds[i].href);
                     }
                 }
                 if(metaObj && metaObj.data && metaObj.data.title)
@@ -167,7 +167,7 @@ export class UrlService  {
         });
     }
 
-    insertItem(user: User, item: Url){
+    insertItem(user: User, item: any){
 
         if(!user || !user.id) return;
         this.user = user;

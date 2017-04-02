@@ -77,8 +77,8 @@ export class UrlNewComponent  implements OnChanges{
         this.urlService.getUrlProperties(this.url.url, this.user)
         .then(properties => {
           
-          this.url["feeds"] = properties["feed"];
-          this.url["title"] = properties["title"];
+          if(properties["feed"]) this.url["feeds"] = properties["feed"];
+          if(properties["title"]) this.url["title"] = properties["title"];
 
           this.urlService.insertItem(this.user, this.url)
           .then(data => console.log("save data = " + JSON.stringify(data)))
