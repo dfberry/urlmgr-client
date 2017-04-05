@@ -7,7 +7,7 @@ import { Observable } from 'rxjs/Rx';
 @Component({
     selector: 'user-auth',
     template: ` 
-<div class="container" style="background-color:#ff00ff">
+<div  style="background-color:#ff00ff">
     <div class="row">
         <div class="col-xs-11 col-sm-6">
             <div class="row">

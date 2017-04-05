@@ -14,7 +14,7 @@ import { Configuration } from './config';
 <div >
    <h2>Profile</h2>
    <form (submit)="logout()">
-      <div class="container">
+      <div>
 
               <div class="form-group" >
                   <label for="firstname">First Name</label>

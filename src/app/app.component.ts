@@ -12,8 +12,10 @@ import { AppState, UserActions } from './app.state';
     selector: 'my-app',
     template: ` 
     <ngrx-store-log-monitor *ngIf="show" toggleCommand="ctrl-h" positionCommand="ctrl-m"></ngrx-store-log-monitor>
+    <div class="container">
         <navigation></navigation>
         <router-outlet></router-outlet>
+    </div>
     `,
     changeDetection: ChangeDetectionStrategy.Default
 })

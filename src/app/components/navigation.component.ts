@@ -14,7 +14,7 @@ import { UserEvent } from '../user/user.broadcaster';
 @Component({
   selector: 'navigation',
   template: `
-    <div class="container">
+
         <div class="row">
           <div class="col-md-3">
             <span *ngIf="!currentUser.isAuthenticated"><a routerLink="/login" routerLinkActive="active">Login</a></span>
@@ -25,7 +25,7 @@ import { UserEvent } from '../user/user.broadcaster';
             <span *ngIf="currentUser.isAuthenticated"> <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a></span>
           </div>           
         </div>
-    </div>        
+       
 
   `
 })
