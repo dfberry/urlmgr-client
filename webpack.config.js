@@ -5,7 +5,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const autoprefixer = require('autoprefixer');
 const postcssUrl = require('postcss-url');
 
-const {NoEmitOnErrorsPlugin, LoaderOptionsPlugin, ContextReplacementPlugin} = require('webpack');
+const {NoEmitOnErrorsPlugin, LoaderOptionsPlugin, ContextReplacementPlugin, DefinePlugin} = require('webpack');
 const {GlobCopyWebpackPlugin} = require('copy-globs-webpack-plugin');
 const {BaseHrefWebpackPlugin} = require('base-href-webpack-plugin');
 const {CommonsChunkPlugin} = require('webpack').optimize;
@@ -15,9 +15,25 @@ const entryPoints = ["inline", "polyfills", "sw-register", "styles", "vendor", "
 const baseHref = "";
 const deployUrl = "";
 
+/* globals */
+const ENV  = process.env.NODE_ENV = 'development';
+const HOST = process.env.HOST || 'localhost';
+const PORT = process.env.PORT || 3000;
+
+const metadata = {
+  env : ENV,
+  host: HOST,
+  port: PORT
+};
+
+let globalVariables = {'ENV': JSON.stringify(metadata.env)};
+
 module.exports = {
   "devtool": "source-map",
   "resolve": {
+    alias: {
+        jquery: "jquery/src/jquery"
+    },
     "extensions": [
       ".ts",
       ".js"
@@ -199,6 +215,8 @@ module.exports = {
   },
   "plugins": [
     new NoEmitOnErrorsPlugin(),
+    new DefinePlugin({'process.env': globalVariables}),
+
     //new GlobCopyWebpackPlugin({
     //  "patterns": [
     //    "assets",
@@ -211,13 +229,14 @@ module.exports = {
     //  }
     //}),
     new ProgressPlugin(),
+    new CopyWebpackPlugin([{from: './src/app/config/config.json', to: 'config.json'}]),
     new HtmlWebpackPlugin({
       "template": "./src/index.html",
       "filename": "./index.html",
       "hash": false,
       "inject": true,
       "compile": true,
-      "favicon": false,
+      "favicon": "./src/favicon.ico",
       "minify": false,
       "cache": true,
       "showErrors": true,
@@ -296,6 +315,7 @@ module.exports = {
           // your Angular Async Route paths relative to this root directory
         }
       ),
+
   /*
   new AotPlugin({
     "mainPath": "main.ts",
