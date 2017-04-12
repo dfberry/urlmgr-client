@@ -3,14 +3,10 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "ng": "ng",
-    "start": "webpack-dev-server --port=3000",
+    "start": "http-server dist --port=3000",
     "build": "webpack",
-    "test": "karma start ./karma.conf.js",
-    "lint": "ng lint",
-    "e2e": "protractor ./protractor.conf.js",
-    "prepree2e": "npm start",
-    "pree2e": "webdriver-manager update --standalone false --gecko false --quiet"
+    "build-prod":  "webpack --config webpack.prod.config.js --progress --profile --colors"
+
   },
   "private": true,
   "dependencies": {
@@ -52,7 +48,6 @@
     "extract-text-webpack-plugin": "^2.1.0",
     "file-loader": "^0.10.0",
     "html-webpack-plugin": "^2.28.0",
-    "http-server": "^0.9.0",
     "istanbul-instrumenter-loader": "^2.0.0",
     "jasmine-core": "~2.5.2",
     "jasmine-spec-reporter": "~3.2.0",

@@ -30,9 +30,7 @@ export class AppComponent {
         private authService: AuthenticationService
     ){
         console.log("AppComponent ctor");
-				// TODO: environment file or settings in webpack
-				// not sure which one I want to use
-        this.show = environment.production ? true : false;
+        this.show = process.env.ENV === 'development' ? true : false;
 				console.log(process.env);
     }
 
