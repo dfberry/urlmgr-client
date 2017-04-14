@@ -1,6 +1,6 @@
 // ng
 import { NgModule, APP_INITIALIZER, ValueProvider }      from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, Title } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule, Routes } from '@angular/router';
@@ -25,7 +25,6 @@ import {
 
 import { 
   HttpDataService, 
-  ConfigService,
   Broadcaster 
 } from './services/index';
 
@@ -37,6 +36,7 @@ import { UserModule} from './user/user.module';
 import { UrlModule } from './url/url.module';
 import { AlertModule } from './alert/alert.module';
 import { HomeModule } from './home/home.module';
+import { ConfigService } from './config/config.service';
 
 let userModule = UserModule.forRoot();
 let urlModule = UrlModule.forRoot();
@@ -79,6 +79,7 @@ let urlModule = UrlModule.forRoot();
     ConfigService, 
     Broadcaster,
     AuthGuard,
+    Title,
     { provide: APP_INITIALIZER, useFactory: (config: ConfigService) => () => config.load(), deps: [ConfigService], multi: true }
   ],
   bootstrap: [ AppComponent]

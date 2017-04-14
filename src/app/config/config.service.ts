@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Observable';
 @Injectable()
 export class ConfigService {
  
-  private static _config: Object;
+  public static config: any=null;
   private static _promise: Promise<any>;
 
   constructor(private http: Http) {
@@ -21,17 +21,17 @@ export class ConfigService {
                   return Observable.throw(error.json().error || 'Server error');
               })
               .subscribe((data) => {
-                  ConfigService._config = data;
+                  ConfigService.config = data;
                   resolve(true);
               });
       });
   }
 
   get(key: any) {
-      return  ConfigService._config[key];
+      return  ConfigService.config[key];
   }
   getAll(){
-    return ConfigService._config;
+    return ConfigService.config;
   }
 };
 

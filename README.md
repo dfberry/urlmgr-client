@@ -13,4 +13,9 @@ Run `http-server dist -p 3000` for a dev server. Navigate to `http://localhost:3
 
 Run `npm run build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
 
+fixing ng
+    "start": "ng serve --host 0.0.0.0 --port 3000",
+    ng eject
 
+    Chrome in docker Container
+    https://hub.docker.com/r/markadams/chromium-xvfb-js/

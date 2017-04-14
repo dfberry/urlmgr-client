@@ -8,8 +8,8 @@ import { createSelector } from 'reselect';
 import * as cheerio from 'cheerio';
 
 import { type } from '../utils/index';
-import { HttpDataService, ConfigService} from '../services/index';
-
+import { HttpDataService } from '../services/index';
+import { ConfigService } from '../config/config.service';
 //import { AppState } from '../app.state';
 //import { Feed, FeedResponse, FeedDefinition , FeedDefinitionService, FeedResponseService} from './feed';
 import { Url } from './url.model';
@@ -37,7 +37,7 @@ export class FeedService  {
         private http: HttpDataService,
         private configService: ConfigService
     ){
-        this.baseUrl = configService.config.apiUrl;
+        this.baseUrl = configService.get("apiUrl");
     }
 
 

@@ -6,7 +6,8 @@ import { Observable } from 'rxjs/Rx';
 import { createSelector } from 'reselect';
 
 import { type } from '../utils/index';
-import { HttpDataService, ConfigService} from '../services/index';
+import { HttpDataService} from '../services/index';
+import { ConfigService } from '../config/config.service';
 import * as cheerio from 'cheerio';
 
 import { AppState } from '../app.state';
@@ -37,7 +38,7 @@ export class UrlService  {
     ){
         console.log("url.ts - ctor");
         this.items = store.select(state => state.urls);
-        this.baseUrl = configService.config.apiUrl + "urls/";
+        this.baseUrl = configService.get("apiUrl") + "urls/";
     }
 
     getTokenedHeaders(){

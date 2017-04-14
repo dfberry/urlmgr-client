@@ -6,8 +6,8 @@ import { Observable } from 'rxjs/Rx';
 import { createSelector } from 'reselect';
 
 import { type } from '../utils/index';
-import { HttpDataService, ConfigService} from '../services/index';
-
+import { HttpDataService} from '../services/index';
+import { ConfigService } from '../config/config.service';
 import 'cheerio';
 
 //import { AppState } from '../app.state';
@@ -31,7 +31,7 @@ export class FeedResponseService{
     constructor(
         private _httpDataService: HttpDataService,
         private configService: ConfigService ){
-        this.baseUrl = configService.config.apiUrl + "urls/";
+        this.baseUrl = configService.get("apiUrl") + "urls/";
 }
 
 

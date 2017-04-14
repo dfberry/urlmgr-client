@@ -1,11 +1,13 @@
 import { Injectable, Component, Output, Input, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { Title }     from '@angular/platform-browser';
 
 import { AuthenticationService } from './user/auth.service';
 import { User } from './user/user.model';
 import { Store } from '@ngrx/store';
 import { AppState, UserActions } from './app.state';
 import { environment } from '../environments/environment';
+import { ConfigService } from './config/config.service';
 //<ngrx-store-log-monitor toggleCommand="ctrl-h" positionCommand="ctrl-m"></ngrx-store-log-monitor>
        
 
@@ -24,10 +26,13 @@ export class AppComponent {
     config: any;
     currentUser: any;
     show: boolean = false;
+    title: string = "";
 
     constructor(
         private store: Store<AppState>,
-        private authService: AuthenticationService
+        private authService: AuthenticationService,
+        private titleService: Title,
+        private configService: ConfigService 
     ){
         console.log("AppComponent ctor");
 				// TODO: environment file or settings in webpack
@@ -37,9 +42,10 @@ export class AppComponent {
     }
 
     ngOnInit() {
-        console.log("AppComponent ngOnInit"); 
+        console.log("AppComponent loaded"); 
 
-        this.loadUserStateFromLocalStorage() 
+        this.loadUserStateFromLocalStorage();
+        this.setTitle(); 
      }
 
      loadUserStateFromLocalStorage(){
@@ -48,6 +54,10 @@ export class AppComponent {
             this.store.dispatch({type: UserActions.USER_LOGIN, payload: localStorageUser});
         }
      }
+     public setTitle() {
+        this.title = this.configService.get('title');
+        this.titleService.setTitle( this.title );
+    }
 }
 
 
