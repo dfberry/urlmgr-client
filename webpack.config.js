@@ -14,6 +14,7 @@ const nodeModules = path.join(process.cwd(), 'node_modules');
 const entryPoints = ["inline", "polyfills", "sw-register", "styles", "vendor", "main"];
 const baseHref = "";
 const deployUrl = "";
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 /* globals */
 const ENV  = process.env.NODE_ENV = 'development';
@@ -27,6 +28,13 @@ const metadata = {
 };
 
 let globalVariables = {'ENV': JSON.stringify(metadata.env)};
+
+let includeSpecFilesButNotTestDirectory = function(modulePath){
+  console.log("\n\r" + " modulePath + " + modulePath);
+  let includeModule =  modulePath.endsWith('.ts') && !modulePath.endsWith('test.ts');
+  console.log(" " + includeModule + "\n\r");
+  return includeModule;
+}
 
 module.exports = {
   "devtool": "source-map",
@@ -191,13 +199,15 @@ module.exports = {
             "postcss-loader",
             "stylus-loader?{\"sourceMap\":false,\"paths\":[]}"
           ],
+
           "fallback": "style-loader",
           "publicPath": ""
         })
       }, 
       {
         test: /\.ts$/,
-        loaders: ['awesome-typescript-loader','angular2-template-loader']
+        loaders: ['awesome-typescript-loader','angular2-template-loader'],
+        //exclude: [includeSpecFilesButNotTestDirectory]
       }
     ]
   },
@@ -216,6 +226,9 @@ module.exports = {
     //    "ignore": "**/.gitkeep"
     //  }
     //}),
+    new BundleAnalyzerPlugin({
+            analyzerMode: 'static'
+        }),
     new ProgressPlugin(),
     new CopyWebpackPlugin([{from: './src/app/config/config.json', to: 'config.json'}]),
     new HtmlWebpackPlugin({

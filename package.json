@@ -5,7 +5,8 @@
   "scripts": {
     "ng": "ng",
     "start": "webpack-dev-server dist --port=3000",
-    "build": "webpack",
+    "build": "webpack --config ./webpack.config.js",
+    "build-test": "webpack --config ./webpack.config.test.js",
     "serve": "http-server -p 3000 dist",
     "test": "karma start ./karma.conf.js",
     "test1": "karma start",
@@ -46,6 +47,7 @@
     "reselect": "^3.0.0",
     "rxjs": "^5.1.0",
     "valid-url": "^1.0.9",
+    "webpack-bundle-analyzer": "^2.4.0",
     "zone.js": "^0.8.4"
   },
   "devDependencies": {
