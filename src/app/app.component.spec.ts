@@ -6,7 +6,7 @@ import {
   ComponentFixture
 } from '@angular/core/testing';
 
-//import { Title, By } from '@angular/platform-browser';
+import { By } from '@angular/platform-browser';
 
 // Load the implementations that should be tested
 import { AppComponent } from './app.component';
@@ -34,15 +34,14 @@ describe(`App`, () => {
       ]
     })
     .compileComponents(); // compile template and css
-  }));
 
-  // synchronous beforeEach
-  beforeEach(() => {
     fixture = TestBed.createComponent(AppComponent);
     comp    = fixture.componentInstance;
 
     fixture.detectChanges(); // trigger initial data binding
-  });
+  }));
+
+
 
   it(`should be readly initialized`, () => {
     expect(fixture).toBeDefined();
@@ -54,6 +53,16 @@ describe(`App`, () => {
 
     comp.ngOnInit();
     expect(console.log).toHaveBeenCalled();
+  });
+  it('should return component\'s config service', () =>{
+      let configService = fixture.debugElement.injector.get(ConfigService);
+      console.log(configService);
+      expect(configService).toBeDefined();
+  });
+  it('should return html from app component', () =>{
+      let de = fixture.debugElement.query(By.css('.container'));
+      console.log(de);
+      expect(de).toBeDefined();
   });
   /*
   it('Title Should be Valid', () => {
