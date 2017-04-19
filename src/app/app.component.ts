@@ -11,7 +11,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { NavigationComponent } from './components/navigation.component'
 
 //<ngrx-store-log-monitor toggleCommand="ctrl-h" positionCommand="ctrl-m"></ngrx-store-log-monitor>
-       
+     
 
 @Component({
     selector: 'app-root',
@@ -28,10 +28,9 @@ export class AppComponent {
     //public title: string = "";
 
     constructor(
-        private authService: AuthenticationService,
-        /*private titleService: Title,
+        private authService: AuthenticationService,     
         private configService: ConfigService
-        */
+        
     ){
         //this.show = environment.production ? true : false;
 		//		console.log(process.env);

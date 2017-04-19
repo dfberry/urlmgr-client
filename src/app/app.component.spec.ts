@@ -11,8 +11,12 @@ import {
 // Load the implementations that should be tested
 import { AppComponent } from './app.component';
 import { AuthenticationService } from './user/auth.service';
-//import { ConfigService } from './config/config.service';
+import { ConfigService } from './config/config.service';
 //import { AppState } from './app.state';
+
+class MockTestService {
+  public mockName: string = 'Mocked Service';
+}  
 
 describe(`App`, () => {
   let comp: AppComponent;
@@ -24,7 +28,10 @@ describe(`App`, () => {
     TestBed.configureTestingModule({
       declarations: [ AppComponent ],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [AuthenticationService/*,Title,ConfigService*/]
+      providers: [
+        AuthenticationService,
+        {provide: ConfigService, useValue: MockTestService}
+      ]
     })
     .compileComponents(); // compile template and css
   }));
