@@ -10,7 +10,7 @@ import {
 
 // Load the implementations that should be tested
 import { AppComponent } from './app.component';
-//import { AuthenticationService } from './user/auth.service';
+import { AuthenticationService } from './user/auth.service';
 //import { ConfigService } from './config/config.service';
 //import { AppState } from './app.state';
 
@@ -24,7 +24,7 @@ describe(`App`, () => {
     TestBed.configureTestingModule({
       declarations: [ AppComponent ],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [/*AuthenticationService,Title,ConfigService*/]
+      providers: [AuthenticationService/*,Title,ConfigService*/]
     })
     .compileComponents(); // compile template and css
   }));

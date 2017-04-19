@@ -28,8 +28,8 @@ export class AppComponent {
     //public title: string = "";
 
     constructor(
-        /*private authService: AuthenticationService,
-        private titleService: Title,
+        private authService: AuthenticationService,
+        /*private titleService: Title,
         private configService: ConfigService
         */
     ){
