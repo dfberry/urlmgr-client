@@ -1,0 +1,127 @@
+{
+  "devtool": "inline-source-map",
+  "resolve": {
+    "extensions": [
+      "",
+      ".html",
+      ".ts",
+      ".js"
+    ],
+    "modules": [
+      "/usr/src/app/urlmgr/urlmgr-client-ng4/src",
+      "node_modules"
+    ]
+  },
+  "module": {
+    "exprContextCritical": false,
+    "rules": [
+      {
+        "enforce": "pre",
+        "test": {},
+        "loader": "source-map-loader",
+        "exclude": [
+          "/usr/src/app/urlmgr/urlmgr-client-ng4/node_modules/rxjs",
+          "/usr/src/app/urlmgr/urlmgr-client-ng4/node_modules/@angular"
+        ]
+      },
+      {
+        "test": {},
+        "use": [
+          {
+            "loader": "awesome-typescript-loader",
+            "query": {
+              "sourceMap": false,
+              "inlineSourceMap": true,
+              "compilerOptions": {
+                "removeComments": true
+              }
+            }
+          },
+          "angular2-template-loader"
+        ],
+        "exclude": [
+          {}
+        ]
+      },
+      {
+        "test": {},
+        "loader": "json-loader",
+        "exclude": [
+          "/usr/src/app/urlmgr/urlmgr-client-ng4/src/index.html"
+        ]
+      },
+      {
+        "test": {},
+        "loader": [
+          "to-string-loader",
+          "css-loader"
+        ],
+        "exclude": [
+          "/usr/src/app/urlmgr/urlmgr-client-ng4/src/index.html"
+        ]
+      },
+      {
+        "test": {},
+        "loader": [
+          "raw-loader",
+          "sass-loader"
+        ],
+        "exclude": [
+          "/usr/src/app/urlmgr/urlmgr-client-ng4/src/index.html"
+        ]
+      },
+      {
+        "test": {},
+        "loader": "raw-loader",
+        "exclude": [
+          "/usr/src/app/urlmgr/urlmgr-client-ng4/src/index.html"
+        ]
+      },
+      {
+        "enforce": "post",
+        "test": {},
+        "loader": "istanbul-instrumenter-loader",
+        "include": "/usr/src/app/urlmgr/urlmgr-client-ng4/src",
+        "exclude": [
+          {},
+          {}
+        ]
+      }
+    ]
+  },
+  "plugins": [
+    {
+      "definitions": {
+        "ENV": "\"test\"",
+        "HMR": false,
+        "process.env": {
+          "ENV": "\"test\"",
+          "NODE_ENV": "\"test\"",
+          "HMR": false
+        }
+      }
+    },
+    {
+      "resourceRegExp": {},
+      "newContentResource": "/usr/src/app/urlmgr/urlmgr-client-ng4/src"
+    },
+    {
+      "options": {
+        "debug": false,
+        "options": {},
+        "test": {}
+      }
+    }
+  ],
+  "performance": {
+    "hints": false
+  },
+  "node": {
+    "global": true,
+    "process": false,
+    "crypto": "empty",
+    "module": false,
+    "clearImmediate": false,
+    "setImmediate": false
+  }
+}
