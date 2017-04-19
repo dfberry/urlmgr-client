@@ -5,13 +5,14 @@ import { AuthenticationService } from './user/auth.service';
 import { User } from './user/user.model';
 import { environment } from '../environments/environment';
 import { ConfigService } from './config/config.service';
+import { AppState } from './app.state';
 
 // components included in 
 import { RouterModule, Routes } from '@angular/router';
 import { NavigationComponent } from './components/navigation.component'
 
+// use redux devtools in chrome instead
 //<ngrx-store-log-monitor toggleCommand="ctrl-h" positionCommand="ctrl-m"></ngrx-store-log-monitor>
-     
 
 @Component({
     selector: 'app-root',
@@ -29,7 +30,8 @@ export class AppComponent {
 
     constructor(
         private authService: AuthenticationService,     
-        private configService: ConfigService
+        private configService: ConfigService,
+        private appState: AppState
         
     ){
         //this.show = environment.production ? true : false;

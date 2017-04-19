@@ -12,11 +12,33 @@ import { By } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { AuthenticationService } from './user/auth.service';
 import { ConfigService } from './config/config.service';
-//import { AppState } from './app.state';
+import { AppState } from './app.state';
 
 class MockTestService {
   public mockName: string = 'Mocked Service';
 }  
+class MockAppState {
+  public mockName: string = 'AppState';
+}  
+/*
+https://github.com/ngrx/store/issues/78
+import { StoreModule } from '@ngrx/store';
+
+   // Add the imported module to the imports array in beforeEach 
+   beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        StoreModule.provideStore({})
+      ],
+      declarations: [
+        // The component that's being tested
+      ]
+    })
+    .compileComponents();
+  }));
+
+*/
+
 
 describe(`App`, () => {
   let comp: AppComponent;
@@ -30,7 +52,8 @@ describe(`App`, () => {
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         AuthenticationService,
-        {provide: ConfigService, useValue: MockTestService}
+        { provide: ConfigService, useValue: MockTestService},
+        { provide: AppState, useValue: MockAppState }
       ]
     })
     .compileComponents(); // compile template and css

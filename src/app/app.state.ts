@@ -1,13 +1,26 @@
 import { Url/*, Feed*/ } from './url/url.model';
 import { User } from './user/user.model';
+import { Store } from '@ngrx/store';
 
-export interface AppState {
+export interface IAppState {
   urls : Url[];
   //feeds: Feed[];
   //selectedFeed: Feed,
   user: User
 }
+export class AppState implements IAppState{
+  urls: Url[];
+  user: User;
 
+  constructor(/*private store: Store<AppState>*/){}
+
+  public userLogon(user: User){
+    this.user = user;
+    if(user && user.isAuthenticated){
+      //this.store.dispatch({type: UserActions.USER_LOGIN, payload: user});
+    }
+  }
+};
 export const UserActions = {
       USER_LOGIN : '[User] Authorized',
       USER_CLEAR : '[User] Initialized'
