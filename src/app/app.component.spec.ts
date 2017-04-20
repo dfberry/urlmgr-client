@@ -6,20 +6,31 @@ import {
   ComponentFixture
 } from '@angular/core/testing';
 
-import { By } from '@angular/platform-browser';
+import { Title, By } from '@angular/platform-browser';
 
 // Load the implementations that should be tested
 import { AppComponent } from './app.component';
 import { AuthenticationService } from './user/auth.service';
 import { ConfigService } from './config/config.service';
 import { AppState } from './app.state';
+class MockHttpService{
 
-class MockTestService {
-  public mockName: string = 'Mocked Service';
+}
+class MockConfigService {
+  public config: any={};
+  public get(key:any){return this.config[key];}
+  public getAll(){return this.config};
+  public load(data){this.config = data;}
+
 }  
 class MockAppState {
   public mockName: string = 'AppState';
 }  
+class MockTitleService {
+  x: string="";
+  public setTitle(x){ this.x = x};
+  public getTitle(){return this.x;}
+}
 /*
 https://github.com/ngrx/store/issues/78
 import { StoreModule } from '@ngrx/store';
@@ -52,8 +63,9 @@ describe(`App`, () => {
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         AuthenticationService,
-        { provide: ConfigService, useValue: MockTestService},
-        { provide: AppState, useValue: MockAppState }
+        { provide: ConfigService, useClass: MockConfigService},
+        { provide: AppState, useClass: MockAppState },
+        { provide: Title, useClass: MockTitleService}
       ]
     })
     .compileComponents(); // compile template and css
@@ -82,19 +94,34 @@ describe(`App`, () => {
       console.log(configService);
       expect(configService).toBeDefined();
   });
+  it('should return component\'s title service', () =>{
+      let titleService = fixture.debugElement.injector.get(Title);
+      console.log(titleService);
+      expect(titleService).toBeDefined();
+  });
+  
   it('should return html from app component', () =>{
       let de = fixture.debugElement.query(By.css('.container'));
       console.log(de);
       expect(de).toBeDefined();
   });
-  /*
+  
   it('Title Should be Valid', () => {
     let testTitle = 'spectest';
-    titleService = TestBed.get(Title);
+    let titleService = TestBed.get(Title);
 
     comp.setTitle(testTitle);
     expect(titleService.getTitle()).toBe(testTitle);
     expect(comp.title).toBe(testTitle);
-  });*/
+  });/*
+  it('Config values Should be Valid', () => {
+    let values = {a:1, b:{c:3}};
+    let service = TestBed.get(ConfigService);
+    service.config = values;
+
+    comp.loadUserStateFromLocalStorage(testTitle);
+    expect(titleService.getTitle()).toBe(testTitle);
+    expect(comp.title).toBe(testTitle);
+  }); */ 
 });
 

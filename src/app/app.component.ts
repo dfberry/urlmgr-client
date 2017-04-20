@@ -26,12 +26,13 @@ import { NavigationComponent } from './components/navigation.component'
 export class AppComponent {
     //currentUser: User;
    // show: boolean = false;
-    //public title: string = "";
+    public title: string = "";
 
     constructor(
         private authService: AuthenticationService,     
         private configService: ConfigService,
-        private appState: AppState
+        private appState: AppState,
+        private titleService: Title
         
     ){
         //this.show = environment.production ? true : false;
@@ -42,15 +43,15 @@ export class AppComponent {
         console.log("AppComponent loaded"); 
 
         //this.loadUserStateFromLocalStorage();
-        //this.setTitle(); 
+        this.setTitle(); 
      }
 
      loadUserStateFromLocalStorage(){
         //this.appState.userLogon(this.authService.getCurrentUser());
      }
      public setTitle(newTitle?) {
-        //newTitle ? this.title = newTitle : this.title = this.configService.get('title');
-        //this.titleService.setTitle(this.title);
+        newTitle ? this.title = newTitle : this.title = this.configService.get('title');
+        this.titleService.setTitle(this.title);
     }
     
 }
