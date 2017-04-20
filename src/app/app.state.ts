@@ -12,12 +12,12 @@ export class AppState implements IAppState{
   urls: Url[];
   user: User;
 
-  constructor(/*private store: Store<AppState>*/){}
+  constructor(private store: Store<AppState>){}
 
-  public userLogon(user: User){
+  public setUser(user: User){
     this.user = user;
     if(user && user.isAuthenticated){
-      //this.store.dispatch({type: UserActions.USER_LOGIN, payload: user});
+      this.store.dispatch({type: UserActions.USER_LOGIN, payload: user});
     }
   }
 };

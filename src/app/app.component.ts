@@ -24,9 +24,8 @@ import { NavigationComponent } from './components/navigation.component'
     `
 })
 export class AppComponent {
-    //currentUser: User;
-   // show: boolean = false;
     public title: string = "";
+    public user: User;
 
     constructor(
         private authService: AuthenticationService,     
@@ -34,20 +33,20 @@ export class AppComponent {
         private appState: AppState,
         private titleService: Title
         
-    ){
-        //this.show = environment.production ? true : false;
-		//		console.log(process.env);
-    }
+    ){}
 
     ngOnInit() {
         console.log("AppComponent loaded"); 
 
-        //this.loadUserStateFromLocalStorage();
+        this.user = this.getCurrentUser();
+        this.loadUserStateFromLocalStorage(this.user);
         this.setTitle(); 
      }
-
-     loadUserStateFromLocalStorage(){
-        //this.appState.userLogon(this.authService.getCurrentUser());
+     public getCurrentUser(){
+         return this.authService.getCurrentUser();
+     }
+     public loadUserStateFromLocalStorage(u:User){
+        this.appState.setUser(u);
      }
      public setTitle(newTitle?) {
         newTitle ? this.title = newTitle : this.title = this.configService.get('title');

@@ -13,9 +13,9 @@ import { AppComponent } from './app.component';
 import { AuthenticationService } from './user/auth.service';
 import { ConfigService } from './config/config.service';
 import { AppState } from './app.state';
-class MockHttpService{
+import { User } from './user/user.model';
 
-}
+
 class MockConfigService {
   public config: any={};
   public get(key:any){return this.config[key];}
@@ -24,12 +24,23 @@ class MockConfigService {
 
 }  
 class MockAppState {
-  public mockName: string = 'AppState';
+  public u: User;
+  public setUser(u:User){ this.u = u;}
+  public getCurrentUser(){return this.u;}
 }  
 class MockTitleService {
   x: string="";
   public setTitle(x){ this.x = x};
   public getTitle(){return this.x;}
+}
+class MockUserService {
+  user: User;
+  public userLogon(x:User){this.user = x;}
+}
+class MockAuthenticationService {
+  user: User;
+  public setCurrentUser(x:User){this.user = x;}
+  public getCurrentUser(){return this.user;}
 }
 /*
 https://github.com/ngrx/store/issues/78
@@ -62,10 +73,10 @@ describe(`App`, () => {
       declarations: [ AppComponent ],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
-        AuthenticationService,
+        { provide: AuthenticationService, useClass: MockAuthenticationService},
         { provide: ConfigService, useClass: MockConfigService},
         { provide: AppState, useClass: MockAppState },
-        { provide: Title, useClass: MockTitleService}
+        { provide: Title, useClass: MockTitleService},
       ]
     })
     .compileComponents(); // compile template and css
@@ -113,7 +124,32 @@ describe(`App`, () => {
     comp.setTitle(testTitle);
     expect(titleService.getTitle()).toBe(testTitle);
     expect(comp.title).toBe(testTitle);
-  });/*
+  });
+
+  it('should return current user', () => {
+    let testUser = new User();
+    testUser.email = "testUser@test.com";
+
+    let authService = TestBed.get(AuthenticationService);
+    authService.setCurrentUser(testUser);
+
+    expect(comp.getCurrentUser()).toBe(testUser);
+  });
+  
+  it('User Should be Set in State', () => {
+    let user = new User();
+    user.email = "testuser@test.com";
+    comp.loadUserStateFromLocalStorage(user);
+
+    let appState = TestBed.get(AppState);
+    let returnedUser: User = appState.getCurrentUser();
+ 
+    expect(returnedUser).toBe(user);
+  });  
+  
+  
+  
+  /*
   it('Config values Should be Valid', () => {
     let values = {a:1, b:{c:3}};
     let service = TestBed.get(ConfigService);
