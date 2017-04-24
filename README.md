@@ -19,3 +19,5 @@ fixing ng
 
     Chrome in docker Container
     https://hub.docker.com/r/markadams/chromium-xvfb-js/
+
+ng-cong 2017 material design https://www.youtube.com/watch?v=8hIBy2VCUSc

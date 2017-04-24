@@ -30,13 +30,14 @@ import {
 
 import { AppComponent } from './app.component';
 import { AppRoutes } from './app.routing';
-import { AppState, UserState, UserActions, UrlState, UrlActions } from './app.state';
+import { AppStore, AppState, UserState, UserActions, UrlState, UrlActions } from './app.state';
 import { AuthGuard} from './app.routing.authguard';
 import { UserModule} from './user/user.module';
 import { UrlModule } from './url/url.module';
 import { AlertModule } from './alert/alert.module';
 import { HomeModule } from './home/home.module';
 import { ConfigService } from './config/config.service';
+import { StateService } from './state/index';
 
 let userModule = UserModule.forRoot();
 let urlModule = UrlModule.forRoot();
@@ -80,6 +81,9 @@ let urlModule = UrlModule.forRoot();
     Broadcaster,
     AuthGuard,
     Title,
+    AppState,
+    AppStore,
+    StateService,
     { provide: APP_INITIALIZER, useFactory: (config: ConfigService) => () => config.load(), deps: [ConfigService], multi: true }
   ],
   bootstrap: [ AppComponent]

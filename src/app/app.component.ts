@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
 import { Title } from '@angular/platform-browser';
+import { Store } from '@ngrx/store';
 
 import { AuthenticationService } from './user/auth.service';
 import { User } from './user/user.model';
 import { environment } from '../environments/environment';
 import { ConfigService } from './config/config.service';
-import { AppState } from './app.state';
+import { AppStore,AppState, UserActions, UserState } from './app.state';
+import { StateService } from './state/index';
 
 // components included in 
 import { RouterModule, Routes } from '@angular/router';
@@ -30,7 +32,7 @@ export class AppComponent {
     constructor(
         private authService: AuthenticationService,     
         private configService: ConfigService,
-        private appState: AppState,
+        private state: StateService,
         private titleService: Title
         
     ){}
@@ -45,8 +47,8 @@ export class AppComponent {
      public getCurrentUser(){
          return this.authService.getCurrentUser();
      }
-     public loadUserStateFromLocalStorage(u:User){
-        this.appState.setUser(u);
+     public loadUserStateFromLocalStorage(user:User){
+        this.state.userLogon(user);
      }
      public setTitle(newTitle?) {
         newTitle ? this.title = newTitle : this.title = this.configService.get('title');

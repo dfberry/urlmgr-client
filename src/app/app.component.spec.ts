@@ -12,9 +12,11 @@ import { Title, By } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { AuthenticationService } from './user/auth.service';
 import { ConfigService } from './config/config.service';
-import { AppState } from './app.state';
+import { AppStore,AppState, UserActions, UserState } from './app.state';
 import { User } from './user/user.model';
-
+import { Action, Store } from "@ngrx/store";
+import { Subject } from "rxjs/Subject";
+import { StateService } from './state/index';
 
 class MockConfigService {
   public config: any={};
@@ -23,10 +25,12 @@ class MockConfigService {
   public load(data){this.config = data;}
 
 }  
-class MockAppState {
+class MockStateService {
   public u: User;
-  public setUser(u:User){ this.u = u;}
-  public getCurrentUser(){return this.u;}
+  public userLogon(u:User){
+    console.log("MockStateService::userLogon - noop");
+  }
+  public getUser(){return this.u;}
 }  
 class MockTitleService {
   x: string="";
@@ -42,6 +46,7 @@ class MockAuthenticationService {
   public setCurrentUser(x:User){this.user = x;}
   public getCurrentUser(){return this.user;}
 }
+
 /*
 https://github.com/ngrx/store/issues/78
 import { StoreModule } from '@ngrx/store';
@@ -65,17 +70,19 @@ import { StoreModule } from '@ngrx/store';
 describe(`App`, () => {
   let comp: AppComponent;
   let fixture: ComponentFixture<AppComponent>;
-  //let titleService: Title; 
 
   // async beforeEach
   beforeEach(async(() => {
+
+
+
     TestBed.configureTestingModule({
       declarations: [ AppComponent ],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         { provide: AuthenticationService, useClass: MockAuthenticationService},
         { provide: ConfigService, useClass: MockConfigService},
-        { provide: AppState, useClass: MockAppState },
+        { provide: StateService, useClass: MockStateService },
         { provide: Title, useClass: MockTitleService},
       ]
     })
@@ -141,8 +148,10 @@ describe(`App`, () => {
     user.email = "testuser@test.com";
     comp.loadUserStateFromLocalStorage(user);
 
-    let appState = TestBed.get(AppState);
-    let returnedUser: User = appState.getCurrentUser();
+    let stateService = TestBed.get(StateService);
+
+    // TODO: this isn't really a good mock of state
+    let returnedUser: User = stateService.getUser();
  
     expect(returnedUser).toBe(user);
   });  
