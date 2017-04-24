@@ -1,3 +1,4 @@
+import {Injectable} from '@angular/core';
 import { Url/*, Feed*/ } from './url/url.model';
 import { User } from './user/user.model';
 import { Store } from '@ngrx/store';
@@ -8,6 +9,7 @@ export interface IAppState {
   //selectedFeed: Feed,
   user: User
 }
+@Injectable()
 export class AppState implements IAppState{
   urls: Url[];
   user: User;
