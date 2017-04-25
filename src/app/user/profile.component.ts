@@ -58,7 +58,7 @@ export class ProfileComponent {
 
         // if ?logout=true, then logout
         this.activatedRoute.queryParams.subscribe( data => {
-            console.log('queryParams', data['logout']);
+            //console.log('queryParams', data['logout']);
             if(data['logout']) this.logout();
         });
           
@@ -90,13 +90,13 @@ export class ProfileComponent {
         return this.http.delete(Configuration.urls.base + '/users/' + postForm.user + '/tokens', options)
             .map((response:Response) => {
                 // nothing returned but 200
-                console.log("logout success "); 
+                //console.log("logout success "); 
                 this.router.navigate(['/']);
                 return;
             })
             .toPromise()
             .catch((err: any) => {
-                console.log("logout err " + err);
+                //console.log("logout err " + err);
                 return Promise.reject(err.message)
             });
     }

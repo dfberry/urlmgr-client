@@ -50,7 +50,6 @@ export class FeedService  {
                 ret.push( links[i].href );
             }
         }
-        console.log(ret);
         return (ret.length==0) ? "" : ret.sort()[0];
     }
 }

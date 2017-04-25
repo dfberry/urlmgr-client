@@ -14,53 +14,7 @@ import { AuthenticationService } from './user/auth.service';
 import { ConfigService } from './config/config.service';
 import { AppState } from './app.state';
 import { User } from './user/user.model';
-
-
-class MockConfigService {
-  public config: any={};
-  public get(key:any){return this.config[key];}
-  public getAll(){return this.config};
-  public load(data){this.config = data;}
-
-}  
-class MockAppState {
-  public u: User;
-  public setUser(u:User){ this.u = u;}
-  public getCurrentUser(){return this.u;}
-}  
-class MockTitleService {
-  x: string="";
-  public setTitle(x){ this.x = x};
-  public getTitle(){return this.x;}
-}
-class MockUserService {
-  user: User;
-  public userLogon(x:User){this.user = x;}
-}
-class MockAuthenticationService {
-  user: User;
-  public setCurrentUser(x:User){this.user = x;}
-  public getCurrentUser(){return this.user;}
-}
-/*
-https://github.com/ngrx/store/issues/78
-import { StoreModule } from '@ngrx/store';
-
-   // Add the imported module to the imports array in beforeEach 
-   beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        StoreModule.provideStore({})
-      ],
-      declarations: [
-        // The component that's being tested
-      ]
-    })
-    .compileComponents();
-  }));
-
-*/
-
+import { MockAuthenticationService, MockConfigService, MockAppState, MockTitleService} from './utils/mocks';
 
 describe(`App`, () => {
   let comp: AppComponent;
@@ -102,18 +56,18 @@ describe(`App`, () => {
   });
   it('should return component\'s config service', () =>{
       let configService = fixture.debugElement.injector.get(ConfigService);
-      console.log(configService);
+
       expect(configService).toBeDefined();
   });
   it('should return component\'s title service', () =>{
       let titleService = fixture.debugElement.injector.get(Title);
-      console.log(titleService);
+
       expect(titleService).toBeDefined();
   });
   
   it('should return html from app component', () =>{
       let de = fixture.debugElement.query(By.css('.container'));
-      console.log(de);
+
       expect(de).toBeDefined();
   });
   

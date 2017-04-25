@@ -58,11 +58,9 @@ export class FeedTestComponent  implements OnChanges{
   }
   save(){
     let url = this.testForm.controls["url"].value;
-    console.log("saved " + url);
     
     
     //let results = this.feedService.getFeed(url, this.user);
-    
-    console.log("after getFeed2 " );
+
   }
 }

@@ -52,7 +52,7 @@ export class UrlNewComponent  implements OnChanges{
     this.httpUrlValue = this.newForm.controls['httpUrlValue'];
   }
   ngOnInit() {
-      console.log("dt.component UrlNewComponent ngOnInit input this.user " + JSON.stringify(this.user));
+      //console.log("dt.component UrlNewComponent ngOnInit input this.user " + JSON.stringify(this.user));
   }
   ngOnChanges(changes: SimpleChanges) {
     for (let propName in changes) {
@@ -60,7 +60,7 @@ export class UrlNewComponent  implements OnChanges{
       let cur  = JSON.stringify(chng.currentValue);
       let prev = JSON.stringify(chng.previousValue);
 
-      console.log(`dt.component::UrlNewComponent - ngOnChanges - ${propName}: currentValue = ${cur}, previousValue = ${prev}`);
+      //console.log(`dt.component::UrlNewComponent - ngOnChanges - ${propName}: currentValue = ${cur}, previousValue = ${prev}`);
     }
   }
 

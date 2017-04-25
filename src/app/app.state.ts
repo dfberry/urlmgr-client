@@ -22,6 +22,12 @@ export class AppState implements IAppState{
       this.store.dispatch({type: UserActions.USER_LOGIN, payload: user});
     }
   }
+  public getCurrentUser(){
+    return this.user;
+  }
+  public getState(){
+    return this.store;
+  }
 };
 export const UserActions = {
       USER_LOGIN : '[User] Authorized',
@@ -29,9 +35,6 @@ export const UserActions = {
   };
 
 export function UserState(state=new User(), action) {
-
-      console.log("userState state = " + JSON.stringify(state));
-      console.log("userState action = " + JSON.stringify(action));
 
       let user:User = new User();
 
@@ -59,9 +62,6 @@ export const UrlActions = {
   };
 
 export function UrlState (state = [], action) {
-
-      console.log("urlState state = " + JSON.stringify(state));
-      console.log("urlState action = " + JSON.stringify(action));
 
      switch (action.type) {
         case UrlActions.URL_ADD_1:

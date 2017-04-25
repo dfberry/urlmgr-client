@@ -16,12 +16,10 @@ export class Broadcaster {
   }
 
   broadcast(key: any, data?: any) {
-    console.log("broadcast.broadcast " + key + "," + data);
     this._eventBus.next({key, data});
   }
 
   on<T>(key: any): Observable<T> {
-    console.log("broadcast.on " + key);
     return this._eventBus.asObservable()
       .filter(event => event.key === key)
       .map(event => <T>event.data);

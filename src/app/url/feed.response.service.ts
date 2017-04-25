@@ -36,7 +36,6 @@ export class FeedResponseService{
 
 
   getFeed(urlId: string): any{
-    console.log("getFeed 0, urlId = " + urlId);
     /*this.store.select(state => state.feeds).subscribe(feeds => {
       console.log(feeds ? "getFeed 1 feeds not empty "  + urlId: "getFeed 1 feeds empty "+ urlId);
       feeds.map(feed => {
@@ -51,12 +50,9 @@ export class FeedResponseService{
 
   // add new feed to state, set new feed as selected feed
   addFeed(id: string, url:string){
-      console.log("addFeed 0, id = " + id);
       if (!url) return;
 
-      let existingFeed = this.getFeed(id);
-      console.log((existingFeed && existingFeed.lenght) ? "addFeed 1 existingFeed not empty" : "addFeed existingFeed empty");
-      
+      let existingFeed = this.getFeed(id);      
       // if feed is already in store, don't go fetch it
       if(existingFeed) return;
 
@@ -75,9 +71,6 @@ export class FeedResponseService{
       // get feeds for this url
       this._httpDataService.getJsonPromise(this.rssToJsonServiceBaseUrl + url, options)
           .then(data => {
-            //console.log(this.rssToJsonServiceBaseUrl + url);
-
-            //console.log(JSON.stringify(data));
 
               let newfeed: Feed = new Feed();
               newfeed.urlId = id;

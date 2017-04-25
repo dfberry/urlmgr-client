@@ -36,7 +36,6 @@ export class DashboardComponent {
     private urlService: UrlService    
   ){}
   ngOnInit(){
-    console.log("dashboard component ngOnInit");
     this.registerUrlBroadcast();
     this.store.select(state => state.user)
       .distinctUntilChanged()
@@ -45,12 +44,10 @@ export class DashboardComponent {
       });
   }
   public onUserChange(user:User){
-    console.log("dashboard onUserChange");
     this.user = user;
     this.onUrlEvent();
   }
   public onUrlEvent(urlAction?){
-    console.log("dashboard onUrlChange");
 
     // if no user or any state object's action is clear  
     if(!this.user || !this.user.email) {
@@ -68,7 +65,6 @@ export class DashboardComponent {
   }
   loadUrls(){
     this.urlService.loadItems(this.user).then(urls => {
-      console.log("dashboard - load urls into state");
       this.urls = urls;
       this.store.dispatch({type: UrlActions.URL_ADD_N, payload: urls});
     }).catch(err => {
@@ -78,7 +74,6 @@ export class DashboardComponent {
   registerUrlBroadcast() {
     this.userEvent.on()
       .subscribe(message => {
-        console.log("dashboard url event received");
         this.onUrlEvent(message);
       });
   }

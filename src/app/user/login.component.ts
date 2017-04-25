@@ -57,20 +57,20 @@ export class LoginComponent {
 
     login() {
       
-        console.log("login function");
-        console.log("username " + this.username);
-        console.log("password " + this.password);
+        //console.log("login function");
+        //console.log("username " + this.username);
+        //console.log("password " + this.password);
 
         let postForm = {
             email: this.username,
             password: this.password
         };
 
-        console.log("postForm");
+        //console.log("postForm");
 
         return this.http.post(Configuration.urls.base + "/auth", postForm)
             .map((response:Response) => {
-                console.log(response.json());
+                //console.log(response.json());
                 let user = response.json().data;
                 if (user && user.token) {
 
@@ -86,7 +86,7 @@ export class LoginComponent {
             })
             .toPromise()
             .catch((err: any) => {
-                console.log("http::data-getJsonPromise err " + err);
+                //console.log("http::data-getJsonPromise err " + err);
                 this.authError = err._body;
                 //return Promise.reject(err)
             });

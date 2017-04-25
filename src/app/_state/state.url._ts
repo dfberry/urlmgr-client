@@ -10,9 +10,6 @@ export const UrlActions = {
 
 export function UrlState (state = [], action) {
 
-      console.log("urlState state = " + JSON.stringify(state));
-      console.log("urlState action = " + JSON.stringify(action));
-
      switch (action.type) {
         case UrlActions.URL_ADD_1:
           return [

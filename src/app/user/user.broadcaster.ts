@@ -7,13 +7,13 @@ export class UserEvent {
   constructor(private broadcaster: Broadcaster) {}
 
   fire(data: string): void {
-      console.log("UserEvent.fire " + data);
+      //console.log("UserEvent.fire " + data);
 
     this.broadcaster.broadcast(MessageEvent, data);
   }
 
   on(): Observable<string> {
-      console.log("UserEvent.on " );
+      //console.log("UserEvent.on " );
     return this.broadcaster.on<string>(MessageEvent);
   }
 }

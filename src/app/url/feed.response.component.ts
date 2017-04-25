@@ -40,13 +40,8 @@ export class FeedResponseComponent {
     this.urlId = this.route.snapshot.params['id'];
     this.url = this.route.snapshot.params['url'];
 
-    console.log("FeedResponseComponent " + this.urlId);
-    console.log("FeedResponseComponent " + this.url);
-
     if (this.url && this.urlId){
       this.selectedFeed = new Feed();
-
-      console.log("FeedResponseComponent - addFeed");
       this.feedResponseService.addFeed(this.urlId, this.url);
     }
     // get out of state
@@ -61,7 +56,6 @@ export class FeedResponseComponent {
   }
   public onFeedsEmitted(data:Feed){
     this.selectedFeed = data;
-    console.log("feed returned");
     this.found = true;
   }
   

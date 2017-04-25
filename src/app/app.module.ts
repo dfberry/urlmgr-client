@@ -87,6 +87,5 @@ let urlModule = UrlModule.forRoot();
   bootstrap: [ AppComponent]
 })
 export class AppModule { 
-  constructor(){//console.log("AppModule");
-  }
+  constructor(){}
 }

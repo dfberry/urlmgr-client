@@ -7,9 +7,6 @@ export const UserActions = {
 
 export function UserState(state=new User(), action) {
 
-      console.log("userState state = " + JSON.stringify(state));
-      console.log("userState action = " + JSON.stringify(action));
-
       let user:User = new User();
 
       switch (action.type) {

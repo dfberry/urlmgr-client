@@ -41,7 +41,6 @@ export class NavigationComponent {
 
   ngOnInit(){
     // get out of state
-    console.log("navigation ngOnInit");
     this.registerBroadcast();
     this.store.select(state => state.user)
       .distinctUntilChanged()
@@ -49,15 +48,12 @@ export class NavigationComponent {
   }
 
   public onUserChange(user:User){
-    console.log("navigation onUserChange");
     this.currentUser = user;
   }
 
   registerBroadcast() {
     this.userEvent.on()
       .subscribe(message => {
-        console.log("user broadcast event = " + JSON.stringify(message));
-
          switch (message) {
           case "USER_LOGON":
             // received message the user logged on

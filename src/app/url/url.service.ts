@@ -36,7 +36,7 @@ export class UrlService  {
         private urlEvent: UrlEvent,
         private feedService: FeedService
     ){
-        console.log("url.ts - ctor");
+        //console.log("url.ts - ctor");
         this.items = store.select(state => state.urls);
         this.baseUrl = configService.get("apiUrl") + "urls/";
     }
@@ -63,7 +63,7 @@ export class UrlService  {
         return new Promise<Url[]>((resolve, reject) => {
 
             if(!user || !user.id) {
-                console.log("urlService::loadItems - user is empty");
+                //console.log("urlService::loadItems - user is empty");
                 reject("user is empty");
             }
             this.user = user;
@@ -183,8 +183,8 @@ export class UrlService  {
             headers : headers
         };
 
-        console.log("url insert item = " + JSON.stringify(item));
-        console.log("url insert options = " + JSON.stringify(options))
+        //console.log("url insert item = " + JSON.stringify(item));
+        //console.log("url insert options = " + JSON.stringify(options))
 
         return this._httpDataService.postJsonData(this.baseUrl, item, options).then((data) => {
                 
@@ -213,14 +213,14 @@ export class UrlService  {
         //console.log("item deleted = " + item.url);
 
         if(!user || !user.id) {
-            console.log("UrlService::removeItem, user is empty");
+            //console.log("UrlService::removeItem, user is empty");
             return;
         }
         this.user = user;
 
         let urlId = item["id"] ? item["id"] : item["_id"];
         if (!urlId) {
-            console.log("UrlService::removeItem, urlId is empty");
+            //console.log("UrlService::removeItem, urlId is empty");
             return;
         }
 
@@ -236,12 +236,12 @@ export class UrlService  {
             body : postForm
         };
 
-        console.log("UrlService::removeItem, options = " + JSON.stringify(options));
+        //console.log("UrlService::removeItem, options = " + JSON.stringify(options));
 
         return this._httpDataService.delete(this.baseUrl + urlId, options)
 
             .then((data) => {
-                console.log("url.ts removeItem http service delete success");
+                //console.log("url.ts removeItem http service delete success");
                 // TODO: what should happen if there is an error on the server/api side
                 // how would I should the error? 
                 //console.log("url.ts::remoteItem - returned data = " + JSON.stringify(data));

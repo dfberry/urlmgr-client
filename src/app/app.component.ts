@@ -37,7 +37,6 @@ export class AppComponent {
 
     ngOnInit() {
         console.log("AppComponent loaded"); 
-
         this.user = this.getCurrentUser();
         this.loadUserStateFromLocalStorage(this.user);
         this.setTitle(); 

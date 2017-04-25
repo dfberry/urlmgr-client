@@ -62,11 +62,11 @@ export class RegisterComponent {
 
     register() {
       
-      console.log("login function");
-      console.log("email " + this.email);
-      console.log("password " + this.password);
-      console.log("lastName " + this.lastName);
-      console.log("firstName " + this.firstName);
+      //console.log("login function");
+      //console.log("email " + this.email);
+      //console.log("password " + this.password);
+      //console.log("lastName " + this.lastName);
+      //console.log("firstName " + this.firstName);
 
       let postForm = {
           email: this.email,
@@ -75,22 +75,22 @@ export class RegisterComponent {
           firstName: this.firstName
       };
 
-      console.log("postForm = " + JSON.stringify(postForm));
+      //console.log("postForm = " + JSON.stringify(postForm));
 
         return this.http.post(Configuration.urls.base + '/users', postForm)
             .map((response:Response) => {
-                console.log("register success " + response.json());
+                //console.log("register success " + response.json());
                 this.router.navigate(['/login']);
             })
             .toPromise()
             .catch((err: any) => {
                 // duplicate error
                 if(err.status == 403) {
-                    console.log("duplicate email entered");
+                    //console.log("duplicate email entered");
                     this.asyncErrors.username.error = true;
                     return Promise.reject("duplicate email entered");
                 }
-                console.log("register error " + err);
+                //console.log("register error " + err);
                 return Promise.reject(err.message)
             });
 

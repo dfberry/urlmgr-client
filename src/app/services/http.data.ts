@@ -37,7 +37,6 @@ export class HttpDataService{
     postWithAuthReturnText(url, post, user): Promise<string>{
         return new Promise<string>((resolve, reject) => {
 
-            console.log("url = " + url);
             // post form
             //let post = {
             //    url: url,
@@ -64,10 +63,8 @@ export class HttpDataService{
         });
     }
     getHtmlPromise(url){
-        console.log("getJsonPromise url = " + url);
         return this._http.get(url)
             .map((response:Response) => {
-                //console.log(response.json());
                 return response.text();
             })
             .toPromise()
@@ -77,10 +74,8 @@ export class HttpDataService{
             });
     }
     getJsonPromise(url, options){
-        //console.log("getJsonPromise url = " + url);
         return this._http.get(url, options)
             .map((response:Response) => {
-                //console.log(response.json());
                 return response.json().data;
             })
             .toPromise()
@@ -98,9 +93,6 @@ export class HttpDataService{
             });
     }
     postJsonData(url, body, options ){
-        console.log("HttpDataService::postJsonData url = " + url);
-        console.log("HttpDataService::postJsonData body = " + JSON.stringify(body));
-        console.log("HttpDataService::postJsonData options = " + JSON.stringify(options));
 
         return this._http.post(url, body, options ? options : this.getDefaultPostOptions())
            .map(res =>  res.json())
@@ -111,7 +103,6 @@ export class HttpDataService{
             });
     }
     delete(url, options ){
-        //console.log("HttpDataService::delete url = " + url);
  
         return this._http.delete(url, options )
            .map(res =>  res.json())

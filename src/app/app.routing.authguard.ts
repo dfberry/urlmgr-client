@@ -4,14 +4,7 @@ import 'rxjs/add/operator/take';
 import { ActionReducer, Action, Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Rx';
 import { AppState } from './app.state';
-//http://stackoverflow.com/questions/39849060/angular-2-router-v3-observable-guard-with-ngrx
-
-function getState(store: Store<AppState>): AppState {
-    let state: AppState;
-    store.take(1).subscribe(s => state = s);
-    console.log("getState store = " + JSON.stringify(state));
-    return state;
-}
+import { User } from './user/user.model';
 
 // all authentication is kept in local storage - not state
 @Injectable()
@@ -19,21 +12,20 @@ export class AuthGuard implements CanActivate {
 
     constructor(
       private router: Router,
-      private store: Store<AppState>, ) { 
+      private appState: AppState ) { 
       }
 
   canActivate():boolean {
-    console.log("AuthGuard::canActivate");
-    let state = getState(this.store);
 
-    console.log("canActivate isAuthenticated = " + state.user.isAuthenticated);
 
-    if (!state.user.isAuthenticated) {
+    let currentUser = this.appState.getCurrentUser();
+
+    if (!currentUser.isAuthenticated) {
       console.log("user is not authorized");
       this.router.navigate(['/login']);
       return false;
     }
     console.log("user is authorized");
-    return state.user.isAuthenticated;
+    return currentUser.isAuthenticated;
   }
 }
