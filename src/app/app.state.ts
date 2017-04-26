@@ -33,24 +33,28 @@ export const UserActions = {
       USER_LOGIN : '[User] Authorized',
       USER_CLEAR : '[User] Initialized'
   };
+function newUnauthenticatedUser(){
+  let user = new User();
+  user.isAuthenticated = false;
+  return user;
+}
+export function UserState(state = new User(), action) {
 
-export function UserState(state=new User(), action) {
+  switch ((action && action.type) ? action.type : null) {
 
-      let user:User = new User();
+    // set user
+    case UserActions.USER_LOGIN:
+      let user = action.payload;
+      user.isAuthenticated = true;
+      return user;
 
-      switch (action.type) {
-          case UserActions.USER_CLEAR:
-            return new User();       
-
-          case UserActions.USER_LOGIN:
-              user = action.payload;
-              user.isAuthenticated = true;
-            return user;   
-                
-          default:
-              return state;
-      }
+    // reset user
+    case UserActions.USER_CLEAR:
+      return newUnauthenticatedUser();
+    default:
+      return newUnauthenticatedUser();
   }
+}
 
 
 export const UrlActions = {
