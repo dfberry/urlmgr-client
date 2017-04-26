@@ -19,3 +19,6 @@ fixing ng
 
     Chrome in docker Container
     https://hub.docker.com/r/markadams/chromium-xvfb-js/
+
+TODO:
+    fix how user state is managed -> ngrx is overkill

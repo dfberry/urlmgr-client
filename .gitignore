@@ -5,6 +5,11 @@
 /out-tsc
 /dist
 /dist_old
+.org.**
+/.org.*
+/_test-output
+/ts_node
+/karma-*
 
 # dependencies
 /node_modules

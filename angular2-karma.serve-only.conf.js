@@ -20,9 +20,9 @@ module.exports = function (config) {
     // list of files to exclude
     exclude: [],
 
-    client: {
-      captureConsole: true
-    },
+    //client: {
+    //  captureConsole: true
+    //},
 
     /*
      * list of files / patterns to load in the browser
@@ -30,8 +30,8 @@ module.exports = function (config) {
      * we are building the test environment in ./spec-bundle.js
      */
     files: [
-      { pattern: './angular2-spec-bundle.js', watched: false },
-      { pattern: './src/assets/**/*', watched: false, included: false, served: true, nocache: false }
+      { pattern: './angular2-spec-bundle.js', watched: true },
+      { pattern: './src/assets/**/*', watched: true, included: false, served: true, nocache: false }
     ],
 
     /*
@@ -45,40 +45,49 @@ module.exports = function (config) {
      * preprocess matching files before serving them to the browser
      * available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
      */
-    preprocessors: { './angular2-spec-bundle.js': ['coverage', 'webpack', 'sourcemap'] },
+    preprocessors: { './angular2-spec-bundle.js': ['webpack', 'sourcemap'] },
 
     // Webpack Config at ./webpack.test.js
     webpack: testWebpackConfig,
 
-    coverageReporter: {
-      type: 'in-memory'
-    },
-
-    remapCoverageReporter: {
-      'text-summary': null,
-      json: './coverage/coverage.json',
-      html: './coverage/html'
-    },
-
     // Webpack please don't spam the console when running in karma!
-    webpackMiddleware: {
+    //webpackMiddleware: {
       // webpack-dev-middleware configuration
       // i.e.
-      noInfo: true,
+      //noInfo: true,
       // and use stats to turn off verbose output
-      stats: {
+      //stats: {
         // options i.e. 
-        chunks: false
-      }
+        //chunks: false
+      //}
+    //},
+    reporters: ['progress','kjhtml'],
+    autowatch: true,
+    singleRun: false,
+    client: {
+      //builtPaths: ['app/'], // add more spec base paths as needed
+      clearContext: false // leave Jasmine Spec Runner output visible in browser
+    },
+    onPrepare: function() {
+        jasmine.getEnv().addReporter(
+          new Jasmine2HtmlReporter({
+            savePath: './test-output/screenshots',
+            takeScreenshots: true,
+            takeScreenshotsOnlyOnFailures: true,
+            screenshotsFolder: 'images'
+          })
+        );
     },
 
-    /*
-     * test results reporter to use
-     *
-     * possible values: 'dots', 'progress'
-     * available reporters: https://npmjs.org/browse/keyword/karma-reporter
-     */
-    reporters: ['mocha', 'coverage', 'remap-coverage'],
+    // HtmlReporter configuration
+    htmlReporter: {
+      // Open this file to see results in browser
+      outputFile: '_test-output/tests.html',
+ 
+      // Optional
+      pageTitle: 'Unit Tests',
+      subPageTitle: __dirname
+    },
 
     // web server port
     port: 3005,
@@ -92,9 +101,6 @@ module.exports = function (config) {
      */
     logLevel: config.LOG_WARN,
 
-    // enable / disable watching file and executing tests whenever any file changes
-    autoWatch: false,
-
     /*
      * start these browsers
      * available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
@@ -102,30 +108,17 @@ module.exports = function (config) {
     browsers: [
       'Chrome'
     ],
-/*
-    customLaunchers: {
-      ChromeTravisCi: {
-        base: 'Chrome',
-        flags: ['--no-sandbox']
-      }
-    },
-*/
+
     /*
      * Continuous Integration mode
      * if true, Karma captures browsers, runs the tests and exits
      */
-    singleRun: true,
     mime: {
       'text/x-typescript': ['ts','tsx']
     },
-    concurrency: Infinity, 
+
   };
 
-  if (process.env.TRAVIS) {
-    configuration.browsers = [
-      'ChromeTravisCi'
-    ];
-  }
 
   config.set(configuration);
 };
