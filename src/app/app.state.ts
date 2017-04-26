@@ -56,14 +56,12 @@ export function UserState(state=new User(), action) {
 export const UrlActions = {
       URL_ADD_1 : '[Url] Add 1',
       URL_ADD_N : '[Url] Add N',
-      URL_DELETE : '[Url] delete',
-      URL_UPDATE : '[Url] update',
       URL_CLEAR: '[Url] Initialized'
   };
 
 export function UrlState (state = [], action) {
 
-     switch (action.type) {
+     switch ((action && action.type) ? action.type : undefined) {
         case UrlActions.URL_ADD_1:
           return [
               ...state,
