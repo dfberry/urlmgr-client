@@ -12,6 +12,10 @@ export class ConfigService {
   constructor(private http: Http) {
         ConfigService._promise = this.load();
   }
+
+  /*
+    expects config.json file to be at root of site
+  */
   load() {
       return new Promise((resolve, reject) => {
           this.http.get('config.json')
