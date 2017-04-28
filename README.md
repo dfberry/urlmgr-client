@@ -21,4 +21,7 @@ fixing ng
     https://hub.docker.com/r/markadams/chromium-xvfb-js/
 
 Docker/Chromium/Protractor/Selenium Issues
+> whereis chromium-browser
+
 http://becausejavascript.com/faking-x-server-to-run-js-unitintegration-tests-in-chrome/
+https://github.com/elgalu/docker-selenium/issues/20#issuecomment-133011186
