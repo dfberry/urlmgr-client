@@ -19,3 +19,6 @@ fixing ng
 
     Chrome in docker Container
     https://hub.docker.com/r/markadams/chromium-xvfb-js/
+
+Docker/Chromium/Protractor/Selenium Issues
+http://becausejavascript.com/faking-x-server-to-run-js-unitintegration-tests-in-chrome/
