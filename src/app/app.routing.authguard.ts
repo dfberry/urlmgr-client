@@ -20,19 +20,20 @@ export class AuthGuard implements CanActivate {
     constructor(
       private router: Router,
       private store: Store<AppState>, ) { 
-      }
+    }
 
+  /* just needs to return true is allowed to route */
   canActivate():boolean {
     console.log("AuthGuard::canActivate");
     let state = getState(this.store);
 
-    console.log("canActivate isAuthenticated = " + state.user.isAuthenticated);
-
+    /* user is NOT allowed to that route */
     if (!state.user.isAuthenticated) {
       console.log("user is not authorized");
       this.router.navigate(['/login']);
       return false;
     }
+    /* user is allowed to that route */
     console.log("user is authorized");
     return state.user.isAuthenticated;
   }
