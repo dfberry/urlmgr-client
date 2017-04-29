@@ -1,5 +1,9 @@
 {
   "extends": "../tsconfig.json",
+  "useAllAngular2AppRoots": true,
+  "capabilities": {
+      "browserName": "chrome"
+  },
   "compilerOptions": {
     "outDir": "../out-tsc/e2e",
     "module": "commonjs",

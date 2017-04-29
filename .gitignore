@@ -5,6 +5,8 @@
 /out-tsc
 /dist
 /dist_old
+/.org.**
+*.map
 
 # dependencies
 /node_modules
