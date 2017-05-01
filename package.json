@@ -3,17 +3,26 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "ng": "ng",
-    "start": "webpack-dev-server dist --port=3000",
-    "build": "webpack --config ./webpack.config.js",
-    "build-test": "webpack --config ./webpack.config.test.js",
-    "serve": "http-server -p 3000 dist",
-    "test": "karma start ./angular2-karma.conf",
+    "build": "npm-run-all -p build:clean build:all",
+    "build:all":"webpack --config ./webpack.config.js", 
+    "build:clean": "rimraf .org* pulse-* ts-node* dist*",
+    
+    "serve": "npm-run-all -s serve:dist",
+    "serve:dist": "http-server -p 3000 dist -c-1 --cors",
+
+    "test": "npm-run-all -s test:unit test:e2e",
+    "test:unit": "karma start ./angular2-karma.conf",
+    "test:e2e": "npm-run-all -p -r build serve test:protractor",
+    "test:serve:protractor": "npm-run-all -p -r serve test:protractor",
+    "test:protractor": "protractor ./protractor.conf.js",
+
     "lint": "tslint",
-    "e2e": "protractor ./protractor.conf.js",
     "postinstall": "npm run webdriver:update",
     "prepree2e": "npm start",
     "pree2e": "webdriver-manager update --standalone false --gecko false --quiet",
+    
+    "webdriver": "npm-run-all webdriver:update build serve webdriver:start",
+    "webdriver:start": "webdriver-manager start",
     "webdriver:update": "webdriver-manager update"
   },
   "private": true,
@@ -44,7 +53,9 @@
     "karma-remap-coverage": "^0.1.4",
     "karma-webpack": "^2.0.3",
     "lodash": "^4.17.4",
+    "npm-run-all": "^4.0.2",
     "reselect": "^3.0.0",
+    "rimraf": "^2.6.1",
     "rxjs": "^5.1.0",
     "valid-url": "^1.0.9",
     "webpack-bundle-analyzer": "^2.4.0",

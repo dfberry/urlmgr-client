@@ -14,7 +14,7 @@ import { AuthGuard } from './app.routing.authguard';
 //import { MockAppState, userIsNotAuthenticated, userIsAuthenticated } from './utils/mocks';
 
 
-fdescribe('AuthGuard', () => {
+describe('AuthGuard', () => {
  
   beforeEach(async(() => {
     TestBed.configureTestingModule({

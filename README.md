@@ -19,3 +19,6 @@ fixing ng
 
     Chrome in docker Container
     https://hub.docker.com/r/markadams/chromium-xvfb-js/
+
+urlmgr-client-running:
+build files then use 'npm run test:serve:protractor' to run e2e
