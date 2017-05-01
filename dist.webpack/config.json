@@ -1,8 +1,0 @@
-{
-  "livetest": "wednesday 11:02am",
-  "clientHost": "localhost:3000",
-  "apiUrl": "http://urlmgrapi.dfberry.io/v1/",
-  "xxx": "http://localhost:3003/v1/",
-  "rssProxy": "http://api.rss2json.com/v1/api.json?rss_url=",
-  "title": "Url Manager"
-}
