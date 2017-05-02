@@ -2677,6 +2677,14 @@ jasmine-core@~2.5.2:
   version "2.5.2"
   resolved "https://registry.yarnpkg.com/jasmine-core/-/jasmine-core-2.5.2.tgz#6f61bd79061e27f43e6f9355e44b3c6cab6ff297"
 
+jasmine-jquery-matchers@^1.4.2:
+  version "1.4.2"
+  resolved "https://registry.yarnpkg.com/jasmine-jquery-matchers/-/jasmine-jquery-matchers-1.4.2.tgz#023500a97520a927c99169f7f14a20a1a8a66281"
+
+jasmine-jquery@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/jasmine-jquery/-/jasmine-jquery-2.1.1.tgz#d4095e646944a26763235769ab018d9f30f0d47b"
+
 jasmine-spec-reporter@~3.2.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/jasmine-spec-reporter/-/jasmine-spec-reporter-3.2.0.tgz#fdbe85a80ccdd3b276746bc77fde83c1ce773eff"
@@ -3115,7 +3123,7 @@ lodash.uniq@^4.5.0:
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/lodash.uniq/-/lodash.uniq-4.5.0.tgz#d0225373aeb652adc1bc82e4945339a842754773"
 
-lodash@^3.8.0:
+lodash@^3.10.0, lodash@^3.8.0:
   version "3.10.1"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-3.10.1.tgz#5bf45e8e49ba4189e17d482789dfd15bd140b7b6"
 
@@ -4014,6 +4022,13 @@ process-nextick-args@~1.0.6:
 process@^0.11.0:
   version "0.11.9"
   resolved "https://registry.yarnpkg.com/process/-/process-0.11.9.tgz#7bd5ad21aa6253e7da8682264f1e11d11c0318c1"
+
+protractor-console@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/protractor-console/-/protractor-console-2.0.1.tgz#4697d3ce9c999f53018e0576a3d0cf3322b282a7"
+  dependencies:
+    chalk "^1.1.0"
+    lodash "^3.10.0"
 
 protractor@~5.1.0:
   version "5.1.1"

@@ -22,3 +22,9 @@ fixing ng
 
 urlmgr-client-running:
 build files then use 'npm run test:serve:protractor' to run e2e
+
+fix to e2e tests running in container:
+https://github.com/SeleniumHQ/docker-selenium/issues/429
+
+testing
+https://github.com/blacksonic/angular-testing-ground
