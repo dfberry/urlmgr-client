@@ -1,4 +1,4 @@
-import { Component, SimpleChange, SimpleChanges} from '@angular/core';
+import { Component, SimpleChange, SimpleChanges, DoCheck} from '@angular/core';
 import { AbstractControl, FormGroup, FormControl, Validators, FormBuilder, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { RouterModule, Routes, Router } from '@angular/router'; 
 import { Http, Response, URLSearchParams, Headers, RequestOptions} from '@angular/http';
@@ -43,7 +43,7 @@ import { AuthenticationHttpService } from './auth.http.service';
       {{validForm}}
     `
 })
-export class RegisterComponent {
+export class RegisterComponent implements DoCheck {
     config: any;
     newForm: FormGroup;
     lastName="";
@@ -71,21 +71,26 @@ export class RegisterComponent {
     }
 
     checkRequiredFields(callername){
-        console.log("this.firstName=" + this.firstName);
 
         if(this.email && this.password){
             this.formEnabled = true;
         } 
         console.log(callername + " called checkRequiredFields, formEnabled=" + this.formEnabled);
+        console.log(callername + " called checkRequiredFields, this.firstName=" + this.firstName);
+        console.log(callername + " called checkRequiredFields, this.lastName=" + this.lastName);
+        console.log(callername + " called checkRequiredFields, this.email=" + this.email);
+        console.log(callername + " called checkRequiredFields, this.password=" + this.password);    
+
+
     }
     ngOnInit() {  
         console.log("registerComponent ngOnInit");
         this.loading = false;
         this.checkRequiredFields("ngOnInit");
      }
-    ngOnChanges(changes: SimpleChanges) {
-        console.log("ngOnChanges called");
-        this.checkRequiredFields("ngOnChanges");
+    ngDoCheck() {
+        console.log("ngDoCheck called");
+        this.checkRequiredFields("ngDoCheck");
         
     }
     someMethod(){

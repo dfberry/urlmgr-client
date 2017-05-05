@@ -23,6 +23,8 @@ fdescribe(`Register`, () => {
   let component: RegisterComponent;
   let fixture: ComponentFixture<RegisterComponent>;
   let debugElement: DebugElement;
+
+  let form: DebugElement;
 /*
 without nativeElement
 
@@ -41,7 +43,7 @@ without nativeElement
 
  
 
-  let submitSpy: jasmine.Spy;
+  let registerSpy: jasmine.Spy;
 /*
     function setInputValue(selector: string, value: string) {
       let el: HTMLInputElement = fixture.nativeElement.querySelector(selector);
@@ -73,12 +75,14 @@ without nativeElement
       component = fixture.componentInstance;
       debugElement = fixture.debugElement;
 
+      registerSpy = spyOn(component.authHttpService, 'authenticateToServer');
+
       submitEl = fixture.debugElement.query(By.css('button')).nativeElement;;
       firstnameEl = fixture.debugElement.query(By.css('input[type=firstname]')).nativeElement;;
       lastnameEl = fixture.debugElement.query(By.css('input[type=lastname]')).nativeElement;; 
       loginEl = fixture.debugElement.query(By.css('input[type=email]')).nativeElement;;
       passwordEl = fixture.debugElement.query(By.css('input[type=password]')).nativeElement;;  
-
+      form = fixture.debugElement.query(By.css('form'));
       fixture.detectChanges();
       tick();    
     }));
@@ -96,21 +100,8 @@ it(`should be readly initialized`, () => {
     expect(firstnameEl).toBeDefined();
     expect(lastnameEl).toBeDefined();
   });
-//http://stackoverflow.com/questions/41897444/angular2-testing-error-when-trying-to-use-angular-platform-browser-testing-br
-//https://github.com/angular/angular/blob/master/packages/forms/test/template_integration_spec.ts#L14
-  /*it('should bind the input to the correct property',async(() => {
-    // first round of change detection
-    fixture.detectChanges();
-    // get ahold of the input
-    let input = debugElement.query(By.css('#firstName'));
-    let inputElement = input.nativeElement;
 
-    //set input value
-    inputElement.value = 'test value';
-    inputElement.dispatchEvent(new Event('input'));
 
-    expect(component.firstName).toBe('test value2');
-  }));*/
   it('should not enable submit button on init', () => {
     fixture.detectChanges();
     expect(submitEl.disabled).toBeTruthy();
@@ -120,14 +111,53 @@ it(`should be readly initialized`, () => {
 
     expect(firstnameEl.value).toBe('');
 
-    firstnameEl.value = 'test value';
+    let firstName = "bob";
+    let lastName = "jones";
+    let email = Math.floor(new Date().valueOf() / 1000) + ".bobjones@registertest.com"
+    let password = "1234"
+
+    firstnameEl.value = firstName;
     firstnameEl.dispatchEvent(new Event('input'));
 
     fixture.detectChanges();
     tick();
 
-    expect(firstnameEl.value).toBe('test value');
-    expect(component.firstName).toBe('test value');
+    lastnameEl.value = lastName;
+    lastnameEl.dispatchEvent(new Event('input'));
+
+    fixture.detectChanges();
+    tick();
+
+    loginEl.value = email;
+    loginEl.dispatchEvent(new Event('input'));
+
+    fixture.detectChanges();
+    tick();
+
+    passwordEl.value = password;
+    passwordEl.dispatchEvent(new Event('input'));
+
+    fixture.detectChanges();
+    tick();
+
+    expect(firstnameEl.value).toBe(firstName);
+    expect(component.firstName).toBe(firstName);
+    
+    expect(lastnameEl.value).toBe(lastName);
+    expect(component.lastName).toBe(lastName);
+
+    expect(loginEl.value).toBe(email);
+    expect(component.email).toBe(email);
+
+    expect(passwordEl.value).toBe(password);
+    expect(component.password).toBe(password);   
+
+    //form.triggerEventHandler('submit', null);
+
+    //expect(submitEl.disabled).toBeFalsy();
+    //expect(registerSpy.calls.any()).toBe(true);
+    //expect(component.model.content).toBe(expectedContent);
+    //expect(component.model.rating.toString()).toBe(expectedRating);
 
   }));
   it('should do something on blur', () => {

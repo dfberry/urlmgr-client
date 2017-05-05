@@ -59,5 +59,10 @@ https://developers.livechatinc.com/blog/testing-angular-2-apps-dependency-inject
 http://stackoverflow.com/questions/41496194/unit-testing-angular-2-authguard-spy-method-is-not-being-called
 http://stackoverflow.com/questions/39623722/angular-2-final-release-router-unit-test
 https://github.com/textbook/salary-stats/blob/8df142c9f3330889e2146f49ab47a097dea32402/src/app/table/table.component.spec.ts#L126
+//http://stackoverflow.com/questions/41897444/angular2-testing-error-when-trying-to-use-angular-platform-browser-testing-br
+//https://github.com/angular/angular/blob/master/packages/forms/test/template_integration_spec.ts#L14
 
 *****https://plnkr.co/edit/9RQqbz4msxgagsipQDpl?p=preview
+
+component change detection
+https://juristr.com/blog/2016/04/angular2-change-detection/#but-what-if-i-always-want-to-get-notified
