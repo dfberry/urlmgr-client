@@ -58,3 +58,6 @@ http://stackoverflow.com/questions/39015918/cant-resolve-all-parameters-for-rout
 https://developers.livechatinc.com/blog/testing-angular-2-apps-dependency-injection-and-components/
 http://stackoverflow.com/questions/41496194/unit-testing-angular-2-authguard-spy-method-is-not-being-called
 http://stackoverflow.com/questions/39623722/angular-2-final-release-router-unit-test
+https://github.com/textbook/salary-stats/blob/8df142c9f3330889e2146f49ab47a097dea32402/src/app/table/table.component.spec.ts#L126
+
+*****https://plnkr.co/edit/9RQqbz4msxgagsipQDpl?p=preview

@@ -1,13 +1,6 @@
 import { NO_ERRORS_SCHEMA, DebugElement } from '@angular/core';
 
-import {
-  inject,
-  async,
-  TestBed,
-  ComponentFixture,
-    fakeAsync,
-  tick
-} from '@angular/core/testing';
+import { inject, async, TestBed, ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
 import { Location } from '@angular/common';
 import { By } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
@@ -19,59 +12,46 @@ import { AuthenticationHttpService } from './auth.http.service';
 import { Router, RouterModule} from '@angular/router'; 
 import { RouterTestingModule } from '@angular/router/testing';
 import {ReflectiveInjector} from '@angular/core';
-//import { ConfigService } from './config/config.service';
-//import { AppState } from './app.state';
-//import { User } from './user/user.model';
 
-//class MockRouter {
-//  navigate(){console.log(" navigate called");}
-//}
-
+function newEvent(eventName: string, bubbles = false, cancelable = false) {
+    let evt = document.createEvent('CustomEvent');  // MUST be 'CustomEvent'
+    evt.initCustomEvent(eventName, bubbles, cancelable, null);
+    return evt;
+}
 
 fdescribe(`Register`, () => {
   let component: RegisterComponent;
   let fixture: ComponentFixture<RegisterComponent>;
   let debugElement: DebugElement;
+/*
+without nativeElement
+
   let submitEl: DebugElement;
+  let firstnameEl: DebugElement;
+  let lastnameEl: DebugElement;
   let loginEl: DebugElement;
   let passwordEl: DebugElement;
-  //let timestamp = Math.floor(new Date().valueOf() / 1000);
-  //let service;
-  //let router;
-  //let location;
-  //let authService: AuthenticationHttpService;
-  //let titleService: Title; 
-
-/*
-  // async beforeEach
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ RegisterComponent ],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [
-        { provide: AuthenticationHttpService}
-        ,Location
-        ,{ provide: Router, useClass: class { navigate = jasmine.createSpy("navigate"); }
-    }
-      ],
-      imports: [RouterTestingModule, FormsModule]
-    })
-    .compileComponents(); // compile template and css
-
-    fixture = TestBed.createComponent(RegisterComponent);
-    comp    = fixture.componentInstance;
-
-    fixture.detectChanges(); // trigger initial data binding
-    debugElement = fixture.debugElement;
-
-    authService = fixture.debugElement.injector.get(AuthenticationHttpService);
-    //router = fixture.debugElement.injector.get(Router);
-  }));
-
 */
 
+  let submitEl: HTMLTextAreaElement;
+  let firstnameEl: HTMLTextAreaElement;
+  let lastnameEl: HTMLTextAreaElement;
+  let loginEl: HTMLTextAreaElement;
+  let passwordEl: HTMLTextAreaElement;
 
-    beforeEach(async(() => {
+ 
+
+  let submitSpy: jasmine.Spy;
+/*
+    function setInputValue(selector: string, value: string) {
+      let el: HTMLInputElement = fixture.nativeElement.querySelector(selector);
+      el.value = value;
+      el.dispatchEvent(new Event('input'));
+    }
+    */
+
+    // not async - DO NOT CHANGE
+    beforeEach( () => {
       TestBed.configureTestingModule({
         schemas: [NO_ERRORS_SCHEMA],
         providers: [
@@ -83,14 +63,24 @@ fdescribe(`Register`, () => {
         imports: [HttpModule, RouterTestingModule, FormsModule],
         declarations: [RegisterComponent],
       }).compileComponents();
+    })
+
+    // notice async - DO NOT CHANGE
+    beforeEach(fakeAsync(() => {
+
 
       fixture = TestBed.createComponent(RegisterComponent);
       component = fixture.componentInstance;
       debugElement = fixture.debugElement;
 
-      submitEl = fixture.debugElement.query(By.css('button'));
-      loginEl = fixture.debugElement.query(By.css('input[type=email]'));
-      passwordEl = fixture.debugElement.query(By.css('input[type=password]'));      
+      submitEl = fixture.debugElement.query(By.css('button')).nativeElement;;
+      firstnameEl = fixture.debugElement.query(By.css('input[type=firstname]')).nativeElement;;
+      lastnameEl = fixture.debugElement.query(By.css('input[type=lastname]')).nativeElement;; 
+      loginEl = fixture.debugElement.query(By.css('input[type=email]')).nativeElement;;
+      passwordEl = fixture.debugElement.query(By.css('input[type=password]')).nativeElement;;  
+
+      fixture.detectChanges();
+      tick();    
     }));
 
 
@@ -102,6 +92,9 @@ it(`should be readly initialized`, () => {
     expect(submitEl).toBeDefined();
     expect(loginEl).toBeDefined();
     expect(passwordEl).toBeDefined();
+
+    expect(firstnameEl).toBeDefined();
+    expect(lastnameEl).toBeDefined();
   });
 //http://stackoverflow.com/questions/41897444/angular2-testing-error-when-trying-to-use-angular-platform-browser-testing-br
 //https://github.com/angular/angular/blob/master/packages/forms/test/template_integration_spec.ts#L14
@@ -120,56 +113,31 @@ it(`should be readly initialized`, () => {
   }));*/
   it('should not enable submit button on init', () => {
     fixture.detectChanges();
-    expect(submitEl.nativeElement.disabled).toBeTruthy();
+    expect(submitEl.disabled).toBeTruthy();
   });
 
-/*
+  fit('should change private component property when form input changes', fakeAsync(() => {
 
-  it('should allow us to set a bound input field', <any>fakeAsync((): void => {
-    setInputValue('#firstname', 'Tommy');
+    expect(firstnameEl.value).toBe('');
 
-    expect(comp.firstName).toEqual('Tommy');
+    firstnameEl.value = 'test value';
+    firstnameEl.dispatchEvent(new Event('input'));
+
+    fixture.detectChanges();
+    tick();
+
+    expect(firstnameEl.value).toBe('test value');
+    expect(component.firstName).toBe('test value');
+
   }));
+  it('should do something on blur', () => {
+    // test prep
+    spyOn(component, 'firstNameBlur');
 
-  // must be called from within fakeAsync due to use of tick()
-  function setInputValue(selector: string, value: string) {
-    fixture.detectChanges();
-    tick();
-
-    let input = fixture.debugElement.query(By.css(selector)).nativeElement;
-    input.value = value;
-    input.dispatchEvent(new Event('input'));
-    tick();
-  }
-*/
-/*
-  fit('should have called router on success registration', () =>{
-
-    function sendInput(text: string) {
-      inputElement.value = text;
-      inputElement.dispatchEvent(fixture.nativeElement, 'input');
-      fixture.detectChanges();
-      return fixture.whenStable();
-    }
-
-    let getInput = (debugElement: DebugElement): DebugElement => {
-      console.log("inside getInpu");
-      let elem = debugElement.query(By.css('#firstname'));
-      console.log(elem);
-      return elem;
-    };
-
-    fixture.detectChanges();
-    let input = getInput(debugElement);
-    //console.log(JSON.stringify(input));
-    let inputElement = input.nativeElement;
-    inputElement.value = 'test value';
-    inputElement.dispatchEvent(new Event('input'));
-    expect(comp.firstName).toBe('test value');
-
-
+    firstnameEl.dispatchEvent(new Event('blur'));
+    expect(component.firstNameBlur).toHaveBeenCalled();
   });
-
+/*
   it('should log ngOnInit', () => {
     spyOn(console, 'log');
     expect(console.log).not.toHaveBeenCalled();

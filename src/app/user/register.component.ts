@@ -17,7 +17,7 @@ import { AuthenticationHttpService } from './auth.http.service';
           <form name="registerForm" (ngSubmit)="register()">
               <div class="form-group" >
                   <label for="firstName">First Name</label>
-                  <input type="firstname" class="form-control" [(ngModel)]="firstName" name="firstname" placeholder="Your first name here" (blur)="someMethod()" />
+                  <input id="firstname" type="firstname" class="form-control" [(ngModel)]="firstName" name="firstname" placeholder="Your first name here" (blur)="firstNameBlur()" />
               </div>
               <div class="form-group" >
                   <label for="lastName">Last Name</label>
@@ -70,25 +70,31 @@ export class RegisterComponent {
         console.log("registerComponent ctor");
     }
 
-    checkRequiredFields(){
+    checkRequiredFields(callername){
+        console.log("this.firstName=" + this.firstName);
+
         if(this.email && this.password){
             this.formEnabled = true;
         } 
-        console.log("checkRequiredFields, formEnabled=" + this.formEnabled);
+        console.log(callername + " called checkRequiredFields, formEnabled=" + this.formEnabled);
     }
     ngOnInit() {  
         console.log("registerComponent ngOnInit");
         this.loading = false;
-        this.checkRequiredFields();
+        this.checkRequiredFields("ngOnInit");
      }
     ngOnChanges(changes: SimpleChanges) {
         console.log("ngOnChanges called");
-        this.checkRequiredFields();
+        this.checkRequiredFields("ngOnChanges");
         
     }
     someMethod(){
         console.log("someMethod called");
-        this.checkRequiredFields();
+        this.checkRequiredFields("someMethod");
+    }
+    firstNameBlur(){
+        console.log("firstNameBlur called");
+        this.checkRequiredFields("firstNameBlur");
     }
     register() {
 
