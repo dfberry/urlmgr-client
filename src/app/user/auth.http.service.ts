@@ -17,12 +17,25 @@ export class AuthenticationHttpService{
     public authenticateToServer(authObj,serverUrl) {
         return this.http.post(serverUrl, authObj)
             .map((response:Response) => {
-                console.log("auth.http.service returned");
+                console.log("auth.http.service auth returned");
                 return response.json();
             })
             .toPromise()
             .catch((err: any) => {
-                console.log("auth.http.service failed err " + err);
+                console.log("auth.http.service auth  failed err " + err);
+                throw err;
+            });
+    }
+    public registerToServer(regObj, serverUrl){
+
+        return this.http.post(serverUrl, regObj)
+            .map((response:Response) => {
+                console.log("auth.http.service registration returned");
+                return response.json();
+            })
+            .toPromise()
+            .catch((err: any) => {
+                console.log("auth.http.service registration failed err " + err);
                 throw err;
             });
     }

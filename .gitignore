@@ -7,6 +7,8 @@
 /dist_old
 /.org.**
 *.map
+.karma
+/karma-*
 
 # dependencies
 /node_modules

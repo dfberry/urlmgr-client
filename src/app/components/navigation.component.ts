@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, SimpleChanges  } from '@angular/core';
+import { OnInit, Component, Input, Output, EventEmitter, ChangeDetectionStrategy, SimpleChanges  } from '@angular/core';
 import { AbstractControl, FormGroup, FormControl, Validators, FormBuilder, ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 import { Observable } from 'rxjs/Rx';
@@ -29,7 +29,7 @@ import { UserEvent } from '../user/user.broadcaster';
 
   `
 })
-export class NavigationComponent {
+export class NavigationComponent implements OnInit{
 
   currentUser:User = new User();
 

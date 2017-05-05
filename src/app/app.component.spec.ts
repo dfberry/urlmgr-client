@@ -1,4 +1,4 @@
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA, DebugElement } from '@angular/core';
 import {
   inject,
   async,
@@ -72,6 +72,7 @@ describe(`App`, () => {
     TestBed.configureTestingModule({
       declarations: [ AppComponent ],
       schemas: [NO_ERRORS_SCHEMA],
+      // DI to component
       providers: [
         { provide: AuthenticationService, useClass: MockAuthenticationService},
         { provide: ConfigService, useClass: MockConfigService},
@@ -82,9 +83,13 @@ describe(`App`, () => {
     .compileComponents(); // compile template and css
 
     fixture = TestBed.createComponent(AppComponent);
+
+    // instance of component
     comp    = fixture.componentInstance;
 
     fixture.detectChanges(); // trigger initial data binding
+
+
   }));
 
 

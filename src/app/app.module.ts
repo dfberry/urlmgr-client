@@ -25,7 +25,8 @@ import {
 
 import { 
   HttpDataService, 
-  Broadcaster 
+  Broadcaster,
+  Utils 
 } from './services/index';
 
 import { AppComponent } from './app.component';
@@ -82,6 +83,7 @@ let urlModule = UrlModule.forRoot();
     AuthGuard,
     Title,
     AppState,
+    Utils,
     { provide: APP_INITIALIZER, useFactory: (config: ConfigService) => () => config.load(), deps: [ConfigService], multi: true }
   ],
   bootstrap: [ AppComponent]
