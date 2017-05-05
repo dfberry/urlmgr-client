@@ -14,7 +14,7 @@ import { AuthenticationHttpService } from './auth.http.service';
     template: ` 
       <div class="col-md-6">
           <h2>Register</h2>
-          <form name="registerForm" (ngSubmit)="register()">
+          <form name="registerForm" (ngSubmit)="register()" >
               <div class="form-group" >
                   <label for="firstName">First Name</label>
                   <input id="firstname" type="firstname" class="form-control" [(ngModel)]="firstName" name="firstname" placeholder="Your first name here" (blur)="firstNameBlur()" />
@@ -32,7 +32,7 @@ import { AuthenticationHttpService } from './auth.http.service';
                   <input type="password" type="password"  class="form-control" [(ngModel)]="password" name="password" placeholder="Your password here" required (blur)="someMethod()" />
               </div>
               <div class="form-group">
-                  <button type="button" [disabled]="!formEnabled" class="btn btn-primary" (click)="register()">Register</button>
+                  <button id="registerButton" type="submit" [disabled]="!formEnabled" class="btn btn-primary" >Register</button>
                   <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
               </div>
                 <div *ngIf="regError" class="form-group has-error">
@@ -53,6 +53,7 @@ export class RegisterComponent implements DoCheck {
     baseUrl;
     public regError;
     loading=true;
+    registered=false;
     formEnabled=false;
 
 
@@ -68,6 +69,7 @@ export class RegisterComponent implements DoCheck {
         private router: Router
     ){
         console.log("registerComponent ctor");
+
     }
 
     checkRequiredFields(callername){
@@ -104,7 +106,8 @@ export class RegisterComponent implements DoCheck {
     register() {
 
         console.log("########################################register called#############################################");
-
+        this.registered = true;
+/*
         let registrationObj = {
             email: this.email,
             password: this.password,
@@ -122,7 +125,7 @@ export class RegisterComponent implements DoCheck {
             console.log("register failure");
             this.regError = err._body;
         });
-
+*/
 
     }
 }

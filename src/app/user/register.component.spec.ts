@@ -43,7 +43,7 @@ without nativeElement
 
  
 
-  let registerSpy: jasmine.Spy;
+  //let registerSpy: jasmine.Spy;
 /*
     function setInputValue(selector: string, value: string) {
       let el: HTMLInputElement = fixture.nativeElement.querySelector(selector);
@@ -75,7 +75,7 @@ without nativeElement
       component = fixture.componentInstance;
       debugElement = fixture.debugElement;
 
-      registerSpy = spyOn(component, 'register');
+      //registerSpy = spyOn(component, 'register');
 
       submitEl = fixture.debugElement.query(By.css('button')).nativeElement;;
       firstnameEl = fixture.debugElement.query(By.css('input[type=firstname]')).nativeElement;;
@@ -153,23 +153,37 @@ it(`should be readly initialized`, () => {
     expect(component.password).toBe(password);  
 
     expect(submitEl.disabled).toBeFalsy();
-
+    expect(submitEl.id).toBe("registerButton");
 
     let clickSpy = spyOn(submitEl, 'click');
+    //let formSpy = spyOn(form, 'submit');
+    let registerSpy = spyOn(component, 'register');
     submitEl.click();
-    //form.
 
     fixture.detectChanges();
     tick();
 
+    form.triggerEventHandler('submit', null);
+    //form.
+
+    fixture.detectChanges();
+    tick(1000);
+
     expect(clickSpy).toHaveBeenCalled();
+    expect(registerSpy).toHaveBeenCalled();
+    expect(fixture.componentInstance.register).toHaveBeenCalled();
+    //expect(component.register).toHaveBeenCalled();
+    //expect(component.registered).toBe(true);
+    //expect(formSpy).toHaveBeenCalled();
     //form.triggerEventHandler('submit', null);
-    //expect(registerSpy.calls.any()).toBe(true);
+    //expect(registerSpy).toHaveBeenCalled();
 
     //expect(component.model.content).toBe(expectedContent);
     //expect(component.model.rating.toString()).toBe(expectedRating);
-
-  }));
+//http://stackoverflow.com/questions/38786995/avoid-angular2-to-systematically-submit-form-on-button-click
+  
+//http://plnkr.co/edit/FrVMMaLc0NQkArGUC8yb?p=preview
+}));
   it('should do something on blur', () => {
     // test prep
     spyOn(component, 'firstNameBlur');
