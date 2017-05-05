@@ -75,7 +75,7 @@ without nativeElement
       component = fixture.componentInstance;
       debugElement = fixture.debugElement;
 
-      registerSpy = spyOn(component.authHttpService, 'authenticateToServer');
+      registerSpy = spyOn(component, 'register');
 
       submitEl = fixture.debugElement.query(By.css('button')).nativeElement;;
       firstnameEl = fixture.debugElement.query(By.css('input[type=firstname]')).nativeElement;;
@@ -150,12 +150,22 @@ it(`should be readly initialized`, () => {
     expect(component.email).toBe(email);
 
     expect(passwordEl.value).toBe(password);
-    expect(component.password).toBe(password);   
-
-    //form.triggerEventHandler('submit', null);
+    expect(component.password).toBe(password);  
 
     expect(submitEl.disabled).toBeFalsy();
+
+
+    let clickSpy = spyOn(submitEl, 'click');
+    submitEl.click();
+    //form.
+
+    fixture.detectChanges();
+    tick();
+
+    expect(clickSpy).toHaveBeenCalled();
+    //form.triggerEventHandler('submit', null);
     //expect(registerSpy.calls.any()).toBe(true);
+
     //expect(component.model.content).toBe(expectedContent);
     //expect(component.model.rating.toString()).toBe(expectedRating);
 
