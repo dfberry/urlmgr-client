@@ -119,20 +119,20 @@ it(`should be readly initialized`, () => {
     firstnameEl.value = firstName;
     firstnameEl.dispatchEvent(new Event('input'));
 
-    fixture.detectChanges();
-    tick();
+    //fixture.detectChanges();
+    //tick();
 
     lastnameEl.value = lastName;
     lastnameEl.dispatchEvent(new Event('input'));
 
-    fixture.detectChanges();
-    tick();
+    //fixture.detectChanges();
+    //tick();
 
     loginEl.value = email;
     loginEl.dispatchEvent(new Event('input'));
 
-    fixture.detectChanges();
-    tick();
+    //fixture.detectChanges();
+    //tick();
 
     passwordEl.value = password;
     passwordEl.dispatchEvent(new Event('input'));
@@ -154,7 +154,7 @@ it(`should be readly initialized`, () => {
 
     //form.triggerEventHandler('submit', null);
 
-    //expect(submitEl.disabled).toBeFalsy();
+    expect(submitEl.disabled).toBeFalsy();
     //expect(registerSpy.calls.any()).toBe(true);
     //expect(component.model.content).toBe(expectedContent);
     //expect(component.model.rating.toString()).toBe(expectedRating);
