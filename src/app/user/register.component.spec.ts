@@ -157,7 +157,7 @@ it(`should be readly initialized`, () => {
 
     let clickSpy = spyOn(submitEl, 'click');
     //let formSpy = spyOn(form, 'submit');
-    let registerSpy = spyOn(component, 'register');
+    let registerSpy = spyOn(component, 'register').and.callThrough();
     submitEl.click();
 
     fixture.detectChanges();

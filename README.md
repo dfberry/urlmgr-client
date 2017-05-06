@@ -66,3 +66,12 @@ https://github.com/textbook/salary-stats/blob/8df142c9f3330889e2146f49ab47a097de
 
 component change detection
 https://juristr.com/blog/2016/04/angular2-change-detection/#but-what-if-i-always-want-to-get-notified
+
+testing html components continued
+http://plnkr.co/edit/08ppx8olCnTMpkPdW3eC?p=preview
+
+jasmine spy cheatsheet
+http://tobyho.com/2011/12/15/jasmine-spy-cheatsheet/
+
+My Plunker/StackOverflow on integration testing
+https://plnkr.co/edit/hSoXsdYvcLY3XXrFSYQl?p=preview
