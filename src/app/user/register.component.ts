@@ -123,8 +123,10 @@ export class RegisterComponent implements DoCheck {
         }).catch((err: any) => {
             // don't go any where, just set error text
             //console.log("registration.component err " + err);
-            console.log("register failure");
-            this.regError = err._body;
+            console.log("register failure - " + err);
+            this.regError = "An unexpected error occured";
+            if(err && err._body) this.regError = JSON.parse(err._body).error;
+
         });
     }
 }
