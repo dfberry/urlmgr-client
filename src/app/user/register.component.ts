@@ -14,6 +14,9 @@ import { AuthenticationHttpService } from './auth.http.service';
     template: ` 
       <div class="col-md-6">
           <h2>Register</h2>
+                <div *ngIf="regError" class="form-group has-error">
+                    <label class="control-label" >{{regError}}</label>
+                </div>
           <form name="registerForm" (ngSubmit)="register()" >
               <div class="form-group" >
                   <label for="firstName">First Name</label>
@@ -35,9 +38,7 @@ import { AuthenticationHttpService } from './auth.http.service';
                   <button id="registerButton" type="submit" [disabled]="!formEnabled" class="btn btn-primary" >Register</button>
                   <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
               </div>
-                <div *ngIf="regError" class="form-group has-error">
-                    <label class="control-label" >{{regError}}</label>
-                </div>
+
           </form>
       </div>
       {{validForm}}
@@ -76,7 +77,9 @@ export class RegisterComponent implements DoCheck {
 
         if(this.email && this.password){
             this.formEnabled = true;
-        } 
+        } else {
+            this.formEnabled = false;
+        }
         console.log(callername + " called checkRequiredFields, formEnabled=" + this.formEnabled);
         console.log(callername + " called checkRequiredFields, this.firstName=" + this.firstName);
         console.log(callername + " called checkRequiredFields, this.lastName=" + this.lastName);
