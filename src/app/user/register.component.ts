@@ -17,7 +17,7 @@ import { AuthenticationHttpService } from './auth.http.service';
           <form name="registerForm" (ngSubmit)="register()" >
               <div class="form-group" >
                   <label for="firstName">First Name</label>
-                  <input id="firstname" type="firstname" class="form-control" [(ngModel)]="firstName" name="firstname" placeholder="Your first name here" (blur)="firstNameBlur()" />
+                  <input id="firstname" type="firstname" class="form-control" [(ngModel)]="firstName" name="firstname" placeholder="Your first name here" />
               </div>
               <div class="form-group" >
                   <label for="lastName">Last Name</label>
@@ -104,10 +104,10 @@ export class RegisterComponent implements DoCheck {
         this.checkRequiredFields("firstNameBlur");
     }
     register() {
-
+        //console.log("caller is " + arguments.callee.caller.toString());
         console.log("########################################register called#############################################");
         this.registered = true;
-/*
+
         let registrationObj = {
             email: this.email,
             password: this.password,
@@ -115,9 +115,10 @@ export class RegisterComponent implements DoCheck {
             firstName: this.firstName
         };
 
-        this.authHttpService.authenticateToServer(registrationObj, Configuration.urls.base + '/users' ).then(json => {
+        this.authHttpService.registerToServer(registrationObj, Configuration.urls.base + '/users' ).then(json => {
             console.log("register success");
             this.regError="";
+            this.registered=true;
             this.router.navigate(['/login']);
         }).catch((err: any) => {
             // don't go any where, just set error text
@@ -125,7 +126,5 @@ export class RegisterComponent implements DoCheck {
             console.log("register failure");
             this.regError = err._body;
         });
-*/
-
     }
 }

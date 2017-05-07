@@ -75,3 +75,7 @@ http://tobyho.com/2011/12/15/jasmine-spy-cheatsheet/
 
 My Plunker/StackOverflow on integration testing
 https://plnkr.co/edit/hSoXsdYvcLY3XXrFSYQl?p=preview
+
+//http://stackoverflow.com/questions/38786995/avoid-angular2-to-systematically-submit-form-on-button-click
+  
+//http://plnkr.co/edit/FrVMMaLc0NQkArGUC8yb?p=preview

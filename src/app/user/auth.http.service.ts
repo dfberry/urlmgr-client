@@ -26,6 +26,7 @@ export class AuthenticationHttpService{
                 throw err;
             });
     }
+    
     public registerToServer(regObj, serverUrl){
 
         return this.http.post(serverUrl, regObj)
