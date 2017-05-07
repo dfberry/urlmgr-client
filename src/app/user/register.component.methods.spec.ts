@@ -13,7 +13,7 @@ import { Router, RouterModule } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ReflectiveInjector } from '@angular/core';
 
-fdescribe(`Register Component Method`, () => {
+describe(`Register Component Method`, () => {
   let component: RegisterComponent;
   let fixture: ComponentFixture<RegisterComponent>;
 
@@ -63,11 +63,14 @@ fdescribe(`Register Component Method`, () => {
     fixture = TestBed.createComponent(RegisterComponent);
     component = fixture.componentInstance;
 
-    authService = fixture.debugElement.injector.get(AuthenticationHttpService);
+    authService = fixture.debugElement.injector.get(AuthenticationHttpService);   
     routerService = fixture.debugElement.injector.get(Router);
 
     authServiceSpy = spyOn(authService, 'registerToServer')
           .and.returnValue(Promise.resolve(baseJsonResponse));
+    expect(component.registered).toBe(false);
+    component.register();
+
   }));
   it('should define everything', () => {
     expect(authService).toBeDefined();
@@ -75,32 +78,29 @@ fdescribe(`Register Component Method`, () => {
     expect(component.register).toBeDefined();
   });
   it('should call services from register', () => {
-    component.register();
     expect(authServiceSpy).toHaveBeenCalled();
-
   });
-  /*
-  it(`should route when new user successfully registered on server`, ()=> {
-    
-    //let authService = TestBed.get(AuthenticationHttpService);
-
-    let authSpy: jasmine.Spy;
-    let routeSpy: jasmine.Spy;
-
-    authSpy = spyOn(auth, 'authenticateToServer');
-
-    component.email = email;
-    component.password = password;
-    component.lastName = lastName;
-    component.firstName = firstName;
-
-    expect(component.registered).toBe(false);
-
-    component.register();
-
+  it('should wait for promise (async)', async(() => {
+    fixture.detectChanges();
+    fixture.whenStable().then(() => { // wait for async 
+      fixture.detectChanges();        // update view
+      expect(component.registered).toBe(true);
+    });
+  }));
+  it('should wait for fake promise (fakeAsync)', fakeAsync(() => {
+    fixture.detectChanges();
+    tick();
+    fixture.detectChanges();        // update view
     expect(component.registered).toBe(true);
-    expect(authSpy).toHaveBeenCalled();
+  }));
+  it('should show quote after getQuote promise (done)', (done: any) => {
+    fixture.detectChanges();
 
-  })));
-  */
+    // get the spy promise and wait for it to resolve
+    authServiceSpy.calls.mostRecent().returnValue.then(() => {
+      fixture.detectChanges(); // update view 
+      expect(component.registered).toBe(true);
+      done();
+    });
+  });
 });
