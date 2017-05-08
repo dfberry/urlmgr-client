@@ -20,19 +20,23 @@ import { AuthenticationHttpService } from './auth.http.service';
           <form name="registerForm" (ngSubmit)="register()" >
               <div class="form-group" >
                   <label for="firstName">First Name</label>
-                  <input id="firstname" type="firstname" class="form-control" [(ngModel)]="firstName" name="firstname" placeholder="Your first name here" />
+                  <input id="firstname" type="firstname" class="form-control" [(ngModel)]="firstName" name="firstname" placeholder="Your first name here" (blur)="validateOnBlur()"  />
               </div>
+              
               <div class="form-group" >
                   <label for="lastName">Last Name</label>
-                  <input type="lastname" class="form-control" [(ngModel)]="lastName" name="lastname" placeholder="Your last name here"  (blur)="someMethod()" />
+                  <input type="lastname" class="form-control" [(ngModel)]="lastName" name="lastname" placeholder="Your last name here"  (blur)="validateOnBlur()" />
               </div>
               <div class="form-group" >
                   <label for="email">Email</label>
-                  <input type="text" type="email" class="form-control" [(ngModel)]="email" name="username" placeholder="Your email here" required (blur)="someMethod()" />
+                  <input type="text" type="email" class="form-control" [(ngModel)]="email" name="username" placeholder="Your email here" required (blur)="validateOnBlur()" pattern="\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b."/>
+                  <div type="emailErrorContainer"  class="email form-group has-error">
+                    <label type="emailErrors" name="emailErrors" class="email errors control-label" >{{emailValidationError}}</label>
+                  </div>
               </div>
               <div class="form-group" >
                   <label for="password">Password</label>
-                  <input type="password" type="password"  class="form-control" [(ngModel)]="password" name="password" placeholder="Your password here" required (blur)="someMethod()" />
+                  <input type="password" type="password"  class="form-control" [(ngModel)]="password" name="password" placeholder="Your password here" required (blur)="validateOnBlur()"  />
               </div>
               <div class="form-group">
                   <button id="registerButton" type="submit" [disabled]="!formEnabled" class="btn btn-primary" >Register</button>
@@ -57,6 +61,7 @@ export class RegisterComponent implements DoCheck {
     registered=false;
     formEnabled=false;
 
+    emailValidationError="";
 
     asyncErrors = {
         username: {
@@ -85,8 +90,6 @@ export class RegisterComponent implements DoCheck {
         console.log(callername + " called checkRequiredFields, this.lastName=" + this.lastName);
         console.log(callername + " called checkRequiredFields, this.email=" + this.email);
         console.log(callername + " called checkRequiredFields, this.password=" + this.password);    
-
-
     }
     ngOnInit() {  
         console.log("registerComponent ngOnInit");
@@ -98,9 +101,11 @@ export class RegisterComponent implements DoCheck {
         this.checkRequiredFields("ngDoCheck");
         
     }
-    someMethod(){
-        console.log("someMethod called");
-        this.checkRequiredFields("someMethod");
+    validateOnBlur(){
+        console.log("validateOnBlur called");
+
+        this.emailIsValid(this.email);
+        this.checkRequiredFields("validateOnBlur");
     }
     firstNameBlur(){
         console.log("firstNameBlur called");
@@ -131,5 +136,15 @@ export class RegisterComponent implements DoCheck {
             if(err && err._body) this.regError = JSON.parse(err._body).error;
 
         });
+    }
+    emailIsValid(email:string) {
+        // RFC 2822 compliant regex
+        if (email.match(/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/)) {
+            console.log("email is valid format");
+            this.emailValidationError = "";
+        } else {
+            this.emailValidationError = "Email is not valid format";
+            console.log("email is not valid format");
+        }
     }
 }

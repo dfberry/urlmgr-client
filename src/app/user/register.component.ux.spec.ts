@@ -43,6 +43,10 @@ describe(`Register UX`, () => {
   let firstnameEl: HTMLTextAreaElement;
   let lastnameEl: HTMLTextAreaElement;
   let loginEl: HTMLTextAreaElement;
+
+  let emailErrorsContainerEl: HTMLTextAreaElement;
+  let emailErrorsEl: HTMLTextAreaElement;
+  
   let passwordEl: HTMLTextAreaElement;
 
   beforeEach(() => {
@@ -66,11 +70,14 @@ describe(`Register UX`, () => {
     component = fixture.componentInstance;
     debugElement = fixture.debugElement;
 
-    submitEl = fixture.debugElement.query(By.css('button')).nativeElement;;
-    firstnameEl = fixture.debugElement.query(By.css('input[type=firstname]')).nativeElement;;
-    lastnameEl = fixture.debugElement.query(By.css('input[type=lastname]')).nativeElement;;
-    loginEl = fixture.debugElement.query(By.css('input[type=email]')).nativeElement;;
-    passwordEl = fixture.debugElement.query(By.css('input[type=password]')).nativeElement;;
+    submitEl = fixture.debugElement.query(By.css('button')).nativeElement;
+    firstnameEl = fixture.debugElement.query(By.css('input[type=firstname]')).nativeElement;
+    lastnameEl = fixture.debugElement.query(By.css('input[type=lastname]')).nativeElement;
+    loginEl = fixture.debugElement.query(By.css('input[type=email]')).nativeElement;
+    passwordEl = fixture.debugElement.query(By.css('input[type=password]')).nativeElement;
+
+    emailErrorsContainerEl = fixture.debugElement.query(By.css('div[type=emailerrorcontainer]')).nativeElement;;
+    emailErrorsEl = fixture.debugElement.query(By.css('label[type=emailErrors]')).nativeElement;
 
     form = fixture.debugElement.query(By.css('form'));
 
@@ -83,7 +90,7 @@ describe(`Register UX`, () => {
   }));
 
 
-  it(`should be readly initialized`, () => {
+  fit(`should be readly initialized`, () => {
     expect(fixture).toBeDefined();
     expect(component).toBeDefined();
     expect(debugElement).toBeDefined();
@@ -91,6 +98,8 @@ describe(`Register UX`, () => {
     expect(submitEl).toBeDefined();
 
     expect(loginEl).toBeDefined();
+    expect(emailErrorsContainerEl).toBeDefined();
+    expect(emailErrorsEl).toBeDefined();
     expect(passwordEl).toBeDefined();
 
     expect(firstnameEl).toBeDefined();
@@ -101,7 +110,11 @@ describe(`Register UX`, () => {
 
     expect(firstnameEl.value).toBe('');
     expect(lastnameEl.value).toBe('');
+
     expect(loginEl.value).toBe('');
+    //expect(emailErrorsContainerEl.hasAttribute('hidden')).toEqual(true);
+    expect(emailErrorsEl).toEqual('');
+
     expect(passwordEl.value).toBe('');
     expect(submitEl.disabled).toBeTruthy();
 
@@ -132,6 +145,9 @@ describe(`Register UX`, () => {
 
     expect(loginEl.value).toBe(email);
     expect(component.email).toBe(email);
+
+    expect(emailErrorsContainerEl.hasAttribute('hidden')).toEqual(true);
+    expect(emailErrorsEl).toEqual('');
 
     expect(passwordEl.value).toBe(password);
     expect(component.password).toBe(password);
