@@ -94,9 +94,9 @@ export class RegisterComponent implements DoCheck {
 
     checkRequiredFields(callername){
 
-        if(this.email.value && !this.email.dirty) this.validateEmailOnBlur();
+        this.validateEmailOnBlur();
 
-        if((this.email.dirty && this.email.valid && this.email.value) && this.password){
+        if(this.email.valid && this.password){
             this.formEnabled = true;
         } else {
             this.formEnabled = false;

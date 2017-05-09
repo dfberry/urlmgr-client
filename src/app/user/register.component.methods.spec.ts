@@ -57,9 +57,6 @@ describe(`Register Component Method`, () => {
 
   // fakeAsync so I can use tick
   beforeEach(fakeAsync(() => {
-
-
-
     fixture = TestBed.createComponent(RegisterComponent);
     component = fixture.componentInstance;
 
@@ -69,6 +66,8 @@ describe(`Register Component Method`, () => {
     authServiceSpy = spyOn(authService, 'registerToServer')
           .and.returnValue(Promise.resolve(baseJsonResponse));
     expect(component.registered).toBe(false);
+
+    // register new user
     component.register();
 
   }));
@@ -84,6 +83,8 @@ describe(`Register Component Method`, () => {
     fixture.detectChanges();
     fixture.whenStable().then(() => { // wait for async 
       fixture.detectChanges();        // update view
+
+      // successfully registered user
       expect(component.registered).toBe(true);
     });
   }));
@@ -91,14 +92,18 @@ describe(`Register Component Method`, () => {
     fixture.detectChanges();
     tick();
     fixture.detectChanges();        // update view
+
+    // successfully registered user
     expect(component.registered).toBe(true);
   }));
-  it('should show quote after getQuote promise (done)', (done: any) => {
+  it('should register after submission promise (done)', (done: any) => {
     fixture.detectChanges();
 
     // get the spy promise and wait for it to resolve
     authServiceSpy.calls.mostRecent().returnValue.then(() => {
       fixture.detectChanges(); // update view 
+
+      // successfully registered user
       expect(component.registered).toBe(true);
       done();
     });

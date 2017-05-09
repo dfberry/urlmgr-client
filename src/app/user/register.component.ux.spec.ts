@@ -228,4 +228,98 @@ describe(`Register UX`, () => {
     // component formEnabled
     expect(component.formEnabled).toBeFalsy();
   }));  
+it('should allow correct email after invalid email error', fakeAsync(() => {
+
+    expect(firstnameEl.value).toBe('');
+    expect(lastnameEl.value).toBe('');
+
+    expect(loginEl.value).toBe('');
+
+    expect(passwordEl.value).toBe('');
+    console.log("submit should be enabled");
+    expect(submitEl.disabled).toBeTruthy();
+
+    fixture.detectChanges();
+
+    email = "thisisabademail";
+
+    firstnameEl.value = firstName;
+    firstnameEl.dispatchEvent(new Event('input'));
+
+    lastnameEl.value = lastName;
+    lastnameEl.dispatchEvent(new Event('input'));
+
+    loginEl.value = email;
+    loginEl.dispatchEvent(new Event('input'));
+
+    passwordEl.value = password;
+    passwordEl.dispatchEvent(new Event('input'));
+
+    fixture.detectChanges();
+    tick();
+
+    expect(firstnameEl.value).toBe(firstName);
+    expect(component.firstName).toBe(firstName);
+
+    expect(lastnameEl.value).toBe(lastName);
+    expect(component.lastName).toBe(lastName);
+
+    expect(passwordEl.value).toBe(password);
+    expect(component.password).toBe(password);
+
+    expect(loginEl.value).toBe(email);
+    expect(component.email.value).toBe(email);
+
+    // assert for invalid error format
+
+    emailErrorsContainerEl = fixture.debugElement.query(By.css('div[type=emailerrorcontainer]')).nativeElement;
+    emailErrorsEl = fixture.debugElement.query(By.css('label[type=emailerrors')).nativeElement;
+
+    // DOM changed
+    expect(emailErrorsContainerEl).toBeDefined();
+    expect(emailErrorsEl).toBeDefined();
+
+    // HTML - container for email error should be visible
+    expect(emailErrorsContainerEl.hasAttribute('hidden')).toEqual(false);
+    // HTML - email label to have text
+    expect(emailErrorsEl.innerHTML).not.toBe('');
+    // HTML - submit button is disabled because of errors
+    expect(submitEl.disabled).toBeTruthy();
+    
+    // component email error text is set
+    expect(component.email.errorMsg).toBeTruthy();
+    // component formEnabled
+    expect(component.formEnabled).toBeFalsy();
+
+    // well-formed email
+    email = Math.floor(new Date().valueOf() / 1000) + emailPost;
+    loginEl.value = email;
+    loginEl.dispatchEvent(new Event('input'));
+
+    console.log("entered correct email and detecting changes");
+
+    fixture.detectChanges();
+    tick();
+
+    expect(loginEl.value).toBe(email);
+    expect(component.email.valid).toBe(true);
+    expect(component.email.dirty).toBe(true);
+    expect(component.email.errorMsg).toBe('');
+    expect(component.email.value).toBe(email);
+    
+    console.log("checking submit");
+
+    expect(submitEl.disabled).toBeFalsy();
+    expect(submitEl.id).toBe("registerButton");
+
+    form.triggerEventHandler('submit', null);
+
+
+    fixture.detectChanges();
+    tick(1000);
+
+    expect(registerSpy).toHaveBeenCalled();
+    
+  }));  
+
 });
