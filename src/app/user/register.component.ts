@@ -14,29 +14,30 @@ import { AuthenticationHttpService } from './auth.http.service';
     template: ` 
       <div class="col-md-6">
           <h2>Register</h2>
+
+          <form name="registerForm" (ngSubmit)="register()" >
                 <div *ngIf="regError" class="form-group has-error">
                     <label class="control-label" >{{regError}}</label>
                 </div>
-          <form name="registerForm" (ngSubmit)="register()" >
               <div class="form-group" >
                   <label for="firstName">First Name</label>
-                  <input id="firstname" type="firstname" class="form-control" [(ngModel)]="firstName" name="firstname" placeholder="Your first name here" (blur)="validateOnBlur()"  />
+                  <input id="firstname" type="firstname" class="form-control" [(ngModel)]="firstName" name="firstname" placeholder="Your first name here"   />
               </div>
               
               <div class="form-group" >
                   <label for="lastName">Last Name</label>
-                  <input type="lastname" class="form-control" [(ngModel)]="lastName" name="lastname" placeholder="Your last name here"  (blur)="validateOnBlur()" />
+                  <input type="lastname" class="form-control" [(ngModel)]="lastName" name="lastname" placeholder="Your last name here"   />
               </div>
-              <div class="form-group" >
+              <div class="form-group email" >
                   <label for="email">Email</label>
-                  <input type="text" type="email" class="form-control" [(ngModel)]="email" name="username" placeholder="Your email here" required (blur)="validateOnBlur()" pattern="\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b."/>
-                  <div type="emailErrorContainer"  class="email form-group has-error">
-                    <label type="emailErrors" name="emailErrors" class="email errors control-label" >{{emailValidationError}}</label>
+                  <input type="text" type="email" class="form-control" [(ngModel)]="email.value" name="username" placeholder="Your email here" required (blur)="validateEmailOnBlur()" />
+                  <div id="emailerrorcontainer" type="emailerrorcontainer" *ngIf="!email.valid" class="email form-group has-error">
+                    <label id="emailerrors" type="emailerrors" class="email errors control-label" >{{email.errorMsg}}</label>
                   </div>
               </div>
               <div class="form-group" >
                   <label for="password">Password</label>
-                  <input type="password" type="password"  class="form-control" [(ngModel)]="password" name="password" placeholder="Your password here" required (blur)="validateOnBlur()"  />
+                  <input type="password" type="password"  class="form-control" [(ngModel)]="password" name="password" placeholder="Your password here"  />
               </div>
               <div class="form-group">
                   <button id="registerButton" type="submit" [disabled]="!formEnabled" class="btn btn-primary" >Register</button>
@@ -53,22 +54,23 @@ export class RegisterComponent implements DoCheck {
     newForm: FormGroup;
     lastName="";
     firstName="";
-    email="";
     password="";
     baseUrl;
     public regError;
     loading=true;
+
+    email = {
+        value: "",
+        valid: false,
+        dirty: false,
+        errorMsg: ""
+    }
+
     registered=false;
     formEnabled=false;
 
-    emailValidationError="";
+    emailerrors="";
 
-    asyncErrors = {
-        username: {
-            error: false,
-            message: "user is taken"
-        }
-    };
 
     constructor(
         public authHttpService: AuthenticationHttpService /* for server auth */,
@@ -76,20 +78,6 @@ export class RegisterComponent implements DoCheck {
     ){
         console.log("registerComponent ctor");
 
-    }
-
-    checkRequiredFields(callername){
-
-        if(this.email && this.password){
-            this.formEnabled = true;
-        } else {
-            this.formEnabled = false;
-        }
-        console.log(callername + " called checkRequiredFields, formEnabled=" + this.formEnabled);
-        console.log(callername + " called checkRequiredFields, this.firstName=" + this.firstName);
-        console.log(callername + " called checkRequiredFields, this.lastName=" + this.lastName);
-        console.log(callername + " called checkRequiredFields, this.email=" + this.email);
-        console.log(callername + " called checkRequiredFields, this.password=" + this.password);    
     }
     ngOnInit() {  
         console.log("registerComponent ngOnInit");
@@ -101,15 +89,41 @@ export class RegisterComponent implements DoCheck {
         this.checkRequiredFields("ngDoCheck");
         
     }
-    validateOnBlur(){
-        console.log("validateOnBlur called");
 
-        this.emailIsValid(this.email);
-        this.checkRequiredFields("validateOnBlur");
+
+
+    checkRequiredFields(callername){
+
+        if(this.email.value && !this.email.dirty) this.validateEmailOnBlur();
+
+        if((this.email.dirty && this.email.valid && this.email.value) && this.password){
+            this.formEnabled = true;
+        } else {
+            this.formEnabled = false;
+        }
+        console.log(callername + " called checkRequiredFields, formEnabled=" + this.formEnabled);
+        console.log(callername + " called checkRequiredFields, this.firstName=" + this.firstName);
+        console.log(callername + " called checkRequiredFields, this.lastName=" + this.lastName);
+        console.log(callername + " called checkRequiredFields, this.email=" + JSON.stringify(this.email));
+        console.log(callername + " called checkRequiredFields, this.password=" + this.password);    
     }
-    firstNameBlur(){
-        console.log("firstNameBlur called");
-        this.checkRequiredFields("firstNameBlur");
+    validateEmailOnBlur() {
+
+        this.email.dirty = true;
+
+        // pattern="\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b."
+        console.log("validateEmailOnBlur, email = " + JSON.stringify(this.email));
+
+        // RFC 2822 compliant regex
+        if (this.email.value.match(/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/)) {
+            console.log("email is valid format");
+            this.email.valid = true;
+            this.email.errorMsg = "";
+        } else {
+            this.email.valid = false;
+            this.email.errorMsg = "Email is not valid format";
+            console.log("email is not valid format");
+        }
     }
     register() {
         //console.log("caller is " + arguments.callee.caller.toString());
@@ -117,7 +131,7 @@ export class RegisterComponent implements DoCheck {
         this.registered = true;
 
         let registrationObj = {
-            email: this.email,
+            email: this.email.value,
             password: this.password,
             lastName: this.lastName,
             firstName: this.firstName
@@ -137,14 +151,5 @@ export class RegisterComponent implements DoCheck {
 
         });
     }
-    emailIsValid(email:string) {
-        // RFC 2822 compliant regex
-        if (email.match(/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/)) {
-            console.log("email is valid format");
-            this.emailValidationError = "";
-        } else {
-            this.emailValidationError = "Email is not valid format";
-            console.log("email is not valid format");
-        }
-    }
+
 }

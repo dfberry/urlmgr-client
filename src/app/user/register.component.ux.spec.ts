@@ -76,9 +76,6 @@ describe(`Register UX`, () => {
     loginEl = fixture.debugElement.query(By.css('input[type=email]')).nativeElement;
     passwordEl = fixture.debugElement.query(By.css('input[type=password]')).nativeElement;
 
-    emailErrorsContainerEl = fixture.debugElement.query(By.css('div[type=emailerrorcontainer]')).nativeElement;;
-    emailErrorsEl = fixture.debugElement.query(By.css('label[type=emailErrors]')).nativeElement;
-
     form = fixture.debugElement.query(By.css('form'));
 
     clickSpy = spyOn(submitEl, 'click');
@@ -90,7 +87,7 @@ describe(`Register UX`, () => {
   }));
 
 
-  fit(`should be readly initialized`, () => {
+  it(`should be readly initialized`, () => {
     expect(fixture).toBeDefined();
     expect(component).toBeDefined();
     expect(debugElement).toBeDefined();
@@ -98,13 +95,19 @@ describe(`Register UX`, () => {
     expect(submitEl).toBeDefined();
 
     expect(loginEl).toBeDefined();
-    expect(emailErrorsContainerEl).toBeDefined();
-    expect(emailErrorsEl).toBeDefined();
     expect(passwordEl).toBeDefined();
 
     expect(firstnameEl).toBeDefined();
     expect(lastnameEl).toBeDefined();
+
   });
+
+  it('should not have email error objects in DOM on startup', fakeAsync(() => {
+
+    expect(fixture.debugElement.query(By.css('div[type=emailerrorcontainer]'))).toBeDefined();
+    expect(fixture.debugElement.query(By.css('label[type=emailerrors'))).toBeDefined();
+
+  }))
 
   it('should register with submit button', fakeAsync(() => {
 
@@ -112,8 +115,6 @@ describe(`Register UX`, () => {
     expect(lastnameEl.value).toBe('');
 
     expect(loginEl.value).toBe('');
-    //expect(emailErrorsContainerEl.hasAttribute('hidden')).toEqual(true);
-    expect(emailErrorsEl).toEqual('');
 
     expect(passwordEl.value).toBe('');
     expect(submitEl.disabled).toBeTruthy();
@@ -144,10 +145,10 @@ describe(`Register UX`, () => {
     expect(component.lastName).toBe(lastName);
 
     expect(loginEl.value).toBe(email);
-    expect(component.email).toBe(email);
-
-    expect(emailErrorsContainerEl.hasAttribute('hidden')).toEqual(true);
-    expect(emailErrorsEl).toEqual('');
+    expect(component.email.valid).toBe(true);
+    expect(component.email.dirty).toBe(true);
+    expect(component.email.errorMsg).toBe('');
+    expect(component.email.value).toBe(email);
 
     expect(passwordEl.value).toBe(password);
     expect(component.password).toBe(password);
@@ -164,4 +165,67 @@ describe(`Register UX`, () => {
     expect(registerSpy).toHaveBeenCalled();
 
   }));
+  it('should show invalid email error', fakeAsync(() => {
+
+    expect(firstnameEl.value).toBe('');
+    expect(lastnameEl.value).toBe('');
+
+    expect(loginEl.value).toBe('');
+
+    expect(passwordEl.value).toBe('');
+    console.log("submit should be enabled");
+    expect(submitEl.disabled).toBeTruthy();
+
+    fixture.detectChanges();
+
+    email = "thisisabademail";
+
+    firstnameEl.value = firstName;
+    firstnameEl.dispatchEvent(new Event('input'));
+
+    lastnameEl.value = lastName;
+    lastnameEl.dispatchEvent(new Event('input'));
+
+    loginEl.value = email;
+    loginEl.dispatchEvent(new Event('input'));
+
+    passwordEl.value = password;
+    passwordEl.dispatchEvent(new Event('input'));
+
+    fixture.detectChanges();
+    tick();
+
+    expect(firstnameEl.value).toBe(firstName);
+    expect(component.firstName).toBe(firstName);
+
+    expect(lastnameEl.value).toBe(lastName);
+    expect(component.lastName).toBe(lastName);
+
+    expect(passwordEl.value).toBe(password);
+    expect(component.password).toBe(password);
+
+    expect(loginEl.value).toBe(email);
+    expect(component.email.value).toBe(email);
+
+    // assert for invalid error format
+
+    emailErrorsContainerEl = fixture.debugElement.query(By.css('div[type=emailerrorcontainer]')).nativeElement;
+    emailErrorsEl = fixture.debugElement.query(By.css('label[type=emailerrors')).nativeElement;
+
+    // DOM changed
+    expect(emailErrorsContainerEl).toBeDefined();
+    expect(emailErrorsEl).toBeDefined();
+
+    // HTML - container for email error should be visible
+    expect(emailErrorsContainerEl.hasAttribute('hidden')).toEqual(false);
+    // HTML - email label to have text
+    expect(emailErrorsEl.innerHTML).not.toBe('');
+    // HTML - submit button is disabled because of errors
+    expect(submitEl.disabled).toBeTruthy();
+    
+    // component email error text is set
+    expect(component.email.errorMsg).toBeTruthy();
+    // component formEnabled
+    expect(component.formEnabled).toBeFalsy();
+  }));  
 });
