@@ -65,7 +65,7 @@ describe(`Register Component Method`, () => {
 
     authServiceSpy = spyOn(authService, 'registerToServer')
           .and.returnValue(Promise.resolve(baseJsonResponse));
-    expect(component.registered).toBe(false);
+    expect(component.registration.registered).toBe(false);
 
     // register new user
     component.register();
@@ -85,7 +85,7 @@ describe(`Register Component Method`, () => {
       fixture.detectChanges();        // update view
 
       // successfully registered user
-      expect(component.registered).toBe(true);
+      expect(component.registration.registered).toBe(true);
     });
   }));
   it('should wait for fake promise (fakeAsync)', fakeAsync(() => {
@@ -94,7 +94,7 @@ describe(`Register Component Method`, () => {
     fixture.detectChanges();        // update view
 
     // successfully registered user
-    expect(component.registered).toBe(true);
+    expect(component.registration.registered).toBe(true);
   }));
   it('should register after submission promise (done)', (done: any) => {
     fixture.detectChanges();
@@ -104,7 +104,7 @@ describe(`Register Component Method`, () => {
       fixture.detectChanges(); // update view 
 
       // successfully registered user
-      expect(component.registered).toBe(true);
+      expect(component.registration.registered).toBe(true);
       done();
     });
   });

@@ -79,3 +79,8 @@ https://plnkr.co/edit/hSoXsdYvcLY3XXrFSYQl?p=preview
 //http://stackoverflow.com/questions/38786995/avoid-angular2-to-systematically-submit-form-on-button-click
   
 //http://plnkr.co/edit/FrVMMaLc0NQkArGUC8yb?p=preview
+
+doCheck plunker
+https://plnkr.co/edit/hCKn9V1L8rzDPYzGc5HW?p=info
+http://plnkr.co/edit/pvOQZs0xJOxrMJe2whn1?p=preview
+** only checks basic json - not nested
