@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 
-import { AuthenticationService } from './user/auth.service';
-import { User } from './user/user.model';
+import { AuthenticationService, User } from './user';
 import { environment } from '../environments/environment';
 import { ConfigService } from './config/config.service';
 import { AppState } from './app.state';

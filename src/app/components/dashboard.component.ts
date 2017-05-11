@@ -2,13 +2,13 @@ import { Component} from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 import { Store } from '@ngrx/store';
 
-import { UserEvent } from '../user/user.broadcaster';
+import { UserEvent, User } from '../user';
+
 import { UrlEvent } from '../url/url.event';
 
 import { AppState, UrlActions, UserActions } from '../app.state';
 import { UrlService } from '../url/url.service';
 
-import { User } from '../user/user.model';
 import { Url } from '../url/url.model';
 /**************************************************************************
  * 

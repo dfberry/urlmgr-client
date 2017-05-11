@@ -10,7 +10,9 @@ import { Title, By } from '@angular/platform-browser';
 
 // Load the implementations that should be tested
 import { AppComponent } from './app.component';
-import { AuthenticationService } from './user/auth.service';
+
+import { AuthenticationService} from './user';
+
 import { ConfigService } from './config/config.service';
 import { AppState } from './app.state';
 import { User } from './user/user.model';

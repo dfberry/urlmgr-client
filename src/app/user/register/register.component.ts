@@ -4,8 +4,8 @@ import { RouterModule, Routes, Router } from '@angular/router';
 import { Http, Response, URLSearchParams, Headers, RequestOptions} from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 
-import { Configuration } from './config';
-import { AuthenticationHttpService } from './auth.http.service';
+import { Configuration } from '../config';
+import { AuthenticationHttpService } from '../services';
 
 
 

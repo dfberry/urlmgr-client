@@ -5,11 +5,9 @@ import { Http, Response, URLSearchParams, Headers, RequestOptions, RequestOption
 import { Observable } from 'rxjs/Rx';
 
 // user module only
-import { User } from './user.model';
-import { UserEvent } from './user.broadcaster';
-import { AuthenticationService } from './auth.service';
-import { AuthenticationHttpService } from './auth.http.service';
-import { Configuration } from './config'; // configuration inside user module only
+import { User } from '../user.model';
+import { AuthenticationHttpService, AuthenticationService, UserEvent } from '../services';
+import { Configuration } from '../config'; // configuration inside user module only
 
 @Component({
     selector: 'login',

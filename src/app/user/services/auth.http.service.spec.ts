@@ -1,7 +1,7 @@
 import { TestBed, async, inject } from '@angular/core/testing';
 import { AuthenticationHttpService } from './auth.http.service';
 
-import { Configuration } from './config';
+import { Configuration } from '../config';
 import { MockBackend } from '@angular/http/testing';
 import { HttpModule, Http, BaseRequestOptions, XHRBackend, ResponseOptions } from '@angular/http';
 
