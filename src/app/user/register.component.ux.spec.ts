@@ -104,11 +104,21 @@ describe(`Register UX`, () => {
 
   it('should not have error objects in DOM on startup', fakeAsync(() => {
 
+    expect(fixture.debugElement.query(By.css('div[type=registrationerrorcontainer]'))).toBeDefined();
+    expect(fixture.debugElement.query(By.css('label[type=registrationerrors'))).toBeDefined();
+
     expect(fixture.debugElement.query(By.css('div[type=emailerrorcontainer]'))).toBeDefined();
     expect(fixture.debugElement.query(By.css('label[type=emailerrors'))).toBeDefined();
+
     expect(fixture.debugElement.query(By.css('div[type=passworderrorcontainer]'))).toBeDefined();
     expect(fixture.debugElement.query(By.css('label[type=passworderrors'))).toBeDefined();
 
+  }));
+
+  it('should not enabled submit button on startup', fakeAsync(() => {
+
+    expect(submitEl.disabled).toBeTruthy();
+    
   }));
 
   it('should register with submit button', fakeAsync(() => {

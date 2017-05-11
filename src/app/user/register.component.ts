@@ -16,8 +16,8 @@ import { AuthenticationHttpService } from './auth.http.service';
           <h2>Register</h2>
 
           <form name="registerForm" (ngSubmit)="register()" >
-                <div *ngIf="registration.error" class="form-group has-error">
-                    <label class="control-label" >{{registration.error}}</label>
+                <div id="registrationerrorcontainer" type="registrationerrorcontainer" *ngIf="registration.error" class="form-group has-error">
+                    <label id="registrationerrors" type="registrationerrors" class="control-label" >{{registration.error}}</label>
                 </div>
               <div class="form-group" >
                   <label for="firstName">First Name</label>
