@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
-import {Broadcaster} from '../services/broadcast';
+import {Broadcaster} from '../../services';
 
 @Injectable()
 export class UrlEvent {

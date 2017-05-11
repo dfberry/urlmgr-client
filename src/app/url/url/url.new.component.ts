@@ -2,11 +2,9 @@ import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, Simple
 import { AbstractControl, FormGroup, FormControl, Validators, FormBuilder, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { Observable } from 'rxjs/Rx';
 
-import { User } from '../user/user.model';
-import { IUrl, Url } from './url.model';
-import { UrlEvent } from './url.event';
-import { UrlService } from './url.service';
-import { FeedService } from './feed.service';
+import { User } from '../../user';
+import { IUrl, Url, UrlEvent, UrlService, FeedService } from '../index';
+
 
 let validUrl = require('valid-url');
 

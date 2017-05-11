@@ -29,7 +29,7 @@ describe('Service: AuthenticationHttpService', () => {
   it(`should create instance of service`, async(() => {
     expect(service).toBeDefined();
   }));
-  it(`should make http request`, async(() => {
+  it(`should make http request to live server`, async(() => {
 
     // because this is a live http call, increase timeout
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;

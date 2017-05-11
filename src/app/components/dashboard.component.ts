@@ -4,12 +4,10 @@ import { Store } from '@ngrx/store';
 
 import { UserEvent, User } from '../user';
 
-import { UrlEvent } from '../url/url.event';
+import { UrlEvent, UrlService, Url } from '../url';
 
 import { AppState, UrlActions, UserActions } from '../app.state';
-import { UrlService } from '../url/url.service';
 
-import { Url } from '../url/url.model';
 /**************************************************************************
  * 
  * Show Dashboard

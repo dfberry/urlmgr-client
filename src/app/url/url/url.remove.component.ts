@@ -2,9 +2,9 @@ import {Component, Input, Output, EventEmitter, ChangeDetectionStrategy, SimpleC
 import { AbstractControl, FormGroup, FormControl, Validators, FormBuilder, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { Observable } from 'rxjs/Rx';
 
-import { IUrl, Url } from './url.model';
-import { User } from '../user/user.model';
-import { UrlService } from './url.service';
+import { IUrl, Url, UrlService } from '../';
+import { User } from '../../user';
+
 
 /**************************************************************************
  * 

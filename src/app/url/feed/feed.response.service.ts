@@ -5,16 +5,15 @@ import { Http, Response, URLSearchParams, Headers, RequestOptionsArgs} from '@an
 import { Observable } from 'rxjs/Rx';
 import { createSelector } from 'reselect';
 
-import { type } from '../utils/index';
-import { HttpDataService} from '../services/index';
-import { ConfigService } from '../config/config.service';
+import { type } from '../../utils/index';
+import { HttpDataService} from '../../services/index';
+import { ConfigService } from '../../config/config.service';
 import 'cheerio';
 
 //import { AppState } from '../app.state';
-import { Feed, FeedResponse, FeedDefinition } from './feed.model';
-import { Url } from './url.model';
-import { User } from '../user/user.model';
-import { UrlEvent } from './url.event';
+import { Url, Feed, FeedDefinition, FeedResponse, Article, FeedInfo, UrlEvent } from '../index';
+
+import { User } from '../../user';
 
 @Injectable()
 export class FeedResponseService{

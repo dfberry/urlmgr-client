@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { AbstractControl, FormGroup, FormControl, Validators, FormBuilder, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { Observable } from 'rxjs/Rx';
 
-import { FeedService } from './feed.service';
-import { User } from '../user/user.model';
+import { FeedService }  from '../index';
+import { User } from '../../user';
 
 @Component({
   selector: 'feed-test',

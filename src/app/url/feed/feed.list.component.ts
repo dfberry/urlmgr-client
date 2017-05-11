@@ -2,7 +2,7 @@ import { Component, Input, Output, NgModule, ModuleWithProviders, SimpleChanges 
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule }   from '@angular/forms';
 
-import { Feed } from './feed.model';
+import { Feed } from '../index';
 
 @Component({
   selector: 'feed-list',

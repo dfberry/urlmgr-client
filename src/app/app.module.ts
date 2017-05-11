@@ -49,7 +49,7 @@ let urlModule = UrlModule.forRoot();
     // my code
     AppRoutes,
     UserModule,
-    urlModule,
+    UrlModule,
     HomeModule,
 
     // 3rd party code
@@ -86,6 +86,7 @@ let urlModule = UrlModule.forRoot();
     AppState,
     Utils,
     UserModule,
+    UrlModule,
     { provide: APP_INITIALIZER, useFactory: (config: ConfigService) => () => config.load(), deps: [ConfigService], multi: true }
   ],
   bootstrap: [ AppComponent]

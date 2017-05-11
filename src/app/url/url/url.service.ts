@@ -4,18 +4,16 @@ import { ActionReducer, Action, Store } from '@ngrx/store';
 import { Http, Response, URLSearchParams, Headers, RequestOptionsArgs} from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 import { createSelector } from 'reselect';
-
-import { type } from '../utils/index';
-import { HttpDataService} from '../services/index';
-import { ConfigService } from '../config/config.service';
 import * as cheerio from 'cheerio';
 
-import { AppState } from '../app.state';
-//import { Feed, FeedResponse, FeedDefinition , FeedDefinitionService, FeedResponseService} from './feed';
-import { Url } from './url.model';
-import { User } from '../user/user.model';
-import { UrlEvent } from './url.event';
-import { FeedService } from './feed.service';
+import { type } from '../../utils/index';
+import { HttpDataService} from '../../services/index';
+import { ConfigService } from '../../config/config.service';
+
+import { AppState } from '../../app.state';
+import { User } from '../../user/user.model';
+
+import { Url, UrlEvent, FeedService } from '../index';
 
 @Injectable()
 export class UrlService  {
