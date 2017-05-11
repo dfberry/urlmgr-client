@@ -153,7 +153,7 @@ export class RegisterComponent implements DoCheck {
 
         // pattern="\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b."
         //console.log("validateuserOnBlur, user = " + JSON.stringify(this.registration.user.user));
-
+        this.registration.user.email.dirty = true;
         // RFC 2822 compliant regex
         if (this.registration.user.email.value.match(/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/)) {
             console.log("user is valid format");
@@ -166,7 +166,7 @@ export class RegisterComponent implements DoCheck {
         }
     }
     validatePassword() {
-
+        this.registration.user.password.dirty = true;
         if (this.registration.user.password.value.length > 0) {
             console.log("password is valid length");
             this.registration.user.password.valid = 1;
@@ -199,7 +199,7 @@ export class RegisterComponent implements DoCheck {
             console.log("register failure - " + err);
             this.registration.error = "An unexpected error occured";
             this.registration.registered=false;
-            console.log(err._body);
+            console.log("err._body" + JSON.stringify(err._body));
 
             // TODO: error is incorrectly returned as string in body instead of JSON
             if(err && err._body){

@@ -37,7 +37,7 @@ describe(`Register Component Method`, () => {
   beforeEach(() => {
 
     routerStub = {
-      navigate: {}
+      navigate: function(){}
     };
 
     authServiceStub = {
@@ -66,6 +66,11 @@ describe(`Register Component Method`, () => {
     authServiceSpy = spyOn(authService, 'registerToServer')
           .and.returnValue(Promise.resolve(baseJsonResponse));
     expect(component.registration.registered).toBe(false);
+
+    component.registration.user.email.value = "1@1.com",
+    component.registration.user.password.value = "1@1.com";
+    component.registration.user.lastName = "1@1.com";
+    component.registration.user.firstName  = "1@1.com";
 
     // register new user
     component.register();
@@ -105,6 +110,7 @@ describe(`Register Component Method`, () => {
 
       // successfully registered user
       expect(component.registration.registered).toBe(true);
+      expect(component.registration.error).toBe("");
       done();
     });
   });

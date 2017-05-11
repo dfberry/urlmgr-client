@@ -102,12 +102,14 @@ describe(`Register UX`, () => {
 
   });
 
-  it('should not have email error objects in DOM on startup', fakeAsync(() => {
+  it('should not have error objects in DOM on startup', fakeAsync(() => {
 
     expect(fixture.debugElement.query(By.css('div[type=emailerrorcontainer]'))).toBeDefined();
     expect(fixture.debugElement.query(By.css('label[type=emailerrors'))).toBeDefined();
+    expect(fixture.debugElement.query(By.css('div[type=passworderrorcontainer]'))).toBeDefined();
+    expect(fixture.debugElement.query(By.css('label[type=passworderrors'))).toBeDefined();
 
-  }))
+  }));
 
   it('should register with submit button', fakeAsync(() => {
 
@@ -138,6 +140,12 @@ describe(`Register UX`, () => {
     fixture.detectChanges();
     tick();
 
+    loginEl.dispatchEvent(new Event('blur'));
+    passwordEl.dispatchEvent(new Event('blur'));
+
+    fixture.detectChanges();
+    tick();
+
     expect(firstnameEl.value).toBe(firstName);
     expect(component.registration.user.firstName).toBe(firstName);
 
@@ -145,19 +153,21 @@ describe(`Register UX`, () => {
     expect(component.registration.user.lastName).toBe(lastName);
 
     expect(loginEl.value).toBe(email);
-    expect(component.registration.user.email.valid).toBe(true);
-    //expect(component.registration.user.email.dirty).toBe(true);
+    expect(component.registration.user.email.valid).toBe(1);
+    expect(component.registration.user.email.dirty).toBe(true);
     expect(component.registration.user.email.errorMsg).toBe('');
     expect(component.registration.user.email.value).toBe(email);
 
     expect(passwordEl.value).toBe(password);
-    expect(component.registration.user.password).toBe(password);
+    expect(component.registration.user.password.valid).toBe(1);
+    expect(component.registration.user.password.dirty).toBe(true);
+    expect(component.registration.user.password.errorMsg).toBe('');
+    expect(component.registration.user.password.value).toBe(password);
 
     expect(submitEl.disabled).toBeFalsy();
     expect(submitEl.id).toBe("registerButton");
 
     form.triggerEventHandler('submit', null);
-
 
     fixture.detectChanges();
     tick(1000);
@@ -195,6 +205,12 @@ describe(`Register UX`, () => {
     fixture.detectChanges();
     tick();
 
+    loginEl.dispatchEvent(new Event('blur'));
+    passwordEl.dispatchEvent(new Event('blur'));
+
+    fixture.detectChanges();
+    tick();
+
     expect(firstnameEl.value).toBe(firstName);
     expect(component.registration.user.firstName).toBe(firstName);
 
@@ -202,7 +218,7 @@ describe(`Register UX`, () => {
     expect(component.registration.user.lastName).toBe(lastName);
 
     expect(passwordEl.value).toBe(password);
-    expect(component.registration.user.password).toBe(password);
+    expect(component.registration.user.password.value).toBe(password);
 
     expect(loginEl.value).toBe(email);
     expect(component.registration.user.email.value).toBe(email);
@@ -258,6 +274,12 @@ it('should allow correct email after invalid email error', fakeAsync(() => {
     fixture.detectChanges();
     tick();
 
+    loginEl.dispatchEvent(new Event('blur'));
+    passwordEl.dispatchEvent(new Event('blur'));
+
+    fixture.detectChanges();
+    tick();
+
     expect(firstnameEl.value).toBe(firstName);
     expect(component.registration.user.firstName).toBe(firstName);
 
@@ -265,7 +287,7 @@ it('should allow correct email after invalid email error', fakeAsync(() => {
     expect(component.registration.user.lastName).toBe(lastName);
 
     expect(passwordEl.value).toBe(password);
-    expect(component.registration.user.password).toBe(password);
+    expect(component.registration.user.password.value).toBe(password);
 
     expect(loginEl.value).toBe(email);
     expect(component.registration.user.email.value).toBe(email);
@@ -301,9 +323,15 @@ it('should allow correct email after invalid email error', fakeAsync(() => {
     fixture.detectChanges();
     tick();
 
+    loginEl.dispatchEvent(new Event('blur'));
+    passwordEl.dispatchEvent(new Event('blur'));
+
+    fixture.detectChanges();
+    tick();
+
     expect(loginEl.value).toBe(email);
-    expect(component.registration.user.email.valid).toBe(true);
-    //expect(component.registration.user.email.dirty).toBe(true);
+    expect(component.registration.user.email.valid).toBe(1);
+    expect(component.registration.user.email.dirty).toBe(true);
     expect(component.registration.user.email.errorMsg).toBe('');
     expect(component.registration.user.email.value).toBe(email);
     
