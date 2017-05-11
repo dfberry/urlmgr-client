@@ -182,7 +182,7 @@ export class RegisterComponent implements DoCheck {
         console.log("########################################register called#############################################");
 
         let registrationObj = {
-            user: this.registration.user.email.value,
+            email: this.registration.user.email.value,
             password: this.registration.user.password.value,
             lastName: this.registration.user.lastName,
             firstName: this.registration.user.firstName
