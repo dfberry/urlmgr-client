@@ -4,7 +4,9 @@ import { Store } from '@ngrx/store';
 
 import { UserEvent, User } from '../user';
 
-import { UrlEvent, UrlService, Url } from '../url';
+import { UrlEvent } from '../url/url/url.event';
+import { UrlService } from '../url/url.service';
+import { Url } from '../url/url/url.model';
 
 import { AppState, UrlActions, UserActions } from '../app.state';
 

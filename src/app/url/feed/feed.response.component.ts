@@ -3,7 +3,9 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule }   from '@angular/forms';
 import { RouterModule, Routes, ActivatedRoute } from '@angular/router';
 
-import { Feed, FeedResponseService, FeedDefinition, FeedResponse, Article, FeedInfo } from '../index';
+import { Feed } from './feed.model';
+import { FeedResponseService,  } from './feed.response.service';
+import { FeedDefinition, FeedResponse, FeedInfo, Article } from './feed.model';
 
 /**************************************************************************
  * 

@@ -11,9 +11,6 @@ import { type } from '../../utils/index';
 import { HttpDataService } from '../../services/index';
 import { ConfigService } from '../../config/config.service';
 
-
-import { Url, Feed, FeedDefinition, FeedResponse, Article, FeedInfo, UrlEvent } from '../index';
-
 import { User } from '../../user';
 
 

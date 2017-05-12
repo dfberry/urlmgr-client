@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import { Url/*, Feed*/ } from './url';
+import { Url/*, Feed*/ } from './url/url/url.model';
 import { User } from './user';
 import { Store } from '@ngrx/store';
 

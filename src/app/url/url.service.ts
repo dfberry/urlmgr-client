@@ -6,14 +6,16 @@ import { Observable } from 'rxjs/Rx';
 import { createSelector } from 'reselect';
 import * as cheerio from 'cheerio';
 
-import { type } from '../../utils/index';
-import { HttpDataService} from '../../services/index';
-import { ConfigService } from '../../config/config.service';
+import { type } from '../utils/index';
+import { HttpDataService} from '../services/index';
+import { ConfigService } from '../config/config.service';
 
-import { AppState } from '../../app.state';
-import { User } from '../../user/user.model';
+import { AppState } from '../app.state';
+import { User } from '../user/user.model';
 
-import { Url, UrlEvent, FeedService } from '../index';
+import { Url } from './url/url.model';
+import { UrlEvent } from './url/url.event';
+import { FeedService } from './feed/feed.service';
 
 @Injectable()
 export class UrlService  {

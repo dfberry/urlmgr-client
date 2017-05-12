@@ -11,7 +11,10 @@ import { ConfigService } from '../../config/config.service';
 import 'cheerio';
 
 //import { AppState } from '../app.state';
-import { Url, Feed, FeedDefinition, FeedResponse, Article, FeedInfo, UrlEvent } from '../index';
+//import { Url, Feed, FeedDefinition, FeedResponse, Article, FeedInfo, UrlEvent } from '../index';
+
+import { Feed } from './feed.model';
+import { FeedDefinition, FeedResponse, FeedInfo, Article } from './feed.model';
 
 import { User } from '../../user';
 

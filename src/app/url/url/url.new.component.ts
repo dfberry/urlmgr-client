@@ -3,7 +3,10 @@ import { AbstractControl, FormGroup, FormControl, Validators, FormBuilder, React
 import { Observable } from 'rxjs/Rx';
 
 import { User } from '../../user';
-import { IUrl, Url, UrlEvent, UrlService, FeedService } from '../index';
+import { FeedService } from '../feed/feed.service';
+import { UrlEvent } from './url.event';
+import { IUrl, Url } from './url.model';
+import { UrlService } from '../url.service';
 
 
 let validUrl = require('valid-url');

@@ -5,7 +5,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { Store } from '@ngrx/store';
 import 'rxjs/add/operator/toArray';
 
-import { IUrl, Url, FeedService } from './';
+import { IUrl, Url } from './url/url.model';
+import { FeedService } from './feed/feed.service';
 import { User } from '../user/user.model';
 
 let validUrl = require('valid-url');

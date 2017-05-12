@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { AbstractControl, FormGroup, FormControl, Validators, FormBuilder, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { Observable } from 'rxjs/Rx';
 
-import { FeedService }  from '../index';
+import { FeedService }  from './feed.service';
 import { User } from '../../user';
 
 @Component({

@@ -5,42 +5,64 @@ import 'rxjs/Rx';
 import { DataTableModule } from "angular2-datatable";
 import 'cheerio';
 
+// routes
+import { UrlRoutes } from './url.route';
 
-import * as URL_MODULE from './index';
+// models
+import { IUrl, Url } from './url/url.model';
+import { Feed, FeedDefinition, FeedResponse, Article, FeedInfo} from './feed/feed.model';
+
+// pipes
+import { DataFilterPipe } from './data.filter.pipe';
+import { FeedParserPipe } from './feed/feed.parser.pipe';
+
+// component
+import { UrlMgrComponent } from './url.mgr.component';
+import { UrlRemoveComponent } from './url/url.remove.component';
+import { UrlNewComponent } from './url/url.new.component';
+import { UrlDataTableComponent } from './url/url.datatable.component';
+
+import { FeedListComponent } from './feed/feed.list.component';
+import { FeedResponseComponent } from './feed/feed.response.component';
+import { FeedMgrComponent } from './feed/feed.mgr.component';
+import { FeedTestComponent } from './feed/feed.test.component';
+
+// services
+import { UrlService } from './url.service';
+import { UrlEvent } from './url/url.event';
+import { FeedService } from './feed/feed.service';
+import { FeedResponseService } from './feed/feed.response.service';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     DataTableModule,
-    ReactiveFormsModule,
-    URL_MODULE.UrlRoutes
+    ReactiveFormsModule
   ],
   declarations: [
 // components & pipes
-    URL_MODULE.UrlMgrComponent,
-    URL_MODULE.UrlRemoveComponent,
-    URL_MODULE.UrlNewComponent,
-    URL_MODULE.UrlDataTableComponent,
-    URL_MODULE.DataFilterPipe,
-    URL_MODULE.FeedParserPipe,
-    URL_MODULE.FeedResponseComponent,
-    URL_MODULE.FeedTestComponent
-
+    UrlMgrComponent,
+    UrlRemoveComponent,
+    UrlNewComponent,
+    UrlDataTableComponent,
+    DataFilterPipe,
+    FeedParserPipe,
+    FeedResponseComponent,
+    FeedTestComponent
   ],
   providers: [
 // services
-    URL_MODULE.Url,
-    URL_MODULE.UrlEvent,
-    URL_MODULE.UrlService,
-    URL_MODULE.FeedService,
-    URL_MODULE.FeedResponseService
-    
+    Url,
+    UrlEvent,
+    UrlService,
+    FeedService,
+    FeedResponseService
   ],
   exports: [
 // exported components
-    URL_MODULE.UrlMgrComponent,
-    URL_MODULE.FeedTestComponent
+    UrlMgrComponent,
+    FeedTestComponent
   ]
 })
 export class UrlModule {
@@ -51,11 +73,11 @@ export class UrlModule {
       ngModule: UrlModule,
       providers: [
 // exported services
-        URL_MODULE.Url,
-        URL_MODULE.UrlEvent,
-        URL_MODULE.UrlService,
-        URL_MODULE.FeedService,
-        URL_MODULE.FeedResponseService 
+        Url,
+        UrlEvent,
+        UrlService,
+        FeedService,
+        FeedResponseService 
       ]
     }
   }

@@ -3,7 +3,8 @@ import { AbstractControl, FormGroup, FormControl, Validators, FormBuilder, React
 import { Observable } from 'rxjs/Rx';
 import { RouterModule, Routes, Router, ActivatedRoute } from '@angular/router';
 
-import { Feed, FeedResponseService } from '../index';
+import { Feed } from './feed.model';
+import { FeedResponseService } from './feed.response.service';
 
 @Component({
   selector: 'feed-mgr-component',
