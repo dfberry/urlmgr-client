@@ -7,7 +7,7 @@ import { HttpModule, Http, BaseRequestOptions, XHRBackend, ResponseOptions } fro
 
 // TBD: import actual config settings from ./config.json
 
-describe('Service: ConfigService', () => {
+describe('App Config Service: ConfigService', () => {
   let service: ConfigService;
   const configServiceData: Object= {
       "clientHost": "localhost:3000",

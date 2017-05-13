@@ -13,7 +13,7 @@ if it errors and returns a status of 0 => the server is not available
 
 */
 
-describe('Service: AuthenticationHttpService', () => {
+describe('User Service: AuthenticationHttpService', () => {
   let service: AuthenticationHttpService;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -29,7 +29,7 @@ describe('Service: AuthenticationHttpService', () => {
   it(`should create instance of service`, async(() => {
     expect(service).toBeDefined();
   }));
-  it(`should make http request to live server`, async(() => {
+  xit(`should make http request to live server`, async(() => {
 
     // because this is a live http call, increase timeout
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;

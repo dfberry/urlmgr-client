@@ -13,7 +13,7 @@ import { Router, RouterModule } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ReflectiveInjector } from '@angular/core';
 
-describe(`Register Component Method`, () => {
+describe(`User Register Component Method`, () => {
   let component: RegisterComponent;
   let fixture: ComponentFixture<RegisterComponent>;
 

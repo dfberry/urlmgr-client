@@ -19,7 +19,7 @@ function newEvent(eventName: string, bubbles = false, cancelable = false) {
   return evt;
 }
 
-describe(`Register UX`, () => {
+describe(`User Register Component UX`, () => {
   let component: RegisterComponent;
   let fixture: ComponentFixture<RegisterComponent>;
 
