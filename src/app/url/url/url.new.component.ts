@@ -3,8 +3,9 @@ import { AbstractControl, FormGroup, FormControl, Validators, FormBuilder, React
 import { Observable } from 'rxjs/Rx';
 
 import { User } from '../../user';
-import { IUrl, Url, UrlEvent, UrlService, FeedService } from '../index';
-
+import { IUrl, Url } from './url.model';
+import { UrlEvent } from './url.event';
+import { UrlService } from './url.service';
 
 let validUrl = require('valid-url');
 
@@ -40,8 +41,8 @@ export class UrlNewComponent  implements OnChanges{
   constructor(
       private urlService: UrlService, 
       private builder: FormBuilder,
-      private differs: KeyValueDiffers,
-      private feedService: FeedService
+      private differs: KeyValueDiffers
+      //private feedService: FeedService
     ){
 
     this.newForm = this.builder.group({

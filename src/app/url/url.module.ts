@@ -6,7 +6,17 @@ import { DataTableModule } from "angular2-datatable";
 import 'cheerio';
 
 
-import * as URL_MODULE from './index';
+//import * as URL_MODULE from './index';
+import { UrlRoutes } from './url.route';
+import { UrlMgrComponent } from './url.mgr.component';
+import { UrlDataTableComponent } from './url/url.datatable.component';
+import { UrlNewComponent } from './url/url.new.component';
+import { UrlRemoveComponent } from './url/url.remove.component';
+import { DataFilterPipe } from './data.filter.pipe';
+
+import { IUrl, Url } from './url/url.model';
+import { UrlEvent } from './url/url.event';
+import { UrlService } from './url/url.service';
 
 @NgModule({
   imports: [
@@ -14,33 +24,25 @@ import * as URL_MODULE from './index';
     FormsModule,
     DataTableModule,
     ReactiveFormsModule,
-    URL_MODULE.UrlRoutes
+    UrlRoutes
   ],
   declarations: [
 // components & pipes
-    URL_MODULE.UrlMgrComponent,
-    URL_MODULE.UrlRemoveComponent,
-    URL_MODULE.UrlNewComponent,
-    URL_MODULE.UrlDataTableComponent,
-    URL_MODULE.DataFilterPipe,
-    URL_MODULE.FeedParserPipe,
-    URL_MODULE.FeedResponseComponent,
-    URL_MODULE.FeedTestComponent
-
+    UrlMgrComponent,
+    UrlRemoveComponent,
+    UrlNewComponent,
+    UrlDataTableComponent,
+    DataFilterPipe
   ],
   providers: [
 // services
-    URL_MODULE.Url,
-    URL_MODULE.UrlEvent,
-    URL_MODULE.UrlService,
-    URL_MODULE.FeedService,
-    URL_MODULE.FeedResponseService
-    
+    Url,
+    UrlEvent,
+    UrlService,
   ],
   exports: [
 // exported components
-    URL_MODULE.UrlMgrComponent,
-    URL_MODULE.FeedTestComponent
+    UrlMgrComponent
   ]
 })
 export class UrlModule {
@@ -51,11 +53,9 @@ export class UrlModule {
       ngModule: UrlModule,
       providers: [
 // exported services
-        URL_MODULE.Url,
-        URL_MODULE.UrlEvent,
-        URL_MODULE.UrlService,
-        URL_MODULE.FeedService,
-        URL_MODULE.FeedResponseService 
+        Url,
+        UrlEvent,
+        UrlService 
       ]
     }
   }

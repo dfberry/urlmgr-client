@@ -5,7 +5,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { Store } from '@ngrx/store';
 import 'rxjs/add/operator/toArray';
 
-import { IUrl, Url, FeedService } from './';
+import { IUrl, Url } from './url/url.model';
 import { User } from '../user/user.model';
 
 let validUrl = require('valid-url');
@@ -37,7 +37,7 @@ export class UrlMgrComponent {
   constructor(
     //private urlService: UrlService
     //, private store: Store<AppState>
-    private feedService: FeedService
+    //private feedService: FeedService
     ){
 
     }

@@ -1,10 +1,13 @@
 import { ModuleWithProviders } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { FeedTestComponent, UrlMgrComponent } from './';
+//import { FeedTestComponent } from './';
+import { UrlMgrComponent } from './url.mgr.component';
+
+
 const urlRoutes: Routes = [
   { path: 'urls', component: UrlMgrComponent },
-  { path: 'feedtest', component: FeedTestComponent}
+  //{ path: 'feedtest', component: FeedTestComponent}
 ];
 
 export const UrlRoutes: ModuleWithProviders = RouterModule.forRoot(urlRoutes);

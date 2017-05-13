@@ -13,7 +13,8 @@ import { ConfigService } from '../../config/config.service';
 import { AppState } from '../../app.state';
 import { User } from '../../user/user.model';
 
-import { Url, UrlEvent, FeedService } from '../index';
+import { IUrl, Url } from './url.model';
+import { UrlEvent } from './url.event';
 
 @Injectable()
 export class UrlService  {
@@ -32,7 +33,7 @@ export class UrlService  {
         //private _FeedDefinitionService: FeedDefinitionService,
         private configService: ConfigService,
         private urlEvent: UrlEvent,
-        private feedService: FeedService
+        //private feedService: FeedService
     ){
         console.log("url.ts - ctor");
         this.items = store.select(state => state.urls);
