@@ -5,6 +5,10 @@
 /out-tsc
 /dist
 /dist_old
+/.org.**
+*.map
+.karma
+/karma-*
 
 # dependencies
 /node_modules
@@ -42,3 +46,5 @@ testem.log
 .DS_Store
 Thumbs.db
 
+config.ts
+config.json

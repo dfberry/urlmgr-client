@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
-import { Url/*, Feed*/ } from './url/url.model';
-import { User } from './user/user.model';
+import { Url/*, Feed*/ } from './url/url/url.model';
+import { User } from './user';
 import { Store } from '@ngrx/store';
 
 export interface IAppState {

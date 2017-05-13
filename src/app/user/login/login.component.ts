@@ -4,10 +4,10 @@ import { RouterModule, Routes, Router } from '@angular/router';
 import { Http, Response, URLSearchParams, Headers, RequestOptions, RequestOptionsArgs} from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 
-import { User } from './user.model';
-import { UserEvent } from './user.broadcaster';
-import { AuthenticationService } from './auth.service';
-import { Configuration } from './config';
+// user module only
+import { User } from '../user.model';
+import { AuthenticationHttpService, AuthenticationService, UserEvent } from '../services';
+import { Configuration } from '../config'; // configuration inside user module only
 
 @Component({
     selector: 'login',
@@ -46,10 +46,11 @@ export class LoginComponent {
 
 
     constructor(
-        private http: Http,
-        private authService: AuthenticationService,
-        private router: Router,
-        private userEvent: UserEvent)
+        private authService: AuthenticationService, /* for client auth */
+        private router: Router, /* go to Dashboard after successful auth */
+        private userEvent: UserEvent, /* for state events */
+        private authHttpService: AuthenticationHttpService /* for server auth */
+        )
     {}
 
     ngOnInit() {  
@@ -61,17 +62,21 @@ export class LoginComponent {
         //console.log("username " + this.username);
         //console.log("password " + this.password);
 
-        let postForm = {
+        let authObj = {
             email: this.username,
             password: this.password
         };
 
-        //console.log("postForm");
 
-        return this.http.post(Configuration.urls.base + "/auth", postForm)
-            .map((response:Response) => {
-                //console.log(response.json());
-                let user = response.json().data;
+        let url = Configuration.urls.base + "/auth";
+
+        this.authHttpService.authenticateToServer(authObj, url ).then(json => {
+        
+                console.log(json);
+                let user = json.data;
+
+                // success should sent us to dashboard
+
                 if (user && user.token) {
 
                     let authenticatedUser = new User();
@@ -84,11 +89,10 @@ export class LoginComponent {
                     this.router.navigate(['/dashboard']);
                 }
             })
-            .toPromise()
             .catch((err: any) => {
-                //console.log("http::data-getJsonPromise err " + err);
+                // don't go any where, just set error text
+                console.log("login.component err " + err);
                 this.authError = err._body;
-                //return Promise.reject(err)
             });
     }
  

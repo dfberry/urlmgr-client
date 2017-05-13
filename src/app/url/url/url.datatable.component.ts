@@ -1,7 +1,7 @@
 import {Component, Input, Output, EventEmitter, ChangeDetectionStrategy, SimpleChanges, OnChanges, DoCheck, KeyValueDiffers} from "@angular/core";
 import { AbstractControl, FormGroup, FormControl, Validators, FormBuilder, ReactiveFormsModule, FormsModule } from '@angular/forms';
 
-import { User } from '../user/user.model';
+import { User } from '../../user';
 
 /****************************************************************
  * 

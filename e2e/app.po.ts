@@ -5,7 +5,12 @@ export class UrlmgrClientNg4Page {
     return browser.get('/');
   }
 
-  getParagraphText() {
-    return element(by.css('app-root h1')).getText();
+  getngVersion() {
+    let appRoot = element(by.tagName('app-root'));
+    //console.log("appRoot found");
+    let ngVersion = appRoot.getAttribute('ng-version');
+    console.log("ngVersion found");
+    console.log(ngVersion);
+    return ngVersion;
   }
 }

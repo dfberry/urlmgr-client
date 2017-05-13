@@ -4,14 +4,13 @@ import { FormsModule }   from '@angular/forms';
 import 'rxjs/Rx';
 
 import { AuthenticationComponent } from './auth.component';
-import { LoginComponent } from './login.component';
-import { RegisterComponent } from './register.component';
-import { ProfileComponent } from './profile.component';
+import { LoginComponent } from './login/index';
+import { RegisterComponent } from './register/index';
+import { ProfileComponent } from './profile/profile.component';
 import { UserRoutes } from './user.routes';
-import { AuthenticationService } from './auth.service';
+import { AuthenticationHttpService, AuthenticationService,UserEvent  } from './services/index';
 import { User } from './user.model';
-import { UserEvent } from './user.broadcaster';
-import { Configuration } from './config';
+import { Configuration } from './config/index';
 
 @NgModule({
   imports: [
@@ -29,8 +28,8 @@ import { Configuration } from './config';
     AuthenticationService,
     User,
     UserEvent,
-    Configuration
-    
+    Configuration,
+    AuthenticationHttpService
   ],
   exports: [
     LoginComponent, 
@@ -48,7 +47,8 @@ export class UserModule {
       providers: [
         AuthenticationService,
         User,
-        UserEvent
+        UserEvent,
+        AuthenticationHttpService
       ]
     }
   }

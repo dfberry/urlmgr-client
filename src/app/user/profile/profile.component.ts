@@ -4,9 +4,9 @@ import { RouterModule, Routes, Router, ActivatedRoute } from '@angular/router';
 import { Http, Response, URLSearchParams, Headers, RequestOptions, RequestOptionsArgs} from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 
-import { UserEvent } from './user.broadcaster';
-import { AuthenticationService } from './auth.service';
-import { Configuration } from './config';
+import { UserEvent, AuthenticationService } from '../services';
+
+import { Configuration } from '../config';
 
 @Component({
     selector: 'profile',

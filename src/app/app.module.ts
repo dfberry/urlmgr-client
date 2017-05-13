@@ -16,6 +16,7 @@ import { StoreLogMonitorModule, useLogMonitor } from '@ngrx/store-log-monitor';
 
 import { DataTableModule } from "angular2-datatable";
 
+//http://stackoverflow.com/questions/40396070/angular2-module-how-can-i-import-a-service-from-another-module
 
 // this app
 import {   
@@ -25,7 +26,8 @@ import {
 
 import { 
   HttpDataService, 
-  Broadcaster 
+  Broadcaster,
+  Utils 
 } from './services/index';
 
 import { AppComponent } from './app.component';
@@ -46,8 +48,8 @@ let urlModule = UrlModule.forRoot();
   imports: [
     // my code
     AppRoutes,
-    userModule,
-    urlModule,
+    UserModule,
+    UrlModule,
     HomeModule,
 
     // 3rd party code
@@ -82,6 +84,9 @@ let urlModule = UrlModule.forRoot();
     AuthGuard,
     Title,
     AppState,
+    Utils,
+    UserModule,
+    UrlModule,
     { provide: APP_INITIALIZER, useFactory: (config: ConfigService) => () => config.load(), deps: [ConfigService], multi: true }
   ],
   bootstrap: [ AppComponent]

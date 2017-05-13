@@ -2,14 +2,14 @@ import { Component} from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 import { Store } from '@ngrx/store';
 
-import { UserEvent } from '../user/user.broadcaster';
-import { UrlEvent } from '../url/url.event';
+import { UserEvent, User } from '../user';
+
+import { UrlEvent } from '../url/url/url.event';
+import { UrlService} from '../url/url/url.service';
+import { Url } from '../url/url/url.model';
 
 import { AppState, UrlActions, UserActions } from '../app.state';
-import { UrlService } from '../url/url.service';
 
-import { User } from '../user/user.model';
-import { Url } from '../url/url.model';
 /**************************************************************************
  * 
  * Show Dashboard

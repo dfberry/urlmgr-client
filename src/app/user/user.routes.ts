@@ -1,10 +1,10 @@
 import { ModuleWithProviders } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { LoginComponent } from './login.component';
-import { RegisterComponent } from './register.component';
+import { LoginComponent } from './login';
+import { RegisterComponent } from './register';
 import { AuthenticationComponent } from './auth.component';
-import { ProfileComponent } from './profile.component';
+import { ProfileComponent } from './profile';
 
 const userRoutes: Routes = [
   { path: 'register', component: RegisterComponent },

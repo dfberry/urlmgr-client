@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import { Observable } from 'rxjs/Rx';
-import { User } from './user.model';
+import { User } from '../user.model';
 
 // all authentication is kept in local storage - not state
 @Injectable()

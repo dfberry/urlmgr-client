@@ -2,11 +2,10 @@ import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, Simple
 import { AbstractControl, FormGroup, FormControl, Validators, FormBuilder, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { Observable } from 'rxjs/Rx';
 
-import { User } from '../user/user.model';
+import { User } from '../../user';
 import { IUrl, Url } from './url.model';
 import { UrlEvent } from './url.event';
 import { UrlService } from './url.service';
-import { FeedService } from './feed.service';
 
 let validUrl = require('valid-url');
 
@@ -42,8 +41,8 @@ export class UrlNewComponent  implements OnChanges{
   constructor(
       private urlService: UrlService, 
       private builder: FormBuilder,
-      private differs: KeyValueDiffers,
-      private feedService: FeedService
+      private differs: KeyValueDiffers
+      //private feedService: FeedService
     ){
 
     this.newForm = this.builder.group({

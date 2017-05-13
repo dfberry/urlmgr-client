@@ -4,18 +4,17 @@ import { ActionReducer, Action, Store } from '@ngrx/store';
 import { Http, Response, URLSearchParams, Headers, RequestOptionsArgs} from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 import { createSelector } from 'reselect';
-
-import { type } from '../utils/index';
-import { HttpDataService} from '../services/index';
-import { ConfigService } from '../config/config.service';
 import * as cheerio from 'cheerio';
 
-import { AppState } from '../app.state';
-//import { Feed, FeedResponse, FeedDefinition , FeedDefinitionService, FeedResponseService} from './feed';
-import { Url } from './url.model';
-import { User } from '../user/user.model';
+import { type } from '../../utils/index';
+import { HttpDataService} from '../../services/index';
+import { ConfigService } from '../../config/config.service';
+
+import { AppState } from '../../app.state';
+import { User } from '../../user/user.model';
+
+import { IUrl, Url } from './url.model';
 import { UrlEvent } from './url.event';
-import { FeedService } from './feed.service';
 
 @Injectable()
 export class UrlService  {
@@ -34,7 +33,7 @@ export class UrlService  {
         //private _FeedDefinitionService: FeedDefinitionService,
         private configService: ConfigService,
         private urlEvent: UrlEvent,
-        private feedService: FeedService
+        //private feedService: FeedService
     ){
         //console.log("url.ts - ctor");
         this.items = store.select(state => state.urls);

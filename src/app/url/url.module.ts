@@ -5,33 +5,18 @@ import 'rxjs/Rx';
 import { DataTableModule } from "angular2-datatable";
 import 'cheerio';
 
-// routes
+
+//import * as URL_MODULE from './index';
 import { UrlRoutes } from './url.route';
-
-// models
-import { IUrl, Url } from './url.model';
-import { Feed, FeedDefinition, FeedResponse, Article, FeedInfo} from './feed.model';
-
-// pipes
-import { DataFilterPipe } from './data.filter.pipe';
-import { FeedParserPipe } from './feed.parser.pipe';
-
-// component
 import { UrlMgrComponent } from './url.mgr.component';
-import { UrlRemoveComponent } from './url.remove.component';
-import { UrlNewComponent } from './url.new.component';
-import { UrlDataTableComponent } from './url.datatable.component';
+import { UrlDataTableComponent } from './url/url.datatable.component';
+import { UrlNewComponent } from './url/url.new.component';
+import { UrlRemoveComponent } from './url/url.remove.component';
+import { DataFilterPipe } from './data.filter.pipe';
 
-import { FeedListComponent } from './feed.list.component';
-import { FeedResponseComponent } from './feed.response.component';
-import { FeedMgrComponent } from './feed.mgr.component';
-import { FeedTestComponent } from './feed.test.component';
-
-// services
-import { UrlService } from './url.service';
-import { UrlEvent } from './url.event';
-import { FeedService } from './feed.service';
-import { FeedResponseService } from './feed.response.service';
+import { IUrl, Url } from './url/url.model';
+import { UrlEvent } from './url/url.event';
+import { UrlService } from './url/url.service';
 
 @NgModule({
   imports: [
@@ -47,25 +32,17 @@ import { FeedResponseService } from './feed.response.service';
     UrlRemoveComponent,
     UrlNewComponent,
     UrlDataTableComponent,
-    DataFilterPipe,
-    FeedParserPipe,
-    FeedResponseComponent,
-    FeedTestComponent
-
+    DataFilterPipe
   ],
   providers: [
 // services
     Url,
     UrlEvent,
     UrlService,
-    FeedService,
-    FeedResponseService
-    
   ],
   exports: [
 // exported components
-    UrlMgrComponent,
-    FeedTestComponent
+    UrlMgrComponent
   ]
 })
 export class UrlModule {
@@ -78,9 +55,7 @@ export class UrlModule {
 // exported services
         Url,
         UrlEvent,
-        UrlService,
-        FeedService,
-        FeedResponseService 
+        UrlService 
       ]
     }
   }
