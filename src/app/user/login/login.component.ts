@@ -18,8 +18,8 @@ import { Configuration } from '../config'; // configuration inside user module o
           <form (submit)="login()">
               
               <div class="form-group" >
-                  <label for="username">User</label>
-                  <input type="text" class="form-control" [(ngModel)]="username" name="username" placeholder="Your email here" required />
+                  <label for="email">User</label>
+                  <input type="text" class="form-control" [(ngModel)]="email" name="email" placeholder="Your email here" required />
               </div>
               <div class="form-group" >
                   <label for="password">Password</label>
@@ -39,11 +39,12 @@ import { Configuration } from '../config'; // configuration inside user module o
 export class LoginComponent {
     config: any;
     newForm: FormGroup;
-    username="";
+    email="";
     password="";
     baseUrl;
     authError="";
-
+    authorized=false;
+    authenticatedUser:User;
 
     constructor(
         private authService: AuthenticationService, /* for client auth */
@@ -59,34 +60,44 @@ export class LoginComponent {
     login() {
       
         //console.log("login function");
-        //console.log("username " + this.username);
+        //console.log("email " + this.email);
         //console.log("password " + this.password);
 
         let authObj = {
-            email: this.username,
+            email: this.email,
             password: this.password
         };
 
+        console.log(authObj);
 
         let url = Configuration.urls.base + "/auth";
 
+        console.log(url);
+
         this.authHttpService.authenticateToServer(authObj, url ).then(json => {
         
+                console.log("authenticateToServer success ");
                 console.log(json);
                 let user = json.data;
 
                 // success should sent us to dashboard
 
+                
+
                 if (user && user.token) {
+                    console.log("inside user");
+                    this.authenticatedUser = new User();
+                    this.authenticatedUser.transform(user);
 
-                    let authenticatedUser = new User();
-                    authenticatedUser.transform(user);
-
-                    authenticatedUser["isAuthenticated"]=true;
-
-                    this.authService.setCurrentUser(authenticatedUser);
+                    this.authenticatedUser["isAuthenticated"]=true;
+                    this.authorized = true;
+                    console.log("authorized set to true");
+                    this.authService.setCurrentUser(this.authenticatedUser);
                     this.userEvent.fire('USER_LOGON');
                     this.router.navigate(['/dashboard']);
+                } else {
+                    console.log("user not returned correctly");
+                    console.log(user);
                 }
             })
             .catch((err: any) => {
