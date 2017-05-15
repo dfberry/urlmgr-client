@@ -9,10 +9,11 @@ export class AuthenticationService{
     currentUser: Observable<User>;
 
     constructor(){
-
+      console.log("AuthenticationService");
     }
 
     public getCurrentUser(){
+        console.log("AuthenticationService " + JSON.parse(localStorage.getItem('currentUser')));
         return JSON.parse(localStorage.getItem('currentUser'));
     }
     public setCurrentUser(currentUser){
@@ -23,7 +24,8 @@ export class AuthenticationService{
     }
     public isAuthenticated() {
       let tempUser = this.getCurrentUser();
-      return (tempUser && tempUser["isAuthenticated"]);
+      if (tempUser && tempUser.isAuthenticated) return true;
+      return false;
     }
 
 

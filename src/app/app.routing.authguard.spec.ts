@@ -4,8 +4,9 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { Router } from '@angular/router';
 import { AppState } from './app.state';
 import { AuthGuard } from './app.routing.authguard';
+import { AuthenticationService } from './user/services/auth.service';
 
-import { MockAppState, userIsNotAuthenticated, userIsAuthenticated } from './utils/mocks';
+import { MockAppState, MockLocalStorage, userIsNotAuthenticated, userIsAuthenticated } from './utils/mocks';
 
 describe('AuthGuardService', () => {
 
@@ -13,7 +14,9 @@ describe('AuthGuardService', () => {
     TestBed.configureTestingModule({
       providers: [
         AuthGuard,
-        { provide: AppState, useClass: MockAppState },
+        AuthenticationService,
+        { provide: localStorage, useClass: MockLocalStorage },
+        //{ provide: AppState, useClass: MockAppState },
       ],
       imports: [RouterTestingModule],
       schemas: [NO_ERRORS_SCHEMA],
@@ -22,27 +25,46 @@ describe('AuthGuardService', () => {
 
   });
 
-  it('checks if a invalid user has access to validated route',
-    // inject your guard service AND Router
-    async(inject([AuthGuard, Router, AppState], (auth, router, appState) => {
+  describe('authorized', () => {
+    it('checks if an authenticated user has access to validated route',
+      // inject your guard service AND Router
+      async(inject([AuthGuard, Router, AuthenticationService], (authGuard, router, authenticationService) => {
 
-      // add a spy
-      spyOn(router, 'navigate');
+        spyOn(authenticationService, "isAuthenticated").and.returnValue(true);
+        spyOn(router, 'navigate');
 
-      expect(auth.canActivate()).toBeFalsy();
-      expect(router.navigate).toHaveBeenCalled();
-    })
-  ));
+        expect(authGuard.canActivate()).toBeTruthy();
+        expect(authenticationService.isAuthenticated).toHaveBeenCalled();
+        expect(router.navigate).not.toHaveBeenCalled();
+      })
+    ));
+  })
+  describe('not authorized', () => {
+    it('checks if an UNauthenticated user has access to validated route',
+      // inject your guard service AND Router
+      async(inject([AuthGuard, Router, AuthenticationService], (authGuard, router, authenticationService) => {
+        spyOn(authenticationService, "isAuthenticated").and.returnValue(false);
+        spyOn(router, 'navigate');
 
-  it('checks if a valid user has access to validated route',
-    // inject your guard service AND Router
-    async(inject([AuthGuard, Router, AppState], (auth, router, appState) => {
-      appState.u.isAuthenticated = true;
-      // add a spy
-      spyOn(router, 'navigate');
+        expect(authGuard.canActivate()).toBeFalsy();
+        expect(authenticationService.isAuthenticated).toHaveBeenCalled();
+        expect(router.navigate).toHaveBeenCalled();
+      })
+    ));
 
-      expect(auth.canActivate()).toBeTruthy();
-      expect(router.navigate).not.toHaveBeenCalled();
-    })
-  ));
+
+    it('checks if localStorage is empty, that user does not have access to validated route',
+      // inject your guard service AND Router
+      async(inject([AuthGuard, Router, AuthenticationService], (authGuard, router, authenticationService) => {
+
+        spyOn(authenticationService, "isAuthenticated").and.returnValue(false);
+        spyOn(router, 'navigate');
+
+        expect(authGuard.canActivate()).toBeFalsy();
+        expect(authenticationService.isAuthenticated).toHaveBeenCalled();
+        expect(router.navigate).toHaveBeenCalled();
+      })
+    ));
+  })
+
 });

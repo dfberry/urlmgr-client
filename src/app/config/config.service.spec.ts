@@ -29,6 +29,19 @@ describe('App Config Service: ConfigService', () => {
   it(`should create instance of service`, async(() => {
     expect(service).toBeDefined();
   }));
+  it(`should validate correct url`,(() => {
+    expect(service.validateUrl('http://www.xyz.com/')).toBe(true);
+  }));
+  it(`should throw error on incorrect url`, (() => {
+        expect(function () {
+            service.validateUrl('http://www.xyz.com');
+        }).toThrow();
+  }));
+  it(`should throw error on empty url`, (() => {
+        expect(function () {
+            service.validateUrl('');
+        }).toThrow();
+  }));
   it(`should load config file successfully`, async(() => {
     inject([ConfigService, XHRBackend], (configService, mockBackend) => {
 

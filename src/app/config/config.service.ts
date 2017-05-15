@@ -21,9 +21,16 @@ export class ConfigService {
                   return Observable.throw(error.json().error || 'Server error');
               })
               .subscribe((data) => {
-                  ConfigService.config = data;
-                  resolve(true);
+
+                  // quit if API url is not correct
+                  if (this.validateUrl(data.apiUrl)){
+                    ConfigService.config = data;
+                    resolve(true);
+                  } else {
+                    resolve(false);
+                  }
               });
+
       });
   }
 
@@ -32,6 +39,13 @@ export class ConfigService {
   }
   getAll(){
     return ConfigService.config;
+  }
+  validateUrl(url){
+    console.log("App Config Service, " + url );
+
+    if(url && url[url.length-1]=='/')return true;
+
+    throw new Error("App Config Service, malformed Url");
   }
 };
 

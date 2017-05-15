@@ -37,14 +37,20 @@ export class MockUser {
     if(user.hasOwnProperty("lastLogin")) this.lastLogin = user.lastLogin;
   }
 }
-
-
 export class MockConfigService {
   public config: any={};
   public get(key:any){return this.config[key];}
   public getAll(){return this.config};
   public load(data){this.config = data;}
 
+}
+
+export class MockLocalStorage {
+  getItem(){}
+  getCurrentUser(){}
+  setCurrentUser(){}
+  removeCurrentUser(){}
+  isAuthenticated(){}
 }  
 
 export function userIsAuthenticated(){
