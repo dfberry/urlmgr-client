@@ -37,7 +37,7 @@ import { AuthenticationHttpService } from '../services';
               </div>
               <div class="form-group" >
                   <label for="password">Password</label>
-                  <input type="password" type="password"  class="form-control" [(ngModel)]="registration.user.password.value" name="password" placeholder="Your password here" (blur)="validatePassword()" />
+                  <input type="password"  class="form-control" [(ngModel)]="registration.user.password.value" name="password" placeholder="Your password here" (blur)="validatePassword()" />
                   <div id="passworderrorcontainer" type="passworderrorcontainer" *ngIf="!registration.user.password.valid" class="password form-group has-error">
                     <label id="passworderrors" type="passworderrors" class="password errors control-label" >{{registration.user.password.errorMsg}}</label>
                   </div>
@@ -189,7 +189,7 @@ export class RegisterComponent implements DoCheck {
         };
 
         this.authHttpService.registerToServer(registrationObj, Configuration.urls.base + '/users' ).then(json => {
-            console.log("register success");
+            console.log("registerToServer success");
             this.registration.error="";
             this.registration.registered=true;
             this.router.navigate(['/login']);

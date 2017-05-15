@@ -83,10 +83,10 @@ fdescribe(`User Login Component Method`, () => {
     authHttpServiceSpy = spyOn(authHttpService, 'authenticateToServer')
           .and.returnValue(Promise.resolve(baseJsonResponse));
 
-    expect(component.authorized).toBe(false);
+    expect(component.authentication.authorized).toBe(false);
 
-    component.email = "1@1.com";
-    component.password ="1@1.com";
+    component.authentication.user.email.value = "1@1.com";
+    component.authentication.user.password.value ="1@1.com";
 
     // register new user
     component.login();
@@ -106,7 +106,7 @@ fdescribe(`User Login Component Method`, () => {
       fixture.detectChanges();        // update view
 
       // successfully registered user
-      expect(component.authorized).toBe(true);
+      expect(component.authentication.authorized).toBe(true);
     });
   }));
   it('should wait for fake promise (fakeAsync)', fakeAsync(() => {
@@ -115,7 +115,7 @@ fdescribe(`User Login Component Method`, () => {
     fixture.detectChanges();        // update view
 
     // successfully registered user
-      expect(component.authorized).toBe(true);
+      expect(component.authentication.authorized).toBe(true);
   }));
   it('should register after submission promise (done)', (done: any) => {
     fixture.detectChanges();
@@ -125,8 +125,8 @@ fdescribe(`User Login Component Method`, () => {
       fixture.detectChanges(); // update view 
 
       // successfully registered user
-      expect(component.authorized).toBe(true);
-      expect(component.authError).toBe("");
+      expect(component.authentication.authorized).toBe(true);
+      expect(component.authentication.error).toBe("");
       done();
     });
   });
