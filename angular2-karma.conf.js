@@ -10,6 +10,10 @@ module.exports = function (config) {
     // base path that will be used to resolve all patterns (e.g. files, exclude)
     basePath: '',
 
+    // manage browser disconnects before test ever runs
+    browserDisconnectTolerance: 10,
+    browserNoActivityTimeout: 100000,
+
     /*
      * Frameworks to use
      *
@@ -22,7 +26,7 @@ module.exports = function (config) {
 
     client: {
       // print console.log statements
-      captureConsole: false  
+      captureConsole: true  
     },
 
     /*
