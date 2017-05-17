@@ -27,6 +27,14 @@ export class AuthenticationService{
       if (tempUser && tempUser.isAuthenticated) return true;
       return false;
     }
+    public setCurrentAuthenticatedUserFromJson(jsonUser){
+        let user = new User();
+        user.transform(jsonUser);
+        user.isAuthenticated=true;
+        console.log("authorized set to true");
+        this.setCurrentUser(user);
+ 
+    }
 
 
 

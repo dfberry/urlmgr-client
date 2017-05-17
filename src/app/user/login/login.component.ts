@@ -1,13 +1,13 @@
 import { Component, KeyValueDiffers, DoCheck} from '@angular/core';
 import { AbstractControl, FormGroup, FormControl, Validators, FormBuilder, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { RouterModule, Routes, Router } from '@angular/router'; 
-import { Http, Response, URLSearchParams, Headers, RequestOptions, RequestOptionsArgs} from '@angular/http';
+import { Http, Response, URLSearchParams, Headers, RequestOptions} from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 
-// user module only
-import { User } from '../user.model';
+import { Configuration } from '../config';
 import { AuthenticationHttpService, AuthenticationService, UserEvent } from '../services';
-import { Configuration } from '../config'; // configuration inside user module only
+
+
 
 @Component({
     selector: 'login',
@@ -15,20 +15,26 @@ import { Configuration } from '../config'; // configuration inside user module o
       <div class="col-md-6">
           <h2>Login</h2>
 
-          <form (submit)="login()">
-                  <div id="loginerrorcontainer" type="loginerrorcontainer"  *ngIf="authentication.error" class="form-group has-error">
-                    <label id="loginerrors" type="loginerrors" class="control-label" >{{authentication.error}}</label>
-                </div>            
-              <div class="form-group" >
-                  <label for="email">User</label>
-                  <input type="email" type="text" class="form-control" [(ngModel)]="authentication.user.email.value" name="email" placeholder="Your email here" required />
+          <form name="registerForm" (ngSubmit)="register()" >
+                <div id="registrationerrorcontainer" type="registrationerrorcontainer" *ngIf="registration.error" class="form-group has-error">
+                    <label id="registrationerrors" type="registrationerrors" class="control-label" >{{registration.error}}</label>
+                </div>
+              <div class="form-group user" >
+                  <label for="user">user</label>
+                  <input type="text" type="email" class="form-control" [(ngModel)]="registration.user.email.value" name="email" placeholder="Your email here" required  (blur)="validateEmail()"/>
+                  <div id="emailerrorcontainer" type="emailerrorcontainer" *ngIf="!registration.user.email.valid" class="email form-group has-error">
+                    <label id="emailerrors" type="emailerrors" class="email errors control-label" >{{registration.user.email.errorMsg}}</label>
+                  </div>
               </div>
               <div class="form-group" >
                   <label for="password">Password</label>
-                  <input type="password"  class="form-control" [(ngModel)]="authentication.user.password.value" name="password" placeholder="Your password here" required />
+                  <input type="password"  class="form-control" [(ngModel)]="registration.user.password.value" name="password" placeholder="Your password here" (blur)="validatePassword()" />
+                  <div id="passworderrorcontainer" type="passworderrorcontainer" *ngIf="!registration.user.password.valid" class="password form-group has-error">
+                    <label id="passworderrors" type="passworderrors" class="password errors control-label" >{{registration.user.password.errorMsg}}</label>
+                  </div>
               </div>
               <div class="form-group">
-                  <button id="loginButton" type="submit" [disabled]="loading" class="btn btn-primary">Login</button>
+                  <button id="registerButton" type="submit" [disabled]="!registration.valid" class="btn btn-primary" >Register</button>
                   <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
               </div>
 
@@ -36,15 +42,15 @@ import { Configuration } from '../config'; // configuration inside user module o
       </div>
     `
 })
-export class LoginComponent  implements DoCheck {
+export class LoginComponent implements DoCheck {
     config: any;
     newForm: FormGroup;
 
-    authentication = {
+    registration = {
         error: "",
         valid: false,
         loading: false,
-        authorized: false,
+        registered: false,
         response: {},
         user:{
             password: {
@@ -63,94 +69,150 @@ export class LoginComponent  implements DoCheck {
     }
 
 
-    //email="";
-    //password="";
-    baseUrl;
-    //authError="";
-    //authorized=false;
-    authenticatedUser:User;
+  emailDiffer: any;
+  passwordDiffer: any;
 
     constructor(
-        private authService: AuthenticationService, /* for client auth */
-        private router: Router, /* go to Dashboard after successful auth */
-        private userEvent: UserEvent, /* for state events */
-        private authHttpService: AuthenticationHttpService /* for server auth */,
-        private differs: KeyValueDiffers
-        )
-    {}
+        public authHttpService: AuthenticationHttpService /* for server auth */,
+        private router: Router,
+        private differs: KeyValueDiffers,
+        private authService: AuthenticationService /* for client auth */,
+        private userEvent: UserEvent /* for state events */ 
+    ){
+        console.log("registerComponent ctor");
 
+        /* only differ on basic json object - NOT a nested object - so treat email and password as separate differs */
+        this.emailDiffer = differs.find(this.registration.user.email).create();
+        this.passwordDiffer = differs.find(this.registration.user.password).create();
+    }
     ngOnInit() {  
-        this.authentication.loading = false;
-
+        console.log("registerComponent ngOnInit");
+        this.registration.loading = false;
      }
     ngDoCheck() {
         console.log("ngDoCheck called");
+/*
+ 		var emailChanges = this.emailDiffer.diff(this.registration.user.email);
+        var passwordChanges = this.passwordDiffer.diff(this.registration.user.password);
+
+		if(emailChanges) {
+			console.log('changes detected');
+
+			emailChanges.forEachChangedItem(r => {
+                console.log(r.key + ' changed from ' + JSON.stringify(r.previousValue) + " to " +  JSON.stringify(r.currentValue));
+                this.validateEmail();
+            });
+			emailChanges.forEachAddedItem(r => {
+                console.log(r.key + ' added ' +  JSON.stringify(r.currentValue));
+                this.validateEmail();
+            });
+			emailChanges.forEachRemovedItem(r => console.log('removed ' + r.currentValue));
+		} else {
+			console.log('registration nothing changed');
+		}       
+    
+		if(passwordChanges) {
+			console.log('user changes detected');
+			console.log(passwordChanges);
+			
+			passwordChanges.forEachChangedItem(r => {
+			  console.log(r.key + ' changed from ' + r.previousValue + " to " +  r.currentValue);
+              this.validatePassword();
+			 });
+			passwordChanges.forEachAddedItem(r => {
+                console.log(r.key + ' added ' +  JSON.stringify(r.currentValue));
+                this.validatePassword();
+            });
+			passwordChanges.forEachRemovedItem(r => console.log('removed ' + r.currentValue));
+		} else {
+			console.log('user nothing changed');
+		} 
+*/
         this.checkRequiredFields();
     }
     checkRequiredFields(){
 
-        if(this.authentication.user.email.valid==1 && this.authentication.user.password.valid==1){
-            this.authentication.valid = true;
+        if(this.registration.user.email.valid==1 && this.registration.user.password.valid==1){
+            this.registration.valid = true;
         } else {
-            this.authentication.valid = false;
+            this.registration.valid = false;
         }
-        console.log("login checkRequiredFields " + this.authentication.valid);
     }
-    login() {
+    validateEmail() {
 
-        console.log("########################################login called#############################################");
+        //this.registration.user.user.dirty = true;
 
-        //console.log("login function");
-        //console.log("email " + this.email);
-        //console.log("password " + this.password);
+        // pattern="\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b."
+        //console.log("validateuserOnBlur, user = " + JSON.stringify(this.registration.user.user));
+        this.registration.user.email.dirty = true;
+        // RFC 2822 compliant regex
+        if (this.registration.user.email.value.length > 0) {
+            console.log("user is valid format");
+            this.registration.user.email.valid = 1;
+            this.registration.user.email.errorMsg = "";
+        } else {
+            this.registration.user.email.valid = 0;
+            this.registration.user.email.errorMsg = "user is not valid format";
+            console.log("user is not valid format");
+        }
+    }
+    validatePassword() {
+        this.registration.user.password.dirty = true;
+        if (this.registration.user.password.value.length > 0) {
+            console.log("password is valid length");
+            this.registration.user.password.valid = 1;
+            this.registration.user.password.errorMsg = "";
+        } else {
+            this.registration.user.password.valid = 0;
+            this.registration.user.password.errorMsg = "password is required";
+            console.log("password is not valid length");
+        }
+    }
+    register() {
+        //console.log("caller is " + arguments.callee.caller.toString());
+        console.log("########################################register called#############################################");
 
-        let authObj = {
-            email: this.authentication.user.email.value,
-            password: this.authentication.user.password.value
+        let registrationObj = {
+            email: this.registration.user.email.value,
+            password: this.registration.user.password.value
         };
 
-        console.log(authObj);
+        this.authHttpService.authenticateToServer(registrationObj, Configuration.urls.base + "/auth" ).then(json => {
+            
+            console.log("registerToServer success");
+            this.registration.error="";
+            this.registration.registered=true;
+            //this.router.navigate(['/login']);
+            
+            console.log("inside user");
+            //this.authenticatedUser = new User();
+            //this.authenticatedUser.transform(json.data);
 
-        this.authHttpService.authenticateToServer(authObj, Configuration.urls.base + "/auth" ).then(json => {
-        
-                console.log("authenticateToServer success ");
-                console.log(json);
-                let user = json.data;
+            //this.authenticatedUser["isAuthenticated"]=true;
+            this.registration.registered = true;
+            console.log("authorized set to true");
+            this.authService.setCurrentAuthenticatedUserFromJson(json.data);
+            this.userEvent.fire('USER_LOGON');
+            this.router.navigate(['/dashboard']);
+        }).catch((err: any) => {
+            // don't go any where, just set error text
+            //console.log("registration.component err " + err);
+            console.log("register failure - " + err);
+            this.registration.error = "An unexpected error occured";
+            this.registration.registered=false;
+            console.log("err._body" + JSON.stringify(err._body));
 
-                // success should sent us to dashboard
+            // TODO: error is incorrectly returned as string in body instead of JSON
+            if(err && err._body){
 
-                
+                let response = JSON.parse(err._body);
+                if (response.error) this.registration.error = response.error;
+            }
+            //if(err && err._body && err._body.error){ 
+            //    this.registration.error = err._body;
+            //}
 
-                if (user && user.token) {
-                    console.log("inside user");
-                    this.authenticatedUser = new User();
-                    this.authenticatedUser.transform(user);
-
-                    this.authenticatedUser["isAuthenticated"]=true;
-                    this.authentication.authorized = true;
-                    console.log("authorized set to true");
-                    this.authService.setCurrentUser(this.authenticatedUser);
-                    this.userEvent.fire('USER_LOGON');
-                    this.router.navigate(['/dashboard']);
-                } else {
-                    console.log("user not returned correctly");
-                    console.log(user);
-                }
-            })
-            .catch((err: any) => {
-                // don't go any where, just set error text
-                console.log("login failure - " + err);
-                this.authentication.error = "An unexpected error occured";
-                this.authentication.authorized=false;
-
-                console.log("err._body" + err._body);
-                if(err && err._body){
-
-                    //let response = JSON.parse(err._body);
-                    this.authentication.error = err._body;
-                    console.log("this.authentication.error = " + this.authentication.error);
-                }
-            });
+        });
     }
- 
+
 }
