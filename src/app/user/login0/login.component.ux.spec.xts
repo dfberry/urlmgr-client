@@ -12,44 +12,46 @@ import { AuthenticationHttpService, AuthenticationService, UserEvent } from '../
 import { Router, RouterModule } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ReflectiveInjector } from '@angular/core';
-import { User } from '../user.model';
-
-import { Observable } from 'rxjs/Rx';
 
 function newEvent(eventName: string, bubbles = false, cancelable = false) {
+  console.log("newEvent called");
   let evt = document.createEvent('CustomEvent');  // MUST be 'CustomEvent'
   evt.initCustomEvent(eventName, bubbles, cancelable, null);
   return evt;
 }
 
-class localStorageServiceClass  {
-      setCurrentAuthenticatedUserFromJson(){};
-      setCurrentUser(){};
-      currentUser:Observable<User>;
-}
-
-
 describe(`User Login Component UX`, () => {
-  let component: LoginComponent;
-  let fixture: ComponentFixture<LoginComponent>;
 
   let debugElement: DebugElement;
   let form: DebugElement;
 
-  let mockRouter = {
-    navigate: jasmine.createSpy('navigate')
-  };
-  let userEventStub = {
-      fire:  function(){}
-    };
-  let email;
-  let password = "1234";
-  let emailPost = ".bobjones@registertest.com";
+  let component: LoginComponent;
+  let fixture: ComponentFixture<LoginComponent>;
 
-  let clickSpy: jasmine.Spy;// = spyOn(submitEl, 'click');
-  let registerSpy: jasmine.Spy;// = spyOn(component, 'register').and.callThrough();
+  let password = "1@1.com";
+  let email = "1@1.com";
+
+  let baseJsonResponse={
+    data: {
+      token: "asdfasdf"
+    },
+    commit: "123456"
+  };
+
+  let routerStub;
+  let routerService: Router;
+
+  let authHttpServiceSpy;
+  let authHttpServiceStub;
+  let authHttpService: AuthenticationHttpService;
+  
+  let userEventStub;
+  let authenticationServiceStub;
+
 
   let submitEl: HTMLTextAreaElement;
+  let firstnameEl: HTMLTextAreaElement;
+  let lastnameEl: HTMLTextAreaElement;
   let loginEl: HTMLTextAreaElement;
 
   let emailErrorsContainerEl: HTMLTextAreaElement;
@@ -57,18 +59,39 @@ describe(`User Login Component UX`, () => {
   
   let passwordEl: HTMLTextAreaElement;
 
+
+  let clickSpy: jasmine.Spy;// = spyOn(submitEl, 'click');
+  let loginSpy: jasmine.Spy;// = spyOn(component, 'login').and.callThrough();
+
+
   beforeEach(() => {
+
+    routerStub = {
+      navigate: function(){}
+    };
+
+    //authenticationServiceStub = {
+    //  authenticateToServer:  function(){}
+    //};
+
+    userEventStub = {
+      fire:  function(){}
+    };
+
+    authenticationServiceStub = {
+      setCurrentUser:  function(){}
+    };
+
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
+        UserEvent,
         AuthenticationHttpService,
-        BaseRequestOptions,
-        Location,
-        { provide: Router, useValue: mockRouter },
-        { provide: AuthenticationService, useClass: localStorageServiceClass },
-        { provide: UserEvent, useValue: userEventStub }
+        { provide: Router, useValue: routerStub },
+        { provide: UserEvent, useValue: userEventStub },
+        { provide: AuthenticationService, useValue: authenticationServiceStub }
       ],
-      imports: [HttpModule, RouterTestingModule, FormsModule],
+      imports: [HttpModule, RouterTestingModule],
       declarations: [LoginComponent],
     }).compileComponents();
   });
@@ -79,16 +102,19 @@ describe(`User Login Component UX`, () => {
     fixture = TestBed.createComponent(LoginComponent);
     component = fixture.componentInstance;
     debugElement = fixture.debugElement;
+    
+    form = fixture.debugElement.query(By.css('form'));
 
     submitEl = fixture.debugElement.query(By.css('button')).nativeElement;
     loginEl = fixture.debugElement.query(By.css('input[type=email]')).nativeElement;
     passwordEl = fixture.debugElement.query(By.css('input[type=password]')).nativeElement;
 
-    form = fixture.debugElement.query(By.css('form'));
+    console.log("html login input name = " + loginEl.name);
+    console.log("html password input name = " + passwordEl.name);
 
     clickSpy = spyOn(submitEl, 'click');
     //registerSpy = spyOn(component, 'register').and.callThrough();
-    registerSpy = spyOn(component, 'login');
+    loginSpy = spyOn(component, 'login');
 
     fixture.detectChanges();
     tick();
@@ -99,14 +125,19 @@ describe(`User Login Component UX`, () => {
     expect(fixture).toBeDefined();
     expect(component).toBeDefined();
     expect(debugElement).toBeDefined();
+    expect(form).toBeDefined();
 
     expect(submitEl).toBeDefined();
 
     expect(loginEl).toBeDefined();
     expect(passwordEl).toBeDefined();
-
+    expect(component.auth).toBeDefined();
   });
+  it('should not enable submit button on startup', fakeAsync(() => {
 
+    expect(submitEl.disabled).toBeTruthy();
+    
+  }));
   it('should not have error objects in DOM on startup', fakeAsync(() => {
 
     expect(fixture.debugElement.query(By.css('div[type=loginerrorcontainer]'))).toBeDefined();
@@ -120,70 +151,65 @@ describe(`User Login Component UX`, () => {
 
   }));
 
-  it('should not enabled submit button on startup', fakeAsync(() => {
 
-    expect(submitEl.disabled).toBeTruthy();
-    
-  }));
 
-  it('should register with submit button', fakeAsync(() => {
+  it('should login with submit button', fakeAsync(() => {
 
     expect(loginEl.value).toBe('');
-
     expect(passwordEl.value).toBe('');
     expect(submitEl.disabled).toBeTruthy();
 
     fixture.detectChanges();
-
-    email = Math.floor(new Date().valueOf() / 1000) + emailPost;
+    console.log("first detect");
 
     loginEl.value = email;
     loginEl.dispatchEvent(new Event('input'));
+    //loginEl.dispatchEvent(new Event('blur'));
 
     passwordEl.value = password;
     passwordEl.dispatchEvent(new Event('input'));
+    //passwordEl.dispatchEvent(new Event('blur'));
 
     fixture.detectChanges();
     tick();
+    console.log("second detect");
 
-    loginEl.dispatchEvent(new Event('blur'));
-    passwordEl.dispatchEvent(new Event('blur'));
+    console.log("html email = " + loginEl.value);
+    console.log(JSON.stringify(component.auth.user));
 
-    fixture.detectChanges();
-    tick();
 
     expect(loginEl.value).toBe(email);
-    expect(component.registration.user.email.valid).toBe(1);
-    expect(component.registration.user.email.dirty).toBe(true);
-    expect(component.registration.user.email.errorMsg).toBe('');
-    expect(component.registration.user.email.value).toBe(email);
+    expect(component.auth.user.email.valid).toBe(1);
+/*
+    expect(component.auth.user.email.dirty).toBe(true);
+    expect(component.auth.user.email.errorMsg).toBe('');
+    expect(component.auth.user.email.value).toBe(email);
 
     expect(passwordEl.value).toBe(password);
-    expect(component.registration.user.password.valid).toBe(1);
-    expect(component.registration.user.password.dirty).toBe(true);
-    expect(component.registration.user.password.errorMsg).toBe('');
-    expect(component.registration.user.password.value).toBe(password);
+    expect(component.auth.user.password.valid).toBe(1);
+    expect(component.auth.user.password.dirty).toBe(true);
+    expect(component.auth.user.password.errorMsg).toBe('');
+    expect(component.auth.user.password.value).toBe(password);
 
     expect(submitEl.disabled).toBeFalsy();
-    expect(submitEl.id).toBe("loginButton");
+    expect(submitEl.id).toBe("registerButton");
 
     form.triggerEventHandler('submit', null);
 
     fixture.detectChanges();
     tick(1000);
+    console.log("third detect");
 
-    expect(registerSpy).toHaveBeenCalled();
-
+    expect(loginSpy).toHaveBeenCalled();
+*/
   }));
-  xit('should show invalid email error', fakeAsync(() => {
+  
+  it('should show invalid email error', fakeAsync(() => {
 
+    expect(component.title).toEqual("xyz");
     expect(loginEl.value).toBe('');
-
     expect(passwordEl.value).toBe('');
-    console.log("submit should be enabled");
     expect(submitEl.disabled).toBeTruthy();
-
-    fixture.detectChanges();
 
     email = "thisisabademail";
 
@@ -194,7 +220,6 @@ describe(`User Login Component UX`, () => {
     passwordEl.dispatchEvent(new Event('input'));
 
     fixture.detectChanges();
-    tick();
 
     loginEl.dispatchEvent(new Event('blur'));
     passwordEl.dispatchEvent(new Event('blur'));
@@ -202,16 +227,20 @@ describe(`User Login Component UX`, () => {
     fixture.detectChanges();
     tick();
 
+    console.log("html password = " + passwordEl.value);
+    console.log("comp password = " + component.auth.user.password.value);
     expect(passwordEl.value).toBe(password);
-    expect(component.registration.user.password.value).toBe(password);
+    expect(component.auth.user.password.value).toBe(password);
 
+    console.log("html email = " + loginEl.value);
+    console.log("comp email = " + component.auth.user.email.value);
+    console.log("authentication = " + JSON.stringify(component.auth));
     expect(loginEl.value).toBe(email);
-    expect(component.registration.user.email.value).toBe(email);
-
+    expect(component.auth.user.email.value).toBe(email);
+/*
     // assert for invalid error format
-
-    emailErrorsContainerEl = fixture.debugElement.query(By.css('div[type=emailerrorcontainer]')).nativeElement;
-    emailErrorsEl = fixture.debugElement.query(By.css('label[type=emailerrors')).nativeElement;
+    emailErrorsContainerEl = fixture.debugElement.query(By.css('div[type=loginerrorcontainer]')).nativeElement;
+    emailErrorsEl = fixture.debugElement.query(By.css('label[type=loginerrors')).nativeElement;
 
     // DOM changed
     expect(emailErrorsContainerEl).toBeDefined();
@@ -225,11 +254,16 @@ describe(`User Login Component UX`, () => {
     expect(submitEl.disabled).toBeTruthy();
     
     // component email error text is set
-    expect(component.registration.user.email.errorMsg).toBeTruthy();
+    expect(component.auth.error).toBeTruthy();
     // component formEnabled
-    expect(component.registration.valid).toBeFalsy();
+    expect(component.auth.valid).toBeFalsy();
+  */
   }));  
-xit('should allow correct email after invalid email error', fakeAsync(() => {
+/*xit('should allow correct email after invalid email error', fakeAsync(() => {
+
+    expect(firstnameEl.value).toBe('');
+    expect(lastnameEl.value).toBe('');
+
     expect(loginEl.value).toBe('');
 
     expect(passwordEl.value).toBe('');
@@ -239,6 +273,12 @@ xit('should allow correct email after invalid email error', fakeAsync(() => {
     fixture.detectChanges();
 
     email = "thisisabademail";
+
+    firstnameEl.value = firstName;
+    firstnameEl.dispatchEvent(new Event('input'));
+
+    lastnameEl.value = lastName;
+    lastnameEl.dispatchEvent(new Event('input'));
 
     loginEl.value = email;
     loginEl.dispatchEvent(new Event('input'));
@@ -254,6 +294,12 @@ xit('should allow correct email after invalid email error', fakeAsync(() => {
 
     fixture.detectChanges();
     tick();
+
+    expect(firstnameEl.value).toBe(firstName);
+    expect(component.registration.user.firstName).toBe(firstName);
+
+    expect(lastnameEl.value).toBe(lastName);
+    expect(component.registration.user.lastName).toBe(lastName);
 
     expect(passwordEl.value).toBe(password);
     expect(component.registration.user.password.value).toBe(password);
@@ -307,7 +353,7 @@ xit('should allow correct email after invalid email error', fakeAsync(() => {
     console.log("checking submit");
 
     expect(submitEl.disabled).toBeFalsy();
-    expect(submitEl.id).toBe("loginButton");
+    expect(submitEl.id).toBe("registerButton");
 
     form.triggerEventHandler('submit', null);
 
@@ -318,5 +364,5 @@ xit('should allow correct email after invalid email error', fakeAsync(() => {
     expect(registerSpy).toHaveBeenCalled();
     
   }));  
-
+*/
 });

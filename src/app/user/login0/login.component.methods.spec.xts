@@ -1,10 +1,11 @@
 import { NO_ERRORS_SCHEMA, DebugElement } from '@angular/core';
-import { Observable } from 'rxjs/Rx';
+
 import { inject, async, TestBed, ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
 import { Location } from '@angular/common';
 import { By } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { HttpModule, Http, BaseRequestOptions, XHRBackend, ResponseOptions } from '@angular/http';
+import { Observable } from 'rxjs/Rx';
 
 // Load the implementations that should be tested
 import { LoginComponent } from './login.component';
@@ -12,33 +13,30 @@ import { AuthenticationHttpService, AuthenticationService, UserEvent } from '../
 import { Router, RouterModule } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ReflectiveInjector } from '@angular/core';
-import { User } from '../user.model';
-
-class localStorageServiceClass  {
-      setCurrentAuthenticatedUserFromJson(){};
-      setCurrentUser(){};
-      currentUser:Observable<User>;
-}
 
 describe(`User Login Component Method`, () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
 
-  let email;
-  let password = "1234";
-  let emailPost = ".bobjones@registertest.com";
+  let password = "1@1.com";
+  let email = "1@1.com";
 
   let baseJsonResponse={
+    data: {
+      token: "asdfasdf"
+    },
     commit: "123456"
   };
 
   let routerStub;
   let routerService: Router;
+
+  let authHttpServiceSpy;
+  let authHttpServiceStub;
+  let authHttpService: AuthenticationHttpService;
+  
   let userEventStub;
-  let authServiceSpy;
-  let authServiceStub;
-  let authService: AuthenticationHttpService;
-  let localStorageServiceStub: AuthenticationService;
+  let authenticationServiceStub;
 
   beforeEach(() => {
 
@@ -46,23 +44,27 @@ describe(`User Login Component Method`, () => {
       navigate: function(){}
     };
 
-    authServiceStub = {
-      registerToServer: {},
-      authenticateToServer:{}
-    };
+    //authenticationServiceStub = {
+    //  authenticateToServer:  function(){}
+    //};
 
     userEventStub = {
       fire:  function(){}
     };
 
+    authenticationServiceStub = {
+      setCurrentUser:  function(){}
+    };
 
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
-        { provide: UserEvent, useValue: userEventStub },
-        { provide: AuthenticationHttpService, useValue: authServiceStub },
+        UserEvent,
+        AuthenticationService,
+        AuthenticationHttpService,
         { provide: Router, useValue: routerStub },
-        { provide: AuthenticationService, useClass: localStorageServiceClass }
+        { provide: UserEvent, useValue: userEventStub },
+        { provide: AuthenticationService, useValue: authenticationServiceStub }
       ],
       imports: [HttpModule, RouterTestingModule],
       declarations: [LoginComponent],
@@ -74,27 +76,29 @@ describe(`User Login Component Method`, () => {
     fixture = TestBed.createComponent(LoginComponent);
     component = fixture.componentInstance;
 
-    authService = fixture.debugElement.injector.get(AuthenticationHttpService);   
+    
     routerService = fixture.debugElement.injector.get(Router);
 
-    authServiceSpy = spyOn(authService, 'authenticateToServer')
+    authHttpService = fixture.debugElement.injector.get(AuthenticationHttpService);   
+    authHttpServiceSpy = spyOn(authHttpService, 'authenticateToServer')
           .and.returnValue(Promise.resolve(baseJsonResponse));
-    expect(component.registration.registered).toBe(false);
 
-    component.registration.user.email.value = "1@1.com",
-    component.registration.user.password.value = "1@1.com";
+    expect(component.auth.authorized).toBe(false);
+
+    component.auth.user.email.value = "1@1.com";
+    component.auth.user.password.value ="1@1.com";
 
     // register new user
     component.login();
 
   }));
   it('should define everything', () => {
-    expect(authService).toBeDefined();
+    expect(authHttpService).toBeDefined();
     expect(routerService).toBeDefined();
     expect(component.login).toBeDefined();
   });
-  it('should call services from register', () => {
-    expect(authServiceSpy).toHaveBeenCalled();
+  it('should call services from login', () => {
+    expect(authHttpServiceSpy).toHaveBeenCalled();
   });
   it('should wait for promise (async)', async(() => {
     fixture.detectChanges();
@@ -102,7 +106,7 @@ describe(`User Login Component Method`, () => {
       fixture.detectChanges();        // update view
 
       // successfully registered user
-      expect(component.registration.registered).toBe(true);
+      expect(component.auth.authorized).toBe(true);
     });
   }));
   it('should wait for fake promise (fakeAsync)', fakeAsync(() => {
@@ -111,18 +115,18 @@ describe(`User Login Component Method`, () => {
     fixture.detectChanges();        // update view
 
     // successfully registered user
-    expect(component.registration.registered).toBe(true);
+      expect(component.auth.authorized).toBe(true);
   }));
   it('should register after submission promise (done)', (done: any) => {
     fixture.detectChanges();
 
     // get the spy promise and wait for it to resolve
-    authServiceSpy.calls.mostRecent().returnValue.then(() => {
+    authHttpServiceSpy.calls.mostRecent().returnValue.then(() => {
       fixture.detectChanges(); // update view 
 
       // successfully registered user
-      expect(component.registration.registered).toBe(true);
-      expect(component.registration.error).toBe("");
+      expect(component.auth.authorized).toBe(true);
+      expect(component.auth.error).toBe("");
       done();
     });
   });

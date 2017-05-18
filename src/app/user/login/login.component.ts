@@ -15,12 +15,12 @@ import { AuthenticationHttpService, AuthenticationService, UserEvent } from '../
       <div class="col-md-6">
           <h2>Login</h2>
 
-          <form name="registerForm" (ngSubmit)="register()" >
-                <div id="registrationerrorcontainer" type="registrationerrorcontainer" *ngIf="registration.error" class="form-group has-error">
-                    <label id="registrationerrors" type="registrationerrors" class="control-label" >{{registration.error}}</label>
+          <form name="loginForm" (ngSubmit)="login()" >
+                <div id="loginerrorcontainer" type="loginerrorcontainer" *ngIf="registration.error" class="form-group has-error">
+                    <label id="loginerrors" type="loginerrors" class="control-label" >{{registration.error}}</label>
                 </div>
               <div class="form-group user" >
-                  <label for="user">user</label>
+                  <label for="user">User</label>
                   <input type="text" type="email" class="form-control" [(ngModel)]="registration.user.email.value" name="email" placeholder="Your email here" required  (blur)="validateEmail()"/>
                   <div id="emailerrorcontainer" type="emailerrorcontainer" *ngIf="!registration.user.email.valid" class="email form-group has-error">
                     <label id="emailerrors" type="emailerrors" class="email errors control-label" >{{registration.user.email.errorMsg}}</label>
@@ -34,7 +34,7 @@ import { AuthenticationHttpService, AuthenticationService, UserEvent } from '../
                   </div>
               </div>
               <div class="form-group">
-                  <button id="registerButton" type="submit" [disabled]="!registration.valid" class="btn btn-primary" >Register</button>
+                  <button id="loginButton" type="submit" [disabled]="!registration.valid" class="btn btn-primary" >Register</button>
                   <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
               </div>
 
@@ -168,9 +168,7 @@ export class LoginComponent implements DoCheck {
             console.log("password is not valid length");
         }
     }
-    register() {
-        //console.log("caller is " + arguments.callee.caller.toString());
-        console.log("########################################register called#############################################");
+    login() {
 
         let registrationObj = {
             email: this.registration.user.email.value,
@@ -179,25 +177,22 @@ export class LoginComponent implements DoCheck {
 
         this.authHttpService.authenticateToServer(registrationObj, Configuration.urls.base + "/auth" ).then(json => {
             
-            console.log("registerToServer success");
+            console.log("authenticateToServer success");
+            
+            // local properties
             this.registration.error="";
             this.registration.registered=true;
-            //this.router.navigate(['/login']);
-            
-            console.log("inside user");
-            //this.authenticatedUser = new User();
-            //this.authenticatedUser.transform(json.data);
 
-            //this.authenticatedUser["isAuthenticated"]=true;
-            this.registration.registered = true;
-            console.log("authorized set to true");
+            // local storage
             this.authService.setCurrentAuthenticatedUserFromJson(json.data);
+
+            // set state
             this.userEvent.fire('USER_LOGON');
+
+            // go to dashboard
             this.router.navigate(['/dashboard']);
         }).catch((err: any) => {
             // don't go any where, just set error text
-            //console.log("registration.component err " + err);
-            console.log("register failure - " + err);
             this.registration.error = "An unexpected error occured";
             this.registration.registered=false;
             console.log("err._body" + JSON.stringify(err._body));
@@ -208,10 +203,6 @@ export class LoginComponent implements DoCheck {
                 let response = JSON.parse(err._body);
                 if (response.error) this.registration.error = response.error;
             }
-            //if(err && err._body && err._body.error){ 
-            //    this.registration.error = err._body;
-            //}
-
         });
     }
 
