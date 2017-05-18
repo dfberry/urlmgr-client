@@ -1,10 +1,10 @@
 import { Component} from '@angular/core';
 import { AbstractControl, FormGroup, FormControl, Validators, FormBuilder, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { RouterModule, Routes, Router, ActivatedRoute } from '@angular/router'; 
-import { Http, Response, URLSearchParams, Headers, RequestOptions, RequestOptionsArgs} from '@angular/http';
+//import { Response, URLSearchParams, Headers, RequestOptions, RequestOptionsArgs} from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 
-import { UserEvent, AuthenticationService } from '../services';
+import { UserEvent, AuthenticationService, AuthenticationHttpService } from '../services';
 
 import { Configuration } from '../config';
 
@@ -46,7 +46,7 @@ export class ProfileComponent {
     baseUrl;
 
     constructor(
-        private http: Http,
+        public authHttpService: AuthenticationHttpService,
         private authService: AuthenticationService,
         private userEvent: UserEvent,
         private router: Router,
@@ -66,38 +66,17 @@ export class ProfileComponent {
  
     logout() {
 
-        let postForm = {
-            user: this.user['id'],
-        };
+        let url = Configuration.urls.base + '/users/' + this.user['id'] + '/tokens';
 
-        let headers = new Headers();
-        headers.set('x-access-token', this.user['token']);
+        this.authHttpService.deAuthenticateToServer(this.user, url).then( results => {
+            
+            this.userEvent.fire('USER_CLEAR');
+            this.authService.removeCurrentUser();
+            this.user = {};
+            this.router.navigate(['/']);
+        }).catch(err => {
+            console.log("logout failure - " + err);
+        }); 
 
-        let options:RequestOptionsArgs = {
-            headers : headers,
-            body : postForm
-        };
-
-        // remove user from ngrx storage
-        this.userEvent.fire('USER_CLEAR');
-
-        // remove user from local storage to log user out
-        this.authService.removeCurrentUser();
-
-        // clear local variable
-        this.user = {};
-
-        return this.http.delete(Configuration.urls.base + '/users/' + postForm.user + '/tokens', options)
-            .map((response:Response) => {
-                // nothing returned but 200
-                //console.log("logout success "); 
-                this.router.navigate(['/']);
-                return;
-            })
-            .toPromise()
-            .catch((err: any) => {
-                //console.log("logout err " + err);
-                return Promise.reject(err.message)
-            });
     }
 }
