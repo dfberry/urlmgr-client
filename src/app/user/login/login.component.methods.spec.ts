@@ -79,12 +79,12 @@ describe(`User Login Component Method`, () => {
 
     authServiceSpy = spyOn(authService, 'authenticateToServer')
           .and.returnValue(Promise.resolve(baseJsonResponse));
-    expect(component.registration.registered).toBe(false);
+    expect(component.authentication.authenticated).toBe(false);
 
-    component.registration.user.email.value = "1@1.com",
-    component.registration.user.password.value = "1@1.com";
+    component.authentication.user.email.value = "1@1.com",
+    component.authentication.user.password.value = "1@1.com";
 
-    // register new user
+    // login user
     component.login();
 
   }));
@@ -93,7 +93,7 @@ describe(`User Login Component Method`, () => {
     expect(routerService).toBeDefined();
     expect(component.login).toBeDefined();
   });
-  it('should call services from register', () => {
+  it('should call services from login', () => {
     expect(authServiceSpy).toHaveBeenCalled();
   });
   it('should wait for promise (async)', async(() => {
@@ -101,8 +101,8 @@ describe(`User Login Component Method`, () => {
     fixture.whenStable().then(() => { // wait for async 
       fixture.detectChanges();        // update view
 
-      // successfully registered user
-      expect(component.registration.registered).toBe(true);
+      // successfully authenticated user
+      expect(component.authentication.authenticated).toBe(true);
     });
   }));
   it('should wait for fake promise (fakeAsync)', fakeAsync(() => {
@@ -110,19 +110,19 @@ describe(`User Login Component Method`, () => {
     tick();
     fixture.detectChanges();        // update view
 
-    // successfully registered user
-    expect(component.registration.registered).toBe(true);
+    // successfully authenticated user
+    expect(component.authentication.authenticated).toBe(true);
   }));
-  it('should register after submission promise (done)', (done: any) => {
+  it('should login after submission promise (done)', (done: any) => {
     fixture.detectChanges();
 
     // get the spy promise and wait for it to resolve
     authServiceSpy.calls.mostRecent().returnValue.then(() => {
       fixture.detectChanges(); // update view 
 
-      // successfully registered user
-      expect(component.registration.registered).toBe(true);
-      expect(component.registration.error).toBe("");
+      // successfully authenticated user
+      expect(component.authentication.authenticated).toBe(true);
+      expect(component.authentication.error).toBe("");
       done();
     });
   });

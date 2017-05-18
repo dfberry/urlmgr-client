@@ -47,7 +47,7 @@ describe(`User Login Component UX`, () => {
   let emailPost = ".bobjones@registertest.com";
 
   let clickSpy: jasmine.Spy;// = spyOn(submitEl, 'click');
-  let registerSpy: jasmine.Spy;// = spyOn(component, 'register').and.callThrough();
+  let loginSpy: jasmine.Spy;// = spyOn(component, 'register').and.callThrough();
 
   let submitEl: HTMLTextAreaElement;
   let loginEl: HTMLTextAreaElement;
@@ -87,8 +87,8 @@ describe(`User Login Component UX`, () => {
     form = fixture.debugElement.query(By.css('form'));
 
     clickSpy = spyOn(submitEl, 'click');
-    //registerSpy = spyOn(component, 'register').and.callThrough();
-    registerSpy = spyOn(component, 'login');
+    //loginSpy = spyOn(component, 'register').and.callThrough();
+    loginSpy = spyOn(component, 'login');
 
     fixture.detectChanges();
     tick();
@@ -126,7 +126,7 @@ describe(`User Login Component UX`, () => {
     
   }));
 
-  it('should register with submit button', fakeAsync(() => {
+  it('should login with submit button', fakeAsync(() => {
 
     expect(loginEl.value).toBe('');
 
@@ -153,16 +153,16 @@ describe(`User Login Component UX`, () => {
     tick();
 
     expect(loginEl.value).toBe(email);
-    expect(component.registration.user.email.valid).toBe(1);
-    expect(component.registration.user.email.dirty).toBe(true);
-    expect(component.registration.user.email.errorMsg).toBe('');
-    expect(component.registration.user.email.value).toBe(email);
+    expect(component.authentication.user.email.valid).toBe(1);
+    expect(component.authentication.user.email.dirty).toBe(true);
+    expect(component.authentication.user.email.errorMsg).toBe('');
+    expect(component.authentication.user.email.value).toBe(email);
 
     expect(passwordEl.value).toBe(password);
-    expect(component.registration.user.password.valid).toBe(1);
-    expect(component.registration.user.password.dirty).toBe(true);
-    expect(component.registration.user.password.errorMsg).toBe('');
-    expect(component.registration.user.password.value).toBe(password);
+    expect(component.authentication.user.password.valid).toBe(1);
+    expect(component.authentication.user.password.dirty).toBe(true);
+    expect(component.authentication.user.password.errorMsg).toBe('');
+    expect(component.authentication.user.password.value).toBe(password);
 
     expect(submitEl.disabled).toBeFalsy();
     expect(submitEl.id).toBe("loginButton");
@@ -172,7 +172,7 @@ describe(`User Login Component UX`, () => {
     fixture.detectChanges();
     tick(1000);
 
-    expect(registerSpy).toHaveBeenCalled();
+    expect(loginSpy).toHaveBeenCalled();
 
   }));
   xit('should show invalid email error', fakeAsync(() => {
@@ -203,10 +203,10 @@ describe(`User Login Component UX`, () => {
     tick();
 
     expect(passwordEl.value).toBe(password);
-    expect(component.registration.user.password.value).toBe(password);
+    expect(component.authentication.user.password.value).toBe(password);
 
     expect(loginEl.value).toBe(email);
-    expect(component.registration.user.email.value).toBe(email);
+    expect(component.authentication.user.email.value).toBe(email);
 
     // assert for invalid error format
 
@@ -225,9 +225,9 @@ describe(`User Login Component UX`, () => {
     expect(submitEl.disabled).toBeTruthy();
     
     // component email error text is set
-    expect(component.registration.user.email.errorMsg).toBeTruthy();
+    expect(component.authentication.user.email.errorMsg).toBeTruthy();
     // component formEnabled
-    expect(component.registration.valid).toBeFalsy();
+    expect(component.authentication.valid).toBeFalsy();
   }));  
 xit('should allow correct email after invalid email error', fakeAsync(() => {
     expect(loginEl.value).toBe('');
@@ -256,10 +256,10 @@ xit('should allow correct email after invalid email error', fakeAsync(() => {
     tick();
 
     expect(passwordEl.value).toBe(password);
-    expect(component.registration.user.password.value).toBe(password);
+    expect(component.authentication.user.password.value).toBe(password);
 
     expect(loginEl.value).toBe(email);
-    expect(component.registration.user.email.value).toBe(email);
+    expect(component.authentication.user.email.value).toBe(email);
 
     // assert for invalid error format
 
@@ -278,9 +278,9 @@ xit('should allow correct email after invalid email error', fakeAsync(() => {
     expect(submitEl.disabled).toBeTruthy();
     
     // component email error text is set
-    expect(component.registration.user.email.errorMsg).toBeTruthy();
+    expect(component.authentication.user.email.errorMsg).toBeTruthy();
     // component formEnabled
-    expect(component.registration.valid).toBeFalsy();
+    expect(component.authentication.valid).toBeFalsy();
 
     // well-formed email
     email = Math.floor(new Date().valueOf() / 1000) + emailPost;
@@ -299,10 +299,10 @@ xit('should allow correct email after invalid email error', fakeAsync(() => {
     tick();
 
     expect(loginEl.value).toBe(email);
-    expect(component.registration.user.email.valid).toBe(1);
-    expect(component.registration.user.email.dirty).toBe(true);
-    expect(component.registration.user.email.errorMsg).toBe('');
-    expect(component.registration.user.email.value).toBe(email);
+    expect(component.authentication.user.email.valid).toBe(1);
+    expect(component.authentication.user.email.dirty).toBe(true);
+    expect(component.authentication.user.email.errorMsg).toBe('');
+    expect(component.authentication.user.email.value).toBe(email);
     
     console.log("checking submit");
 
@@ -315,7 +315,7 @@ xit('should allow correct email after invalid email error', fakeAsync(() => {
     fixture.detectChanges();
     tick(1000);
 
-    expect(registerSpy).toHaveBeenCalled();
+    expect(loginSpy).toHaveBeenCalled();
     
   }));  
 
