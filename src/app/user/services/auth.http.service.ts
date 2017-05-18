@@ -40,4 +40,31 @@ export class AuthenticationHttpService{
                 throw err;
             });
     }
+
+    public deAuthenticateToServer(userObj, serverUrl){
+
+        let postForm = {
+            user: userObj['id'],
+        };
+
+        let headers = new Headers();
+        headers.set('x-access-token', userObj['token']);
+
+        let options:RequestOptionsArgs = {
+            headers : headers,
+            body : postForm
+        };
+
+        return this.http.delete(serverUrl, options)
+            .map((response:Response) => {
+                // nothing returned but 200
+                //console.log("logout success "); 
+                return Promise.resolve();
+            })
+            .toPromise()
+            .catch((err: any) => {
+                //console.log("logout err " + err);
+                return Promise.reject(err.message)
+            });
+    }
 }
