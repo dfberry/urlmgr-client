@@ -1,12 +1,10 @@
 import { NO_ERRORS_SCHEMA, DebugElement } from '@angular/core';
-import { Observable } from 'rxjs/Rx';
+
 import { inject, async, TestBed, ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
 import { Location } from '@angular/common';
 import { By } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { HttpModule, Http, BaseRequestOptions, XHRBackend, ResponseOptions } from '@angular/http';
-
-
 
 // Load the implementations that should be tested
 import { ProfileComponent } from './profile.component';
@@ -16,8 +14,19 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ReflectiveInjector } from '@angular/core';
 import { User } from '../user.model';
 
+
+
+import { Subscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Rx';
+
+function newEvent(eventName: string, bubbles = false, cancelable = false) {
+  let evt = document.createEvent('CustomEvent');  // MUST be 'CustomEvent'
+  evt.initCustomEvent(eventName, bubbles, cancelable, null);
+  return evt;
+}
+
 class MockActivatedRoute {
-  params = {
+  queryParams = {
     subscribe: jasmine.createSpy('subscribe')
      .and
      .returnValue(Observable.of(<Params>{id: 1}))
@@ -35,36 +44,37 @@ class localStorageServiceClass  {
         mockUser.email = 'profileLogout@test.com';
         mockUser.isAuthenticated = true;
         mockUser.token = "ABCDEF";
+        mockUser.lastName = "testLastName";
+        mockUser.firstName = "testFirstName";
+        return mockUser;
       }
 }
 
 
-
-describe(`User Profile Component Method`, () => {
+describe(`User Profile Component UX`, () => {
   let component: ProfileComponent;
   let fixture: ComponentFixture<ProfileComponent>;
 
-  let email;
-  let password = "1234";
-  let emailPost = ".bobjones@rprofiletest.com";
+  let debugElement: DebugElement;
+  let form: DebugElement;
 
-  let baseJsonResponse={
-    commit: "123456"
+  let authServiceStub;
+
+  let routerStub;
+  let mockRouter = {
+    navigate: jasmine.createSpy('navigate')
   };
 
-  let routerSpy;
-  let routerStub;
-  let routerService: Router;
+  let userEventStub = {
+      fire:  function(){}
+    };
 
-  let userEventStub;
-  let authServiceSpy;
-  let authServiceStub;
-  let authService: AuthenticationHttpService;
+  let clickSpy: jasmine.Spy;// = spyOn(submitEl, 'click');
+  let logoutSpy: jasmine.Spy;// = spyOn(component, 'register').and.callThrough();
 
-  let localStorageServiceSpy;
-  let localStorageService: AuthenticationService;
+  let submitEl: HTMLTextAreaElement;
 
-  beforeEach(() => {
+beforeEach(() => {
 
     routerStub = {
       navigate: function(){}
@@ -97,37 +107,44 @@ describe(`User Profile Component Method`, () => {
 
   // fakeAsync so I can use tick
   beforeEach(fakeAsync(() => {
+
     fixture = TestBed.createComponent(ProfileComponent);
     component = fixture.componentInstance;
+    debugElement = fixture.debugElement;
 
-    authService = fixture.debugElement.injector.get(AuthenticationHttpService);   
-    routerService = fixture.debugElement.injector.get(Router);
-    localStorageService = fixture.debugElement.injector.get(AuthenticationService);
+    submitEl = fixture.debugElement.query(By.css('button')).nativeElement;
 
-    authServiceSpy = spyOn(authService, 'deAuthenticateToServer')
-          .and.returnValue(Promise.resolve()); //returns empty promise
+    form = fixture.debugElement.query(By.css('form'));
 
-    localStorageServiceSpy = spyOn(localStorageService, 'removeCurrentUser' );
+    clickSpy = spyOn(submitEl, 'click');
+    //loginSpy = spyOn(component, 'register').and.callThrough();
+    logoutSpy = spyOn(component, 'logout');
 
-    routerSpy = spyOn(routerService,'navigate');
+    fixture.detectChanges();
+    tick();
+  }));
 
-    // login user
-    component.logout();
+
+  it(`should be readly initialized`, () => {
+    expect(fixture).toBeDefined();
+    expect(component).toBeDefined();
+    expect(debugElement).toBeDefined();
+
+    expect(submitEl).toBeDefined();
+    expect(submitEl.id="logout");
+    expect(submitEl.disabled).toBeFalsy();
+
+  });
+
+  it('should logout with submit button', fakeAsync(() => {
+    fixture.detectChanges();
+
+    form.triggerEventHandler('submit', null);
+
+    fixture.detectChanges();
+    tick(1000);
+
+    expect(logoutSpy).toHaveBeenCalled();
 
   }));
-  it('should define everything', () => {
-    expect(authService).toBeDefined();
-    expect(routerService).toBeDefined();
-    expect(component.logout).toBeDefined();
-  });
-  it('should call services from logout', () => {
-    expect(authServiceSpy).toHaveBeenCalled();
-    expect(localStorageServiceSpy).toHaveBeenCalled();
-    expect(routerSpy).toHaveBeenCalled();
-  });
-  it('should set user property to empty json', () => {
-    expect(component.user).toEqual({});
-  });
-
-  
 });

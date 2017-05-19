@@ -34,7 +34,7 @@ import { Configuration } from '../config';
                   <input readonly type="text" class="form-control" value="{{user.lastLogin}}" />
               </div>
 
-               <button [disabled]="loading" class="btn btn-primary">Logout</button>
+               <button id="logout" [disabled]="loading" class="btn btn-primary">Logout</button>
         </div>
    </form>
 </div>
