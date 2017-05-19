@@ -36,7 +36,6 @@ import { AppState, UserState, UserActions, UrlState, UrlActions } from './app.st
 import { AuthGuard} from './app.routing.authguard';
 import { UserModule} from './user/user.module';
 import { UrlModule } from './url/url.module';
-import { AlertModule } from './alert/alert.module';
 import { ConfigService } from './config/config.service';
 //import { StateService } from './state/index';
 
