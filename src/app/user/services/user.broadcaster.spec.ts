@@ -3,7 +3,7 @@ import { Broadcaster} from '../../services/broadcast';
 import { UserEvent } from './user.broadcaster';
 
 
-fdescribe('User Service: UserEvent', () => {
+describe('User Service: UserEvent', () => {
 
   let customEventName = 'UNIT_TEST_EVENT';
 
