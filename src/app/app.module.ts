@@ -37,7 +37,6 @@ import { AuthGuard} from './app.routing.authguard';
 import { UserModule} from './user/user.module';
 import { UrlModule } from './url/url.module';
 import { AlertModule } from './alert/alert.module';
-import { HomeModule } from './home/home.module';
 import { ConfigService } from './config/config.service';
 //import { StateService } from './state/index';
 
@@ -50,7 +49,6 @@ let urlModule = UrlModule.forRoot();
     AppRoutes,
     UserModule,
     UrlModule,
-    HomeModule,
 
     // 3rd party code
     DataTableModule,
