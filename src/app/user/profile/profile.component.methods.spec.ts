@@ -10,7 +10,7 @@ import { HttpModule, Http, BaseRequestOptions, XHRBackend, ResponseOptions } fro
 
 // Load the implementations that should be tested
 import { ProfileComponent } from './profile.component';
-import { AuthenticateWithServerService, AuthenticationService, UserEvent } from '../services';
+import { ServerAuthenticationService, AuthenticationService, UserEvent } from '../services';
 import { Router, RouterModule, ActivatedRoute, Params } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ReflectiveInjector } from '@angular/core';
@@ -59,7 +59,7 @@ describe(`User Profile Component Method`, () => {
   let userEventStub;
   let authServiceSpy;
   let authServiceStub;
-  let authService: AuthenticateWithServerService;
+  let authService: ServerAuthenticationService;
 
   let localStorageServiceSpy;
   let localStorageService: AuthenticationService;
@@ -86,7 +86,7 @@ describe(`User Profile Component Method`, () => {
       providers: [
         { provide: ActivatedRoute, useClass: MockActivatedRoute},
         { provide: UserEvent, useValue: userEventStub },
-        { provide: AuthenticateWithServerService, useValue: authServiceStub },
+        { provide: ServerAuthenticationService, useValue: authServiceStub },
         { provide: Router, useValue: routerStub },
         { provide: AuthenticationService, useClass: localStorageServiceClass }
       ],
@@ -100,7 +100,7 @@ describe(`User Profile Component Method`, () => {
     fixture = TestBed.createComponent(ProfileComponent);
     component = fixture.componentInstance;
 
-    authService = fixture.debugElement.injector.get(AuthenticateWithServerService);   
+    authService = fixture.debugElement.injector.get(ServerAuthenticationService);   
     routerService = fixture.debugElement.injector.get(Router);
     localStorageService = fixture.debugElement.injector.get(AuthenticationService);
 

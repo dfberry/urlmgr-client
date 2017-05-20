@@ -6,7 +6,7 @@ import { Http, Response, URLSearchParams, Headers, RequestOptions, RequestOption
 
 // validate user and password against server
 @Injectable()
-export class AuthenticateWithServerService{
+export class ServerAuthenticationService{
 
     currentUser: Observable<User>;
 

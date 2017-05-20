@@ -5,7 +5,7 @@ import { Http, Response, URLSearchParams, Headers, RequestOptions} from '@angula
 import { Observable } from 'rxjs/Rx';
 
 import { Configuration } from '../config';
-import { AuthenticateWithServerService, AuthenticationService, UserEvent } from '../services';
+import { ServerAuthenticationService, AuthenticationService, UserEvent } from '../services';
 
 
 
@@ -73,7 +73,7 @@ export class LoginComponent implements DoCheck {
   passwordDiffer: any;
 
     constructor(
-        public authHttpService: AuthenticateWithServerService /* for server auth */,
+        public authHttpService: ServerAuthenticationService /* for server auth */,
         private router: Router,
         private differs: KeyValueDiffers,
         private authService: AuthenticationService /* for client auth */,

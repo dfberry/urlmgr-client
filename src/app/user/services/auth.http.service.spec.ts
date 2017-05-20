@@ -1,5 +1,5 @@
 import { TestBed, async, inject } from '@angular/core/testing';
-import { AuthenticateWithServerService } from './auth.http.service';
+import { ServerAuthenticationService } from './auth.http.service';
 
 import { Configuration } from '../config';
 import { MockBackend } from '@angular/http/testing';
@@ -13,18 +13,18 @@ if it errors and returns a status of 0 => the server is not available
 
 */
 
-describe('User Service: AuthenticateWithServerService', () => {
-  let service: AuthenticateWithServerService;
+describe('User Service: ServerAuthenticationService', () => {
+  let service: ServerAuthenticationService;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpModule],
       providers: [ 
-        AuthenticateWithServerService,
+        ServerAuthenticationService,
         BaseRequestOptions,
         Configuration
       ]
     });
-    service = TestBed.get(AuthenticateWithServerService);
+    service = TestBed.get(ServerAuthenticationService);
   }));
   it(`should create instance of service`, async(() => {
     expect(service).toBeDefined();
@@ -41,7 +41,7 @@ describe('User Service: AuthenticateWithServerService', () => {
 
       const url = Configuration.urls.base + "/auth";
 
-      let authService = TestBed.get(AuthenticateWithServerService);
+      let authService = TestBed.get(ServerAuthenticationService);
 
       // act
       authService.authenticateToServer(userObj, url)
