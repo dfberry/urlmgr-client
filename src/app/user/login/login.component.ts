@@ -5,7 +5,7 @@ import { Http, Response, URLSearchParams, Headers, RequestOptions} from '@angula
 import { Observable } from 'rxjs/Rx';
 
 import { Configuration } from '../config';
-import { ServerAuthenticationService, AuthenticationService, UserEvent } from '../services';
+import { ServerAuthenticationService, ClientAuthenticationService, UserEvent } from '../services';
 
 
 
@@ -76,7 +76,7 @@ export class LoginComponent implements DoCheck {
         public authHttpService: ServerAuthenticationService /* for server auth */,
         private router: Router,
         private differs: KeyValueDiffers,
-        private authService: AuthenticationService /* for client auth */,
+        private authService: ClientAuthenticationService /* for client auth */,
         private userEvent: UserEvent /* for state events */ 
     ){
         console.log("loginComponent ctor");

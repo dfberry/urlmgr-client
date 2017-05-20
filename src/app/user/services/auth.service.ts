@@ -4,16 +4,16 @@ import { User } from '../user.model';
 
 // all authentication is kept in local storage - not state
 @Injectable()
-export class AuthenticationService{
+export class ClientAuthenticationService{
 
     currentUser: Observable<User>;
 
     constructor(){
-      console.log("AuthenticationService");
+      console.log("ClientAuthenticationService");
     }
 
     public getCurrentUser(){
-        console.log("AuthenticationService " + JSON.parse(localStorage.getItem('currentUser')));
+        console.log("ClientAuthenticationService " + JSON.parse(localStorage.getItem('currentUser')));
         return JSON.parse(localStorage.getItem('currentUser'));
     }
     public setCurrentUser(currentUser){

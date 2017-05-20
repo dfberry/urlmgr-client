@@ -8,7 +8,7 @@ import { AppState, UserActions } from '../app.state';
 
 //https://toddmotto.com/dynamic-page-titles-angular-2-router-events
 // https://plnkr.co/edit/LT8l5nia7Yig7MZroSdc?p=preview
-import { UserEvent, User , AuthenticationService} from '../user';
+import { UserEvent, User , ClientAuthenticationService} from '../user';
 
 @Component({
   selector: 'navigation',
@@ -36,7 +36,7 @@ export class NavigationComponent implements OnInit{
 
   constructor(
     private store: Store<AppState>,
-    private authService: AuthenticationService,
+    private authService: ClientAuthenticationService,
     private userEvent: UserEvent
   ){}
 

@@ -8,7 +8,7 @@ import { HttpModule, Http, BaseRequestOptions, XHRBackend, ResponseOptions } fro
 
 // Load the implementations that should be tested
 import { LoginComponent } from './login.component';
-import { ServerAuthenticationService, AuthenticationService, UserEvent } from '../services';
+import { ServerAuthenticationService, ClientAuthenticationService, UserEvent } from '../services';
 import { Router, RouterModule } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ReflectiveInjector } from '@angular/core';
@@ -65,7 +65,7 @@ describe(`User Login Component UX`, () => {
         BaseRequestOptions,
         Location,
         { provide: Router, useValue: mockRouter },
-        { provide: AuthenticationService, useClass: localStorageServiceClass },
+        { provide: ClientAuthenticationService, useClass: localStorageServiceClass },
         { provide: UserEvent, useValue: userEventStub }
       ],
       imports: [HttpModule, RouterTestingModule, FormsModule],

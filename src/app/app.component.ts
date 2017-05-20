@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 
-import { AuthenticationService, User } from './user';
+import { ClientAuthenticationService, User } from './user';
 import { environment } from '../environments/environment';
 import { ConfigService } from './config/config.service';
 import { AppState } from './app.state';
@@ -27,7 +27,7 @@ export class AppComponent {
     public user: User;
 
     constructor(
-        private authService: AuthenticationService,     
+        private authService: ClientAuthenticationService,     
         private configService: ConfigService,
         private appState: AppState,
         private titleService: Title

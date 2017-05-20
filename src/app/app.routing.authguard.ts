@@ -5,7 +5,7 @@ import { ActionReducer, Action, Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Rx';
 import { AppState } from './app.state';
 import { User } from './user/user.model';
-import { AuthenticationService } from './user/services/auth.service';
+import { ClientAuthenticationService } from './user/services/auth.service';
 
 // all authentication is kept in local storage - not state
 @Injectable()
@@ -13,7 +13,7 @@ export class AuthGuard implements CanActivate {
 
     constructor(
       private router: Router,
-      private authService: AuthenticationService ) { 
+      private authService: ClientAuthenticationService ) { 
       }
 
   canActivate():boolean {

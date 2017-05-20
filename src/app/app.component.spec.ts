@@ -11,7 +11,7 @@ import { Title, By } from '@angular/platform-browser';
 // Load the implementations that should be tested
 import { AppComponent } from './app.component';
 
-import { AuthenticationService} from './user';
+import { ClientAuthenticationService} from './user';
 
 import { ConfigService } from './config/config.service';
 import { AppState } from './app.state';
@@ -30,7 +30,7 @@ describe(`App`, () => {
       schemas: [NO_ERRORS_SCHEMA],
       // DI to component
       providers: [
-        { provide: AuthenticationService, useClass: MockAuthenticationService},
+        { provide: ClientAuthenticationService, useClass: MockAuthenticationService},
         { provide: ConfigService, useClass: MockConfigService},
         { provide: AppState, useClass: MockAppState },
         { provide: Title, useClass: MockTitleService},
@@ -91,7 +91,7 @@ describe(`App`, () => {
     let testUser = new User();
     testUser.email = "testUser@test.com";
 
-    let authService = TestBed.get(AuthenticationService);
+    let authService = TestBed.get(ClientAuthenticationService);
     authService.setCurrentUser(testUser);
 
     expect(comp.getCurrentUser()).toBe(testUser);
