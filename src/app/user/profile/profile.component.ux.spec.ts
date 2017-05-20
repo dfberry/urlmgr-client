@@ -8,7 +8,7 @@ import { HttpModule, Http, BaseRequestOptions, XHRBackend, ResponseOptions } fro
 
 // Load the implementations that should be tested
 import { ProfileComponent } from './profile.component';
-import { AuthenticationHttpService, AuthenticationService, UserEvent } from '../services';
+import { AuthenticateWithServerService, AuthenticationService, UserEvent } from '../services';
 import { Router, RouterModule, ActivatedRoute, Params } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ReflectiveInjector } from '@angular/core';
@@ -96,7 +96,7 @@ beforeEach(() => {
       providers: [
         { provide: ActivatedRoute, useClass: MockActivatedRoute},
         { provide: UserEvent, useValue: userEventStub },
-        { provide: AuthenticationHttpService, useValue: authServiceStub },
+        { provide: AuthenticateWithServerService, useValue: authServiceStub },
         { provide: Router, useValue: routerStub },
         { provide: AuthenticationService, useClass: localStorageServiceClass }
       ],

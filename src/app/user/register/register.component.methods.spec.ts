@@ -8,7 +8,7 @@ import { HttpModule, Http, BaseRequestOptions, XHRBackend, ResponseOptions } fro
 
 // Load the implementations that should be tested
 import { RegisterComponent } from './register.component';
-import { AuthenticationHttpService } from '../services';
+import { AuthenticateWithServerService } from '../services';
 import { Router, RouterModule } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ReflectiveInjector } from '@angular/core';
@@ -32,7 +32,7 @@ describe(`User Register Component Method`, () => {
 
   let authServiceSpy;
   let authServiceStub;
-  let authService: AuthenticationHttpService;
+  let authService: AuthenticateWithServerService;
 
   beforeEach(() => {
 
@@ -47,7 +47,7 @@ describe(`User Register Component Method`, () => {
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
-        {provide: AuthenticationHttpService, useValue: authServiceStub },
+        {provide: AuthenticateWithServerService, useValue: authServiceStub },
         { provide: Router, useValue: routerStub }
       ],
       imports: [HttpModule, RouterTestingModule],
@@ -60,7 +60,7 @@ describe(`User Register Component Method`, () => {
     fixture = TestBed.createComponent(RegisterComponent);
     component = fixture.componentInstance;
 
-    authService = fixture.debugElement.injector.get(AuthenticationHttpService);   
+    authService = fixture.debugElement.injector.get(AuthenticateWithServerService);   
     routerService = fixture.debugElement.injector.get(Router);
 
     authServiceSpy = spyOn(authService, 'registerToServer')

@@ -8,7 +8,7 @@ import { HttpModule, Http, BaseRequestOptions, XHRBackend, ResponseOptions } fro
 
 // Load the implementations that should be tested
 import { LoginComponent } from './login.component';
-import { AuthenticationHttpService, AuthenticationService, UserEvent } from '../services';
+import { AuthenticateWithServerService, AuthenticationService, UserEvent } from '../services';
 import { Router, RouterModule } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ReflectiveInjector } from '@angular/core';
@@ -37,7 +37,7 @@ describe(`User Login Component Method`, () => {
   let userEventStub;
   let authServiceSpy;
   let authServiceStub;
-  let authService: AuthenticationHttpService;
+  let authService: AuthenticateWithServerService;
   let localStorageServiceStub: AuthenticationService;
 
   beforeEach(() => {
@@ -60,7 +60,7 @@ describe(`User Login Component Method`, () => {
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         { provide: UserEvent, useValue: userEventStub },
-        { provide: AuthenticationHttpService, useValue: authServiceStub },
+        { provide: AuthenticateWithServerService, useValue: authServiceStub },
         { provide: Router, useValue: routerStub },
         { provide: AuthenticationService, useClass: localStorageServiceClass }
       ],
@@ -74,7 +74,7 @@ describe(`User Login Component Method`, () => {
     fixture = TestBed.createComponent(LoginComponent);
     component = fixture.componentInstance;
 
-    authService = fixture.debugElement.injector.get(AuthenticationHttpService);   
+    authService = fixture.debugElement.injector.get(AuthenticateWithServerService);   
     routerService = fixture.debugElement.injector.get(Router);
 
     authServiceSpy = spyOn(authService, 'authenticateToServer')

@@ -4,7 +4,7 @@ import { RouterModule, Routes, Router, ActivatedRoute } from '@angular/router';
 //import { Response, URLSearchParams, Headers, RequestOptions, RequestOptionsArgs} from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 
-import { UserEvent, AuthenticationService, AuthenticationHttpService } from '../services';
+import { UserEvent, AuthenticationService, AuthenticateWithServerService } from '../services';
 
 import { Configuration } from '../config';
 
@@ -46,7 +46,7 @@ export class ProfileComponent {
     baseUrl;
 
     constructor(
-        public authHttpService: AuthenticationHttpService,
+        public authHttpService: AuthenticateWithServerService,
         private authService: AuthenticationService,
         private userEvent: UserEvent,
         private router: Router,

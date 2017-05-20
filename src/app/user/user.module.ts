@@ -8,7 +8,7 @@ import { LoginComponent } from './login/index';
 import { RegisterComponent } from './register/index';
 import { ProfileComponent } from './profile/profile.component';
 import { UserRoutes } from './user.routes';
-import { AuthenticationHttpService, AuthenticationService,UserEvent  } from './services/index';
+import { AuthenticateWithServerService, AuthenticationService,UserEvent  } from './services/index';
 import { User } from './user.model';
 import { Configuration } from './config/index';
 
@@ -29,7 +29,7 @@ import { Configuration } from './config/index';
     User,
     UserEvent,
     Configuration,
-    AuthenticationHttpService
+    AuthenticateWithServerService
   ],
   exports: [
     LoginComponent, 
@@ -48,7 +48,7 @@ export class UserModule {
         AuthenticationService,
         User,
         UserEvent,
-        AuthenticationHttpService
+        AuthenticateWithServerService
       ]
     }
   }
