@@ -12,7 +12,6 @@ import { User } from '../../user';
 @Component({
   selector: 'url-datatable',
   template: `
-  url-datatable
 <div class="container-fluid">
     <div class="col-xs-12 col-md-10 col-lg-8 ">
 

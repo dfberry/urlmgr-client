@@ -19,7 +19,6 @@ let validUrl = require('valid-url');
 @Component({
   selector: 'url-mgr-component',
   template: `
-    url-mgr-component
     <url-datatable [user]="user" [rows]="urls"></url-datatable>
   `,
   styles:[`
