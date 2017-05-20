@@ -3,26 +3,28 @@ import { AbstractControl, FormGroup, FormControl, Validators, FormBuilder, React
 
 import { Observable } from 'rxjs/Rx';
 import { Store } from '@ngrx/store';
-import { RouterModule, Routes } from '@angular/router';
+import { RouterModule, Router, Routes, ActivatedRoute, Route, Event as NavigationStart } from '@angular/router';
 import { AppState, UserActions } from '../app.state';
 
-
+//https://toddmotto.com/dynamic-page-titles-angular-2-router-events
+// https://plnkr.co/edit/LT8l5nia7Yig7MZroSdc?p=preview
 import { UserEvent, User , AuthenticationService} from '../user';
-
 
 @Component({
   selector: 'navigation',
   template: `
 
         <div class="row">
-          <div class="col-md-3">
-            <span *ngIf="!currentUser.isAuthenticated"><a routerLink="/login" routerLinkActive="active">Login</a></span>
-            <span *ngIf="currentUser.isAuthenticated"><a routerLink="/profile" routerLinkActive="active">{{ currentUser.email }}</a> | <a routerLink="/profile" [queryParams]="{logout: 'true'}" routerLinkActive="active">Logout</a></span>
+          <div *ngIf="!currentUser.isAuthenticated" class="col-md-9">
+            <a routerLink="/login" routerLinkActive="active">Login</a> | 
+            <a routerLink="/register" routerLinkActive="active">Register</a> 
           </div>
-          <div class="col-md-2">
-            <span *ngIf="!currentUser.isAuthenticated"> <a routerLink="/register" routerLinkActive="active">Register</a></span>
-            <span *ngIf="currentUser.isAuthenticated"> <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a></span>
-          </div>           
+          <div *ngIf="currentUser.isAuthenticated" class="col-md-9">
+            <a routerLink="/profile" routerLinkActive="active">{{ currentUser.email }} Profile</a> |
+            <a routerLink="/profile" [queryParams]="{logout: 'true'}" routerLinkActive="active">Logout</a> | 
+            <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+          </div>   
+          {{currentRoute}}        
         </div>
        
 
