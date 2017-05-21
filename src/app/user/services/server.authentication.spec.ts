@@ -1,5 +1,5 @@
 import { TestBed, async, inject } from '@angular/core/testing';
-import { ServerAuthenticationService } from './auth.http.service';
+import { ServerAuthenticationService } from './server.authentication';
 
 import { Configuration } from '../config';
 import { MockBackend } from '@angular/http/testing';

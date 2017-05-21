@@ -5,7 +5,7 @@ import { ActionReducer, Action, Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Rx';
 import { AppState } from './app.state';
 import { User } from './user/user.model';
-import { ClientAuthenticationService } from './user/services/auth.service';
+import { ClientAuthenticationService } from './user/services/client.authentication';
 
 // all authentication is kept in local storage - not state
 @Injectable()

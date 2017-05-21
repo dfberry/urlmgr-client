@@ -4,7 +4,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { Router } from '@angular/router';
 import { AppState } from './app.state';
 import { AuthGuard } from './app.routing.authguard';
-import { ClientAuthenticationService } from './user/services/auth.service';
+import { ClientAuthenticationService } from './user/services/client.authentication';
 
 import { MockAppState, MockLocalStorage, userIsNotAuthenticated, userIsAuthenticated } from './utils/mocks';
 

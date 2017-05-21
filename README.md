@@ -93,3 +93,5 @@ https://plnkr.co/edit/hCKn9V1L8rzDPYzGc5HW?p=info
 http://plnkr.co/edit/pvOQZs0xJOxrMJe2whn1?p=preview
 ** only checks basic json - not nested
 
+roles
+https://gist.github.com/btroncone/cebec10b89540f5501dd
