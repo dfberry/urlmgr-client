@@ -6,14 +6,14 @@ import {Broadcaster} from '../../services/broadcast';
 export class UserEvent {
   constructor(private broadcaster: Broadcaster) {}
 
-  fire(data: string): void {
-      console.log("UserEvent.fire " + data);
+  fire(event: string, data: {}): void {
+      console.log("UserEvent.fire " + event + " " + JSON.stringify(data));
 
-    this.broadcaster.broadcast(MessageEvent, data);
+    this.broadcaster.broadcast(MessageEvent, event);
   }
 
   on(): Observable<string> {
-      //console.log("UserEvent.on " + MessageEvent);
+      console.log("UserEvent.on " + MessageEvent);
     return this.broadcaster.on<string>(MessageEvent);
   }
 }

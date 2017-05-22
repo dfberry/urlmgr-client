@@ -86,7 +86,7 @@ describe(`App`, () => {
     expect(titleService.getTitle()).toBe(testTitle);
     expect(comp.title).toBe(testTitle);
   });
-
+/*
   it('should return current user', () => {
     let testUser = new User();
     testUser.email = "testUser@test.com";
@@ -107,7 +107,7 @@ describe(`App`, () => {
  
     expect(returnedUser).toBe(user);
   });  
-  
+  */
   
   
   /*

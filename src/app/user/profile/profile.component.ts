@@ -70,7 +70,7 @@ export class ProfileComponent {
 
         this.authHttpService.deAuthenticateToServer(this.user, url).then( results => {
             
-            this.userEvent.fire('USER_CLEAR');
+            this.userEvent.fire('USER_CLEAR',this.user['id']);
             this.authService.removeCurrentUser();
             this.user = {};
             this.router.navigate(['/']);

@@ -22,11 +22,20 @@ export class AppState implements IAppState{
       this.store.dispatch({type: UserActions.USER_LOGIN, payload: user});
     }
   }
+  public clearUser(){
+    this.store.dispatch({type: UserActions.USER_CLEAR, payload: undefined});
+  }
   public getCurrentUser(){
     return this.user;
   }
   public getState(){
     return this.store;
+  }
+  public setUrls(urls){
+    this.store.dispatch({type: UrlActions.URL_ADD_N, payload: urls});
+  }
+  public clearUrls(){
+    this.store.dispatch({type: UrlActions.URL_CLEAR, payload: []});
   }
 };
 export const UserActions = {

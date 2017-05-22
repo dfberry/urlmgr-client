@@ -25,6 +25,6 @@ describe('User Service: UserEvent', () => {
           expect(g).toEqual(customEventName);
           done();
       });
-      service.fire(customEventName);
+      service.fire(customEventName,{a:1});
   });
 });

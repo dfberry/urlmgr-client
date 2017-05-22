@@ -4,6 +4,7 @@ import { Store } from '@ngrx/store';
 
 import { UserEvent, User } from '../user';
 
+
 import { UrlEvent } from '../url/url/url.event';
 import { UrlService} from '../url/url/url.service';
 import { Url } from '../url/url/url.model';
@@ -33,7 +34,8 @@ export class DashboardComponent {
     private store: Store<AppState>,
     private userEvent: UserEvent,
     private urlEvent: UrlEvent,
-    private urlService: UrlService    
+    private urlService: UrlService,
+    private appState: AppState    
   ){}
   ngOnInit(){
     this.registerUrlBroadcast();
@@ -55,18 +57,18 @@ export class DashboardComponent {
     } else {
       this.loadUrls();
     }
-
-    // so has user and isn't a clear action
-
-
   }
   clearUrls(){
-    this.store.dispatch({type: UrlActions.URL_CLEAR, payload: []});
+    //this.store.dispatch({type: UrlActions.URL_CLEAR, payload: []});
+    console.log("dashboard clear urls");
+    this.appState.clearUrls();
   }
   loadUrls(){
     this.urlService.loadItems(this.user).then(urls => {
       this.urls = urls;
-      this.store.dispatch({type: UrlActions.URL_ADD_N, payload: urls});
+      //this.store.dispatch({type: UrlActions.URL_ADD_N, payload: urls});
+      console.log("dashboard load urls");
+      this.appState.setUrls(urls);
     }).catch(err => {
       console.log("dashboard::onUrlEvent - error = " + JSON.stringify(err));
     });

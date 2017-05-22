@@ -73,10 +73,10 @@ export class LoginComponent implements DoCheck {
   passwordDiffer: any;
 
     constructor(
-        public authHttpService: ServerAuthenticationService /* for server auth */,
+        public serverAuthService: ServerAuthenticationService /* for server auth */,
         private router: Router,
         private differs: KeyValueDiffers,
-        private authService: ClientAuthenticationService /* for client auth */,
+        private clientAuthService: ClientAuthenticationService /* for client auth */,
         private userEvent: UserEvent /* for state events */ 
     ){
         console.log("loginComponent ctor");
@@ -175,7 +175,7 @@ export class LoginComponent implements DoCheck {
             password: this.authentication.user.password.value
         };
 
-        this.authHttpService.authenticateToServer(loginObj, Configuration.urls.base + "/auth" ).then(json => {
+        this.serverAuthService.authenticateToServer(loginObj, Configuration.urls.base + "/auth" ).then(json => {
             
             console.log("authenticateToServer success");
             
@@ -184,10 +184,10 @@ export class LoginComponent implements DoCheck {
             this.authentication.authenticated=true;
 
             // local storage
-            this.authService.setCurrentAuthenticatedUserFromJson(json.data);
+            this.clientAuthService.setCurrentAuthenticatedUserFromJson(json.data);
 
             // set state
-            this.userEvent.fire('USER_LOGON');
+            this.userEvent.fire('USER_LOGON', json.data);
 
             // go to dashboard
             this.router.navigate(['/dashboard']);

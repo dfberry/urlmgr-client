@@ -95,3 +95,22 @@ http://plnkr.co/edit/pvOQZs0xJOxrMJe2whn1?p=preview
 
 roles
 https://gist.github.com/btroncone/cebec10b89540f5501dd
+
+event plunker
+http://embed.plnkr.co/rXSepV1PpxaHNfBdwUEW/
+
+  public onTreeClicked(){
+     this.eventService.emitMessageEvent(this.eventService.eventNames.EVENT_TREE,{cost: 3, label: "beans"});
+  }
+
+    onEventHandler(item: any) {
+    console.log("RiverComponent onEventHandler item: ", item);
+    if (item.name === "EVENT_TREE") {
+        this.item = "$" + item.data.cost + ":00";
+        this.message = item.data.label;
+    }
+ 
+  }
+
+  mediator (pub/sub master)
+  https://addyosmani.com/largescalejavascript/#facadepattern

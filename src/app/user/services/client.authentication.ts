@@ -1,8 +1,9 @@
 import {Injectable} from '@angular/core';
 import { Observable } from 'rxjs/Rx';
-import { User } from '../user.model';
+import { User } from '../';
 
-// all authentication is kept in local storage - not state
+// all authentication is kept in local storage 
+
 @Injectable()
 export class ClientAuthenticationService{
 
@@ -12,17 +13,17 @@ export class ClientAuthenticationService{
       console.log("ClientAuthenticationService");
     }
 
-    public getCurrentUser(){
+    public getCurrentUser(): User{
         console.log("ClientAuthenticationService " + JSON.parse(localStorage.getItem('currentUser')));
         return JSON.parse(localStorage.getItem('currentUser'));
     }
-    public setCurrentUser(currentUser){
+    public setCurrentUser(currentUser: User){
       localStorage.setItem('currentUser', JSON.stringify(currentUser));
     }
     public removeCurrentUser(){
       localStorage.removeItem('currentUser');
     }
-    public isAuthenticated() {
+    public isAuthenticated(): Boolean {
       let tempUser = this.getCurrentUser();
       if (tempUser && tempUser.isAuthenticated) return true;
       return false;

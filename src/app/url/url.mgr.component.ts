@@ -6,7 +6,7 @@ import { Store } from '@ngrx/store';
 import 'rxjs/add/operator/toArray';
 
 import { IUrl, Url } from './url/url.model';
-import { User } from '../user/user.model';
+import { User } from '../user';
 
 let validUrl = require('valid-url');
 
@@ -24,9 +24,7 @@ let validUrl = require('valid-url');
   styles:[`
     div { width: 100%; }
     .styledurls { background-color: #ffb3b3; }
-  `],
-  //providers: [UrlService],
-  changeDetection: ChangeDetectionStrategy.Default
+  `]
 })
 export class UrlMgrComponent {
 
