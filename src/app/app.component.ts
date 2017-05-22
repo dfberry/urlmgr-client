@@ -32,13 +32,13 @@ export class AppComponent implements OnInit {
     constructor(
         private clientAuthService: ClientAuthenticationService,     
         private configService: ConfigService,
-        private store: Store<AppState>,
         private appState: AppState,
         private titleService: Title,
         private userEvent: UserEvent,
         
     ){}
-
+    // when app begins, let's get user from client localStorage if it exists
+    // if it doesn't, just init User and set auth to false
     ngOnInit() {
         console.log("AppComponent loaded"); 
 
@@ -47,21 +47,31 @@ export class AppComponent implements OnInit {
 
         // subscribe to any state change of user
         this.registerBroadcast();
-        this.store.select(state => state.user)
-        .distinctUntilChanged()
-        .subscribe(user => this.onUserChange(user));
-
 
         // get localStorage User and set in state
         // if localStorage is empty, user is init'd but unauthorized
-        this.appState.setUser(this.clientAuthService.getCurrentUser());
+        this.setAppUser();
+
+        this.appState.getCurrentUser()
+        .distinctUntilChanged()
+        .subscribe(user => {
+            this.onUserChange(user);
+        });
+     }
+    public onUserChange(user:User){
+        console.log("app onUserChange");
+        this.user = user;
+    }
+     public setAppUser(){
+         // listen to changes to localStorage
+        this.clientAuthService.getCurrentUser().subscribe(user => {
+            console.log("app setAppUser user changed " + JSON.stringify(user));
+            this.appState.setUser(user);
+        });       
      }
      public setTitle(newTitle?) {
         newTitle ? this.title = newTitle : this.title = this.configService.get('title');
         this.titleService.setTitle(this.title);
-    }
-    public onUserChange(user:User){
-        this.user = user;
     }
     registerBroadcast() {
         this.userEvent.on()
@@ -70,12 +80,14 @@ export class AppComponent implements OnInit {
             case "USER_LOGON":
                 // received message the user logged on
                 // need to set state to that user
-                this.appState.setUser(this.clientAuthService.getCurrentUser());
+                console.log("app recieved USER_LOGON broadcast");
+                this.setAppUser();
                 return;
             case "USER_CLEAR":
                 // received message the user logged out
                 // need to set state to that user
                 //this.store.dispatch({type: UserActions.USER_CLEAR, payload: undefined});
+                console.log("app recieved USER_CLEAR broadcast");
                 this.appState.clearUser();
                 return;
 

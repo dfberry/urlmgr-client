@@ -5,6 +5,7 @@ import { RouterModule, Routes, Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
 
 import { UserEvent, ClientAuthenticationService, ServerAuthenticationService } from '../services';
+import { User } from '../index';
 
 import { Configuration } from '../config';
 
@@ -42,19 +43,24 @@ import { Configuration } from '../config';
 })
 export class ProfileComponent {
 
-    user={};
+    user: User = new User();
     baseUrl;
 
     constructor(
         public authHttpService: ServerAuthenticationService,
-        private authService: ClientAuthenticationService,
+        private clientAuthService: ClientAuthenticationService,
         private userEvent: UserEvent,
         private router: Router,
         private activatedRoute: ActivatedRoute
     ){}
 
     ngOnInit() {  
-        this.user = this.authService.getCurrentUser();
+        console.log("ngOnInit");
+
+        this.clientAuthService.getCurrentUser().subscribe(user => {
+            console.log("profile user  " + JSON.stringify(user));
+            this.user = user;
+        });  
 
         // if ?logout=true, then logout
         this.activatedRoute.queryParams.subscribe( data => {
@@ -66,17 +72,20 @@ export class ProfileComponent {
  
     logout() {
 
-        let url = Configuration.urls.base + '/users/' + this.user['id'] + '/tokens';
+        if(this.user && this.user.isAuthenticated){
 
-        this.authHttpService.deAuthenticateToServer(this.user, url).then( results => {
-            
-            this.userEvent.fire('USER_CLEAR',this.user['id']);
-            this.authService.removeCurrentUser();
-            this.user = {};
-            this.router.navigate(['/']);
-        }).catch(err => {
-            console.log("logout failure - " + err);
-        }); 
+            let url = Configuration.urls.base + '/users/' + this.user.id + '/tokens';
+
+            this.authHttpService.deAuthenticateToServer(this.user, url).then( results => {
+                
+                this.userEvent.fire('USER_CLEAR',this.user.id);
+                this.clientAuthService.removeCurrentUser();
+                this.user = new User();
+                this.router.navigate(['/']);
+            }).catch(err => {
+                console.log("logout failure - " + err);
+            }); 
+        }
 
     }
 }

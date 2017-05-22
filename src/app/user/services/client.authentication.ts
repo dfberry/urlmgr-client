@@ -7,26 +7,27 @@ import { User } from '../';
 @Injectable()
 export class ClientAuthenticationService{
 
-    currentUser: Observable<User>;
+    currentUser: User = new User();
 
     constructor(){
       console.log("ClientAuthenticationService");
     }
 
-    public getCurrentUser(): User{
-        console.log("ClientAuthenticationService " + JSON.parse(localStorage.getItem('currentUser')));
-        return JSON.parse(localStorage.getItem('currentUser'));
+    public getCurrentUser(): Observable<User>{
+        console.log("ClientAuthenticationService " + JSON.stringify(localStorage.getItem('currentUser')));
+        this.currentUser =  JSON.parse(localStorage.getItem('currentUser'));
+        return Observable.of(this.currentUser);
     }
     public setCurrentUser(currentUser: User){
       localStorage.setItem('currentUser', JSON.stringify(currentUser));
+      this.currentUser = currentUser;
     }
     public removeCurrentUser(){
       localStorage.removeItem('currentUser');
+      this.currentUser = new User();
     }
     public isAuthenticated(): Boolean {
-      let tempUser = this.getCurrentUser();
-      if (tempUser && tempUser.isAuthenticated) return true;
-      return false;
+      return this.currentUser.isAuthenticated;
     }
     public setCurrentAuthenticatedUserFromJson(jsonUser){
         let user = new User();
@@ -34,9 +35,5 @@ export class ClientAuthenticationService{
         user.isAuthenticated=true;
         console.log("authorized set to true");
         this.setCurrentUser(user);
- 
     }
-
-
-
 }

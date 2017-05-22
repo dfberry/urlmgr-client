@@ -35,7 +35,7 @@ export class NavigationComponent {
   constructor(){}
 
   ngOnInit(){
-    console.log("user = " + JSON.stringify(this.user));
+    console.log("navigation user = " + JSON.stringify(this.user));
   }
   ngOnChanges(changes: SimpleChanges) {
     
@@ -44,7 +44,7 @@ export class NavigationComponent {
       let cur  = JSON.stringify(chng.currentValue);
       let prev = JSON.stringify(chng.previousValue);
 
-      console.log(`Navigation::ngOnChanges - ${propName}: currentValue = ${cur}, previousValue = ${prev}`);
+      console.log(`navigation change - ${propName}: currentValue = ${cur}, previousValue = ${prev}`);
     }
   }
 }

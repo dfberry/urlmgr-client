@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import { Url/*, Feed*/ } from './url/url/url.model';
 import { User } from './user';
 import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs/Rx';
 
 export interface IAppState {
   urls : Url[];
@@ -13,20 +14,30 @@ export interface IAppState {
 export class AppState implements IAppState{
   urls: Url[];
   user: User;
+  _oUser: Observable<User>;
 
-  constructor(private store: Store<AppState>){}
+  constructor(private store: Store<AppState>){
+    this.user = new User();
+    this._oUser = Observable.of(this.user);
+  }
 
   public setUser(user: User){
     this.user = user;
+    this._oUser = Observable.of(user);
     if(user && user.isAuthenticated){
       this.store.dispatch({type: UserActions.USER_LOGIN, payload: user});
     }
   }
   public clearUser(){
+    this.user = new User();
+    this._oUser = Observable.of(this.user);
     this.store.dispatch({type: UserActions.USER_CLEAR, payload: undefined});
   }
-  public getCurrentUser(){
-    return this.user;
+  public getCurrentUser(): Observable<User>{
+    return this.store.select(state => state.user);
+  }
+  get oUser(): Observable<User>{
+    return this._oUser;
   }
   public getState(){
     return this.store;
