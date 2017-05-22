@@ -13,12 +13,11 @@ export class AuthGuard implements CanActivate {
 
     constructor(
       private router: Router,
-      private authService: ClientAuthenticationService ) { 
+      private clientAuthService: ClientAuthenticationService ) { 
       }
 
   canActivate():boolean {
-
-    if (!this.authService.isAuthenticated()) {
+    if (!this.clientAuthService.isAuthenticated()) {
       console.log("user is not authorized");
       this.router.navigate(['/login']);
       return false;

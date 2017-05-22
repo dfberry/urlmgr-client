@@ -37,11 +37,9 @@ export class AppComponent implements OnInit {
         private userEvent: UserEvent,
         
     ){}
-    // when app begins, let's get user from client localStorage if it exists
-    // if it doesn't, just init User and set auth to false
+    // when app begins, let's get user from client localStorage
     ngOnInit() {
         console.log("AppComponent loaded"); 
-
 
         this.setTitle(); 
 
@@ -49,7 +47,6 @@ export class AppComponent implements OnInit {
         this.registerBroadcast();
 
         // get localStorage User and set in state
-        // if localStorage is empty, user is init'd but unauthorized
         this.setAppUser();
 
         this.appState.getCurrentUser()

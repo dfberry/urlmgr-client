@@ -20,7 +20,7 @@ import { User } from '../../user';
 
         <div class="row">
             <h2 class="col-xs-10">Urls</h2>
-            <div class="col-xs-2">
+            <div *ngIf="rows.length>0" class="col-xs-2">
                 <label class="label-control">Rows on page</label>
                 <select class="form-control input-sm" [(ngModel)]="rowsOnPage">
                     <option [ngValue]="5">5</option>
@@ -34,7 +34,7 @@ import { User } from '../../user';
                 <url-new [user]="user"></url-new>
             </div>
 
-            <table class="table table-striped" 
+            <table *ngIf="rows.length>0" class="table table-striped" 
                     [mfData]="rows | dataFilter : filterQuery" 
                     #mf="mfDataTable"
                    [mfRowsOnPage]="rowsOnPage" 

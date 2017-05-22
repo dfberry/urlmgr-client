@@ -7,15 +7,20 @@ import { User } from '../';
 @Injectable()
 export class ClientAuthenticationService{
 
-    currentUser: User = new User();
+    instatiatedDateTime : Date ;
+    currentUser: User;
 
     constructor(){
-      console.log("ClientAuthenticationService");
+
+      this.currentUser = new User();
+      this.instatiatedDateTime  = new Date();
+      console.log("ClientAuthenticationService c'tor " + this.instatiatedDateTime);
     }
 
     public getCurrentUser(): Observable<User>{
-        console.log("ClientAuthenticationService " + JSON.stringify(localStorage.getItem('currentUser')));
-        this.currentUser =  JSON.parse(localStorage.getItem('currentUser'));
+        let newUser = localStorage.getItem('currentUser');
+        if(newUser) this.currentUser =  JSON.parse(newUser);
+        console.log("ClientAuthenticationService " + JSON.stringify(newUser));
         return Observable.of(this.currentUser);
     }
     public setCurrentUser(currentUser: User){
@@ -27,7 +32,8 @@ export class ClientAuthenticationService{
       this.currentUser = new User();
     }
     public isAuthenticated(): Boolean {
-      return this.currentUser.isAuthenticated;
+      if(this.currentUser)return this.currentUser.isAuthenticated;
+      throw new Error("clientAuthService - user isn't initialized");
     }
     public setCurrentAuthenticatedUserFromJson(jsonUser){
         let user = new User();
