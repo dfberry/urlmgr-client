@@ -14,41 +14,12 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ReflectiveInjector } from '@angular/core';
 import { User } from '../user.model';
 
-
+import { MockActivatedRoute, newEvent, MockLocalStorage } from '../../utils/mocks';
 
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Rx';
 
-function newEvent(eventName: string, bubbles = false, cancelable = false) {
-  let evt = document.createEvent('CustomEvent');  // MUST be 'CustomEvent'
-  evt.initCustomEvent(eventName, bubbles, cancelable, null);
-  return evt;
-}
 
-class MockActivatedRoute {
-  queryParams = {
-    subscribe: jasmine.createSpy('subscribe')
-     .and
-     .returnValue(Observable.of(<Params>{id: 1}))
-  }
-}
-
-class localStorageServiceClass  {
-      setCurrentAuthenticatedUserFromJson(){};
-      setCurrentUser(){};
-      currentUser:Observable<User>;
-      removeCurrentUser(){};
-      getCurrentUser(){
-        let mockUser = new User();
-        mockUser.id = '111';
-        mockUser.email = 'profileLogout@test.com';
-        mockUser.isAuthenticated = true;
-        mockUser.token = "ABCDEF";
-        mockUser.lastName = "testLastName";
-        mockUser.firstName = "testFirstName";
-        return mockUser;
-      }
-}
 
 
 describe(`User Profile Component UX`, () => {
@@ -98,7 +69,7 @@ beforeEach(() => {
         { provide: UserEvent, useValue: userEventStub },
         { provide: ServerAuthenticationService, useValue: authServiceStub },
         { provide: Router, useValue: routerStub },
-        { provide: ClientAuthenticationService, useClass: localStorageServiceClass }
+        { provide: ClientAuthenticationService, useClass: MockLocalStorage }
       ],
       imports: [HttpModule, RouterTestingModule],
       declarations: [ProfileComponent],

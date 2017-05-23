@@ -1,12 +1,14 @@
 import { AppState } from '../app.state';
 import { User } from '../user/user.model';
+import { Observable } from 'rxjs/Rx';
+import { Router, RouterModule, ActivatedRoute, Params } from '@angular/router';
 
 export class MockAppState {
   public mock: string = "mock";
   public u: MockUser = new MockUser();
 
   public setUser(u:MockUser){ this.u = u;}
-  public getCurrentUser(){return this.u;}
+  public getCurrentUser(){return Observable.of(this.u);}
 } 
 export class MockUserService {
   user: MockUser;
@@ -45,13 +47,25 @@ export class MockConfigService {
 
 }
 
-export class MockLocalStorage {
-  getItem(){}
-  getCurrentUser(){}
-  setCurrentUser(){}
-  removeCurrentUser(){}
-  isAuthenticated(){}
-}  
+
+export class MockLocalStorage  {
+      isAuthenticated(){}
+      getItem(){}
+      setCurrentAuthenticatedUserFromJson(){};
+      setCurrentUser(){};
+      currentUser:Observable<User>;
+      removeCurrentUser(){};
+      getCurrentUser(){
+        let mockUser = new User();
+        mockUser.id = '111';
+        mockUser.email = 'profileLogout@test.com';
+        mockUser.isAuthenticated = true;
+        mockUser.token = "ABCDEF";
+        mockUser.lastName = "testLastName";
+        mockUser.firstName = "testFirstName";
+        return Observable.of(mockUser);
+      }
+}
 
 export function userIsAuthenticated(){
   return true;
@@ -66,8 +80,29 @@ export class MockTitleService {
   public setTitle(x){ this.x = x};
   public getTitle(){return this.x;}
 }
-export class MockAuthenticationService {
+export class MockClientAuthenticationService {
   user: User;
-  public setCurrentUser(x:User){this.user = x;}
-  public getCurrentUser(){return this.user;}
+  public setCurrentUser(x:User){}
+  public getCurrentUser(){
+    return Observable.of(this.user);
+  }
+  public removeCurrentUser(){}
+  public userIsAuthenticated(){ return true;}
+  public setCurrentAuthenticatedUserFromJson(jsonUser){}
+}
+export class MockUserEvent{
+  on (){ return Observable.of({a:1});}
+}
+export class MockActivatedRoute {
+  queryParams = {
+    subscribe: jasmine.createSpy('subscribe')
+     .and
+     .returnValue(Observable.of(<Params>{id: 1}))
+  }
+}
+
+export function newEvent(eventName: string, bubbles = false, cancelable = false) {
+  let evt = document.createEvent('CustomEvent');  // MUST be 'CustomEvent'
+  evt.initCustomEvent(eventName, bubbles, cancelable, null);
+  return evt;
 }

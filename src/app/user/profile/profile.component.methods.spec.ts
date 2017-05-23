@@ -111,6 +111,9 @@ describe(`User Profile Component Method`, () => {
 
     routerSpy = spyOn(routerService,'navigate');
 
+    component.user = new User();
+    component.user.isAuthenticated = true;
+
     // login user
     component.logout();
 
@@ -125,8 +128,8 @@ describe(`User Profile Component Method`, () => {
     expect(localStorageServiceSpy).toHaveBeenCalled();
     expect(routerSpy).toHaveBeenCalled();
   });
-  it('should set user property to empty json', () => {
-    expect(component.user).toEqual({});
+  it('should set user property to new user', () => {
+    expect(JSON.stringify(component.user)).toEqual(JSON.stringify(new User()));
   });
 
   

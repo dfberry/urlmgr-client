@@ -7,16 +7,16 @@ import {
 } from '@angular/core/testing';
 
 import { Title, By } from '@angular/platform-browser';
+import { Store } from '@ngrx/store';
 
 // Load the implementations that should be tested
 import { AppComponent } from './app.component';
-
-import { ClientAuthenticationService} from './user';
-
+import { HttpModule } from '@angular/http';
+import { ClientAuthenticationService, UserEvent} from './user';
 import { ConfigService } from './config/config.service';
 import { AppState } from './app.state';
 import { User } from './user/user.model';
-import { MockAuthenticationService, MockConfigService, MockAppState, MockTitleService} from './utils/mocks';
+import { MockUserEvent, MockClientAuthenticationService, MockConfigService, MockAppState, MockTitleService} from './utils/mocks';
 
 describe(`App`, () => {
   let comp: AppComponent;
@@ -28,12 +28,15 @@ describe(`App`, () => {
     TestBed.configureTestingModule({
       declarations: [ AppComponent ],
       schemas: [NO_ERRORS_SCHEMA],
+      imports: [HttpModule],
+      
       // DI to component
       providers: [
-        { provide: ClientAuthenticationService, useClass: MockAuthenticationService},
+        ClientAuthenticationService,
         { provide: ConfigService, useClass: MockConfigService},
-        { provide: AppState, useClass: MockAppState },
+        { provide: AppState, useClass: MockAppState},
         { provide: Title, useClass: MockTitleService},
+        { provide: UserEvent, useClass: MockUserEvent}
       ]
     })
     .compileComponents(); // compile template and css
