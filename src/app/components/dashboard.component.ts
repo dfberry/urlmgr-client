@@ -27,7 +27,7 @@ import { AppState, UrlActions, UserActions } from '../app.state';
 })
 export class DashboardComponent {
 
-  urls: Url[];
+  urls: Url[]=[];
   user: User;
 
   constructor(
