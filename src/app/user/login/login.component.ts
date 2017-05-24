@@ -164,9 +164,7 @@ export class LoginComponent implements DoCheck {
 
             // TODO: error is incorrectly returned as string in body instead of JSON
             if(err && err._body){
-
-                let response = JSON.parse(err._body);
-                if (response.error) this.authentication.error = response.error;
+                this.authentication.error = err._body;
             }
         });
     }
