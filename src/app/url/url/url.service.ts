@@ -35,6 +35,7 @@ export class UrlService  {
         private _httpDataService: HttpDataService,
         private configService: ConfigService,
         private urlEvent: UrlEvent,
+        private http: Http
     ){
         this.items = store.select(state => state.urls);
         this.baseUrl = configService.get("apiUrl") + "urls/";
@@ -42,33 +43,34 @@ export class UrlService  {
 
     /*
         get user's items from server
-        return Promise<Url[]>
+        return Observable<Url[]>
     */
-    loadItems(user){
-        var self = this;
-        return new Promise<Url[]>((resolve, reject) => {
+    loadItems(user: User): Observable<any>{
 
-            if(!user || !user.id) {
-                reject("user is empty");
-            }
-            self.user = user;
+        console.log("url.service loadItems");
+
+            if(!user || !user.id) throw Error("user is invalid");
+            this.user = user;
 
             let headers = new Headers();
-            headers.set('x-access-token', user['token']);
+            headers.set('x-access-token', user.token);
 
             let options:RequestOptionsArgs = {
                 headers : headers
             };
 
-            self._httpDataService.getJsonPromise(self.baseUrl + "?user=" + user["id"], options)
-                .then(data => {
-                    resolve(data);
-                }).catch(err => {
-                    console.log(err);
-                    reject(err);
-                });
+            let url = this.baseUrl + "?user=" + user.id;
 
-        });
+        return this.http.get(url, options)
+        .map((response: Response) => response.json().data)
+        .catch(this._handleErrorObservable);
+    }
+    _handleErrorObservable(err:any){
+           console.log("url.service _handleErrorObservable returned " + JSON.stringify(err));
+ 
+        console.log(err); //log this
+        //throw(err);
+        return Observable.of(err); // pass back for ux
     }
     /*
         get properties from server

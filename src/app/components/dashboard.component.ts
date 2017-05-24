@@ -1,14 +1,8 @@
 import { Component} from '@angular/core';
 import { Observable } from 'rxjs/Rx';
-import { Store } from '@ngrx/store';
 
 import { UserEvent, User } from '../user';
-
-
-import { UrlEvent } from '../url/url/url.event';
-import { UrlService} from '../url/url/url.service';
-import { Url } from '../url/url/url.model';
-
+import { UrlEvent, UrlService, Url } from '../url';
 import { AppState, UrlActions, UserActions } from '../app.state';
 
 /**************************************************************************
@@ -20,9 +14,9 @@ import { AppState, UrlActions, UserActions } from '../app.state';
 @Component({
   selector: 'dashboard',
   template: `
-   <!--dashboard begin -->
+   <div class="dashboard">
    <url-mgr-component [urls]="urls" [user]="user"></url-mgr-component>
-   <!--dashboard end -->
+   </div>
   `
 })
 export class DashboardComponent {
@@ -31,7 +25,6 @@ export class DashboardComponent {
   user: User;
 
   constructor(
-    private store: Store<AppState>,
     private userEvent: UserEvent,
     private urlEvent: UrlEvent,
     private urlService: UrlService,
@@ -39,11 +32,13 @@ export class DashboardComponent {
   ){}
   ngOnInit(){
     this.registerUrlBroadcast();
-    this.store.select(state => state.user)
-      .distinctUntilChanged()
-      .subscribe(user => {
-        this.onUserChange(user);
-      });
+
+    this.appState.getCurrentUser()
+    .distinctUntilChanged()
+    .subscribe(user => {
+      console.log("dashboard user changed");
+      this.onUserChange(user);
+    });
   }
   public onUserChange(user:User){
     this.user = user;
@@ -59,20 +54,21 @@ export class DashboardComponent {
     }
   }
   clearUrls(){
-    //this.store.dispatch({type: UrlActions.URL_CLEAR, payload: []});
-    console.log("dashboard clear urls");
+    this.urls = [];
     this.appState.clearUrls();
   }
   loadUrls(){
-    this.urlService.loadItems(this.user).then(urls => {
+    
+    if(!this.user) return;
+
+    this.urlService.loadItems(this.user).subscribe(urls => {
       this.urls = urls;
-      //this.store.dispatch({type: UrlActions.URL_ADD_N, payload: urls});
-      console.log("dashboard load urls");
       this.appState.setUrls(urls);
-    }).catch(err => {
-      console.log("dashboard::onUrlEvent - error = " + JSON.stringify(err));
     });
   }
+  handleErrorObservable(err:any){ 
+        return Observable.of(err); 
+    }
   registerUrlBroadcast() {
     this.userEvent.on()
       .subscribe(message => {
