@@ -16,7 +16,7 @@ import { ClientAuthenticationService, UserEvent} from './user';
 import { ConfigService } from './config/config.service';
 import { AppState } from './app.state';
 import { User } from './user/user.model';
-import { MockUserEvent, MockClientAuthenticationService, MockConfigService, MockAppState, MockTitleService} from './utils/mocks';
+import { MockUserEvent, MockLocalStorage, MockConfigService, MockAppState, MockTitleService} from './utils/mocks';
 
 describe(`App`, () => {
   let comp: AppComponent;
@@ -32,7 +32,7 @@ describe(`App`, () => {
       
       // DI to component
       providers: [
-        ClientAuthenticationService,
+        { provide: ClientAuthenticationService, useClass: MockLocalStorage},
         { provide: ConfigService, useClass: MockConfigService},
         { provide: AppState, useClass: MockAppState},
         { provide: Title, useClass: MockTitleService},
@@ -48,11 +48,7 @@ describe(`App`, () => {
 
     fixture.detectChanges(); // trigger initial data binding
 
-
   }));
-
-
-
   it(`should be readly initialized`, () => {
     expect(fixture).toBeDefined();
     expect(comp).toBeDefined();

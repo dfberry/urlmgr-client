@@ -19,9 +19,6 @@ import { MockActivatedRoute, newEvent, MockLocalStorage } from '../../utils/mock
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Rx';
 
-
-
-
 describe(`User Profile Component UX`, () => {
   let component: ProfileComponent;
   let fixture: ComponentFixture<ProfileComponent>;
@@ -31,44 +28,11 @@ describe(`User Profile Component UX`, () => {
 
   let authServiceStub;
 
-  let routerStub;
-  let mockRouter = {
-    navigate: jasmine.createSpy('navigate')
-  };
-
-  let userEventStub = {
-      fire:  function(){}
-    };
-
-  let clickSpy: jasmine.Spy;// = spyOn(submitEl, 'click');
-  let logoutSpy: jasmine.Spy;// = spyOn(component, 'register').and.callThrough();
-
-  let submitEl: HTMLTextAreaElement;
-
-beforeEach(() => {
-
-    routerStub = {
-      navigate: function(){}
-    };
-
-    authServiceStub = {
-      registerToServer: {},
-      authenticateToServer:{},
-      deAuthenticateToServer: {}
-    };
-
-    userEventStub = {
-      fire:  function(){}
-    };
-
+  beforeEach(() => {
 
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
-        { provide: ActivatedRoute, useClass: MockActivatedRoute},
-        { provide: UserEvent, useValue: userEventStub },
-        { provide: ServerAuthenticationService, useValue: authServiceStub },
-        { provide: Router, useValue: routerStub },
         { provide: ClientAuthenticationService, useClass: MockLocalStorage }
       ],
       imports: [HttpModule, RouterTestingModule],
@@ -83,13 +47,8 @@ beforeEach(() => {
     component = fixture.componentInstance;
     debugElement = fixture.debugElement;
 
-    submitEl = fixture.debugElement.query(By.css('button')).nativeElement;
 
     form = fixture.debugElement.query(By.css('form'));
-
-    clickSpy = spyOn(submitEl, 'click');
-    //loginSpy = spyOn(component, 'register').and.callThrough();
-    logoutSpy = spyOn(component, 'logout');
 
     fixture.detectChanges();
     tick();
@@ -100,22 +59,5 @@ beforeEach(() => {
     expect(fixture).toBeDefined();
     expect(component).toBeDefined();
     expect(debugElement).toBeDefined();
-
-    expect(submitEl).toBeDefined();
-    expect(submitEl.id="logout");
-    expect(submitEl.disabled).toBeFalsy();
-
   });
-
-  it('should logout with submit button', fakeAsync(() => {
-    fixture.detectChanges();
-
-    form.triggerEventHandler('submit', null);
-
-    fixture.detectChanges();
-    tick(1000);
-
-    expect(logoutSpy).toHaveBeenCalled();
-
-  }));
 });

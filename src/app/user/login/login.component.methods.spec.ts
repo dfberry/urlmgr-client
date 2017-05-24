@@ -9,16 +9,12 @@ import { HttpModule, Http, BaseRequestOptions, XHRBackend, ResponseOptions } fro
 // Load the implementations that should be tested
 import { LoginComponent } from './login.component';
 import { ServerAuthenticationService, ClientAuthenticationService, UserEvent } from '../services';
-import { Router, RouterModule } from '@angular/router';
+import { Router, RouterModule, ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ReflectiveInjector } from '@angular/core';
 import { User } from '../user.model';
 
-class localStorageServiceClass  {
-      setCurrentAuthenticatedUserFromJson(){};
-      setCurrentUser(){};
-      currentUser:Observable<User>;
-}
+import { MockRouter, MockUserEvent, MockLocalStorage, MockActivatedRoute, MockServerAuthenticationService } from '../../utils/mocks';
 
 describe(`User Login Component Method`, () => {
   let component: LoginComponent;
@@ -32,37 +28,27 @@ describe(`User Login Component Method`, () => {
     commit: "123456"
   };
 
-  let routerStub;
   let routerService: Router;
+  
   let userEventStub;
+  
   let authServiceSpy;
-  let authServiceStub;
+  let mockServerAuthenticationService;
+
   let authService: ServerAuthenticationService;
   let localStorageServiceStub: ClientAuthenticationService;
+  let mockLocalStorage;
 
   beforeEach(() => {
-
-    routerStub = {
-      navigate: function(){}
-    };
-
-    authServiceStub = {
-      registerToServer: {},
-      authenticateToServer:{}
-    };
-
-    userEventStub = {
-      fire:  function(){}
-    };
-
 
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
-        { provide: UserEvent, useValue: userEventStub },
-        { provide: ServerAuthenticationService, useValue: authServiceStub },
-        { provide: Router, useValue: routerStub },
-        { provide: ClientAuthenticationService, useClass: localStorageServiceClass }
+        { provide: ActivatedRoute, useClass: MockActivatedRoute},
+        { provide: UserEvent, useClass: MockUserEvent },
+        { provide: ServerAuthenticationService, useClass: MockServerAuthenticationService },
+        { provide: Router, useClass: MockRouter },
+        { provide: ClientAuthenticationService, useClass: MockLocalStorage }
       ],
       imports: [HttpModule, RouterTestingModule],
       declarations: [LoginComponent],
@@ -74,29 +60,52 @@ describe(`User Login Component Method`, () => {
     fixture = TestBed.createComponent(LoginComponent);
     component = fixture.componentInstance;
 
-    authService = fixture.debugElement.injector.get(ServerAuthenticationService);   
+    mockServerAuthenticationService = fixture.debugElement.injector.get(ServerAuthenticationService);   
     routerService = fixture.debugElement.injector.get(Router);
+    mockLocalStorage = fixture.debugElement.injector.get(ClientAuthenticationService);
 
-    authServiceSpy = spyOn(authService, 'authenticateToServer')
+    authServiceSpy = spyOn(mockServerAuthenticationService, 'authenticateToServer')
           .and.returnValue(Promise.resolve(baseJsonResponse));
     expect(component.authentication.authenticated).toBe(false);
 
     component.authentication.user.email.value = "1@1.com",
     component.authentication.user.password.value = "1@1.com";
 
-    // login user
-    component.login();
-
   }));
   it('should define everything', () => {
-    expect(authService).toBeDefined();
+    expect(mockServerAuthenticationService).toBeDefined();
     expect(routerService).toBeDefined();
+    expect(mockLocalStorage).toBeDefined();
+
     expect(component.login).toBeDefined();
+    expect(component.logout).toBeDefined();
   });
   it('should call services from login', () => {
+    component.login();
     expect(authServiceSpy).toHaveBeenCalled();
   });
+  it('should call services from logout', () => {
+
+    component.user = new User();
+    component.user.id = '123';
+    component.user.isAuthenticated = true;
+
+    let serverAuthenticationService= spyOn(mockServerAuthenticationService, 'deAuthenticateToServer' )
+      .and.returnValue(Promise.resolve({}));
+    let localStorageSpy = spyOn(mockLocalStorage, 'removeCurrentUser' );
+    let routerSpy = spyOn(routerService,'navigate');
+
+    component.logout();
+
+    expect(localStorageSpy).toHaveBeenCalled();
+    expect(routerSpy).toHaveBeenCalled();
+    expect(serverAuthenticationService).toHaveBeenCalled();
+
+    expect(component.user.id).toEqual('');
+  });
+
   it('should wait for promise (async)', async(() => {
+    component.login();
     fixture.detectChanges();
     fixture.whenStable().then(() => { // wait for async 
       fixture.detectChanges();        // update view
@@ -106,6 +115,7 @@ describe(`User Login Component Method`, () => {
     });
   }));
   it('should wait for fake promise (fakeAsync)', fakeAsync(() => {
+    component.login();
     fixture.detectChanges();
     tick();
     fixture.detectChanges();        // update view
@@ -114,6 +124,7 @@ describe(`User Login Component Method`, () => {
     expect(component.authentication.authenticated).toBe(true);
   }));
   it('should login after submission promise (done)', (done: any) => {
+    component.login();
     fixture.detectChanges();
 
     // get the spy promise and wait for it to resolve

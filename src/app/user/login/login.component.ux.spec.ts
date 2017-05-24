@@ -9,25 +9,13 @@ import { HttpModule, Http, BaseRequestOptions, XHRBackend, ResponseOptions } fro
 // Load the implementations that should be tested
 import { LoginComponent } from './login.component';
 import { ServerAuthenticationService, ClientAuthenticationService, UserEvent } from '../services';
-import { Router, RouterModule } from '@angular/router';
+import { Router, RouterModule, ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ReflectiveInjector } from '@angular/core';
 import { User } from '../user.model';
 
 import { Observable } from 'rxjs/Rx';
-
-function newEvent(eventName: string, bubbles = false, cancelable = false) {
-  let evt = document.createEvent('CustomEvent');  // MUST be 'CustomEvent'
-  evt.initCustomEvent(eventName, bubbles, cancelable, null);
-  return evt;
-}
-
-class localStorageServiceClass  {
-      setCurrentAuthenticatedUserFromJson(){};
-      setCurrentUser(){};
-      currentUser:Observable<User>;
-}
-
+import { MockActivatedRoute, newEvent, MockLocalStorage, MockRouter, MockUserEvent, MockServerAuthenticationService} from '../../utils/mocks';
 
 describe(`User Login Component UX`, () => {
   let component: LoginComponent;
@@ -36,12 +24,6 @@ describe(`User Login Component UX`, () => {
   let debugElement: DebugElement;
   let form: DebugElement;
 
-  let mockRouter = {
-    navigate: jasmine.createSpy('navigate')
-  };
-  let userEventStub = {
-      fire:  function(){}
-    };
   let email;
   let password = "1234";
   let emailPost = ".bobjones@registertest.com";
@@ -61,12 +43,13 @@ describe(`User Login Component UX`, () => {
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
-        ServerAuthenticationService,
         BaseRequestOptions,
         Location,
-        { provide: Router, useValue: mockRouter },
-        { provide: ClientAuthenticationService, useClass: localStorageServiceClass },
-        { provide: UserEvent, useValue: userEventStub }
+        { provide: ActivatedRoute, useClass: MockActivatedRoute},
+        { provide: UserEvent, useClass: MockUserEvent },
+        { provide: ServerAuthenticationService, useClass: MockServerAuthenticationService },
+        { provide: Router, useClass: MockRouter },
+        { provide: ClientAuthenticationService, useClass: MockLocalStorage }
       ],
       imports: [HttpModule, RouterTestingModule, FormsModule],
       declarations: [LoginComponent],

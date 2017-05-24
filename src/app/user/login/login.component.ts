@@ -1,12 +1,12 @@
 import { Component, KeyValueDiffers, DoCheck} from '@angular/core';
 import { AbstractControl, FormGroup, FormControl, Validators, FormBuilder, ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { RouterModule, Routes, Router } from '@angular/router'; 
+import { RouterModule, Routes, Router, ActivatedRoute  } from '@angular/router'; 
 import { Http, Response, URLSearchParams, Headers, RequestOptions} from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 
 import { Configuration } from '../config';
 import { ServerAuthenticationService, ClientAuthenticationService, UserEvent } from '../services';
-
+import { User } from '../index';
 
 
 @Component({
@@ -45,6 +45,7 @@ import { ServerAuthenticationService, ClientAuthenticationService, UserEvent } f
 export class LoginComponent implements DoCheck {
     config: any;
     newForm: FormGroup;
+    user: User;
 
     authentication = {
         error: "",
@@ -68,22 +69,25 @@ export class LoginComponent implements DoCheck {
         }
     }
 
-
-  emailDiffer: any;
-  passwordDiffer: any;
-
     constructor(
-        public serverAuthService: ServerAuthenticationService /* for server auth */,
+        public serverAuthService: ServerAuthenticationService, /* for server auth */
         private router: Router,
-        private differs: KeyValueDiffers,
-        private clientAuthService: ClientAuthenticationService /* for client auth */,
-        private userEvent: UserEvent /* for state events */ 
+        private clientAuthService: ClientAuthenticationService, /* for client auth */
+        private userEvent: UserEvent, /* for state events */ 
+        private activatedRoute: ActivatedRoute
     ){
-        console.log("loginComponent ctor");
 
-        /* only differ on basic json object - NOT a nested object - so treat email and password as separate differs */
-        this.emailDiffer = differs.find(this.authentication.user.email).create();
-        this.passwordDiffer = differs.find(this.authentication.user.password).create();
+        this.activatedRoute.queryParams.subscribe( data => {
+            //console.log('queryParams', data['logout']);
+            if(data['logout']) {
+
+                this.clientAuthService.getCurrentUser().subscribe(user => {
+                    console.log("profile user  " + JSON.stringify(user));
+                    this.user = user;
+                    this.logout();
+                });  
+            }
+        });
     }
     ngOnInit() {  
         console.log("loginComponent ngOnInit");
@@ -91,43 +95,6 @@ export class LoginComponent implements DoCheck {
      }
     ngDoCheck() {
         console.log("ngDoCheck called");
-/*
- 		var emailChanges = this.emailDiffer.diff(this.authentication.user.email);
-        var passwordChanges = this.passwordDiffer.diff(this.authentication.user.password);
-
-		if(emailChanges) {
-			console.log('changes detected');
-
-			emailChanges.forEachChangedItem(r => {
-                console.log(r.key + ' changed from ' + JSON.stringify(r.previousValue) + " to " +  JSON.stringify(r.currentValue));
-                this.validateEmail();
-            });
-			emailChanges.forEachAddedItem(r => {
-                console.log(r.key + ' added ' +  JSON.stringify(r.currentValue));
-                this.validateEmail();
-            });
-			emailChanges.forEachRemovedItem(r => console.log('removed ' + r.currentValue));
-		} else {
-			console.log('login nothing changed');
-		}       
-    
-		if(passwordChanges) {
-			console.log('user changes detected');
-			console.log(passwordChanges);
-			
-			passwordChanges.forEachChangedItem(r => {
-			  console.log(r.key + ' changed from ' + r.previousValue + " to " +  r.currentValue);
-              this.validatePassword();
-			 });
-			passwordChanges.forEachAddedItem(r => {
-                console.log(r.key + ' added ' +  JSON.stringify(r.currentValue));
-                this.validatePassword();
-            });
-			passwordChanges.forEachRemovedItem(r => console.log('removed ' + r.currentValue));
-		} else {
-			console.log('user nothing changed');
-		} 
-*/
         this.checkRequiredFields();
     }
     checkRequiredFields(){
@@ -139,8 +106,6 @@ export class LoginComponent implements DoCheck {
         }
     }
     validateEmail() {
-
-        //this.authentication.user.user.dirty = true;
 
         // pattern="\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b."
         //console.log("validateuserOnBlur, user = " + JSON.stringify(this.authentication.user.user));
@@ -204,6 +169,23 @@ export class LoginComponent implements DoCheck {
                 if (response.error) this.authentication.error = response.error;
             }
         });
+    }
+    logout() {
+
+        if(this.user && this.user.id && this.user.isAuthenticated){
+            let url = Configuration.urls.base + '/users/' + this.user.id + '/tokens';
+
+            this.clientAuthService.removeCurrentUser();
+            this.userEvent.fire('USER_CLEAR',this.user.id);
+
+            // don't care about response so don't wait around
+            this.serverAuthService.deAuthenticateToServer(this.user, url);
+            this.user = new User();
+            this.router.navigate(['/']);
+        }
+    }
+    observableError(err){
+        console.log("console.log observable error " + err);
     }
 
 }

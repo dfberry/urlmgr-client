@@ -12,12 +12,7 @@ import { ServerAuthenticationService } from '../services';
 import { Router, RouterModule } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ReflectiveInjector } from '@angular/core';
-
-function newEvent(eventName: string, bubbles = false, cancelable = false) {
-  let evt = document.createEvent('CustomEvent');  // MUST be 'CustomEvent'
-  evt.initCustomEvent(eventName, bubbles, cancelable, null);
-  return evt;
-}
+import { newEvent, MockRouter } from '../../utils/mocks';
 
 describe(`User Register Component UX`, () => {
   let component: RegisterComponent;
@@ -25,10 +20,6 @@ describe(`User Register Component UX`, () => {
 
   let debugElement: DebugElement;
   let form: DebugElement;
-
-  let mockRouter = {
-    navigate: jasmine.createSpy('navigate')
-  };
 
   let email;
   let firstName = "bob";
@@ -56,7 +47,7 @@ describe(`User Register Component UX`, () => {
         ServerAuthenticationService,
         BaseRequestOptions,
         Location,
-        { provide: Router, useValue: mockRouter }
+        { provide: Router, useClass: MockRouter }
       ],
       imports: [HttpModule, RouterTestingModule, FormsModule],
       declarations: [RegisterComponent],

@@ -16,13 +16,10 @@ describe('AuthGuardService', () => {
         AuthGuard,
         ClientAuthenticationService,
         { provide: localStorage, useClass: MockLocalStorage },
-        //{ provide: AppState, useClass: MockAppState },
       ],
       imports: [RouterTestingModule],
       schemas: [NO_ERRORS_SCHEMA],
     });
-
-
   });
 
   describe('authorized', () => {
@@ -51,8 +48,6 @@ describe('AuthGuardService', () => {
         expect(router.navigate).toHaveBeenCalled();
       })
     ));
-
-
     it('checks if localStorage is empty, that user does not have access to validated route',
       // inject your guard service AND Router
       async(inject([AuthGuard, Router, ClientAuthenticationService], (authGuard, router, authenticationService) => {
@@ -66,5 +61,4 @@ describe('AuthGuardService', () => {
       })
     ));
   })
-
 });

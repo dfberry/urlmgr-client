@@ -13,6 +13,8 @@ import { Router, RouterModule } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ReflectiveInjector } from '@angular/core';
 
+import { MockRouter, MockServerAuthenticationService } from '../../utils/mocks';
+
 describe(`User Register Component Method`, () => {
   let component: RegisterComponent;
   let fixture: ComponentFixture<RegisterComponent>;
@@ -35,20 +37,12 @@ describe(`User Register Component Method`, () => {
   let authService: ServerAuthenticationService;
 
   beforeEach(() => {
-
-    routerStub = {
-      navigate: function(){}
-    };
-
-    authServiceStub = {
-      registerToServer: {}
-    };
-
+    
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
-        {provide: ServerAuthenticationService, useValue: authServiceStub },
-        { provide: Router, useValue: routerStub }
+        { provide: ServerAuthenticationService, useClass: MockServerAuthenticationService },
+        { provide: Router, useClass: MockRouter }
       ],
       imports: [HttpModule, RouterTestingModule],
       declarations: [RegisterComponent],

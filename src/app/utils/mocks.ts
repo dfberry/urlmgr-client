@@ -72,6 +72,12 @@ export class MockLocalStorage  {
         return Observable.of(mockUser);
       }
 }
+export class MockServerAuthenticationService{
+  authenticateToServer(){}
+  registerToServer(){}
+  deAuthenticateToServer(){}
+
+}
 
 export function userIsAuthenticated(){
   return true;
@@ -86,18 +92,13 @@ export class MockTitleService {
   public setTitle(x){ this.x = x};
   public getTitle(){return this.x;}
 }
-export class MockClientAuthenticationService {
-  user: User;
-  public setCurrentUser(x:User){}
-  public getCurrentUser(){
-    return Observable.of(this.user);
-  }
-  public removeCurrentUser(){}
-  public userIsAuthenticated(){ return true;}
-  public setCurrentAuthenticatedUserFromJson(jsonUser){}
+
+export class MockRouter {
+  navigate(){}
 }
 export class MockUserEvent{
   on (){ return Observable.of({a:1});}
+  fire(){}
 }
 export class MockUrlEvent{
   on (){ return Observable.of({a:1});}
