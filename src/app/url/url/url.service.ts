@@ -62,8 +62,11 @@ export class UrlService  {
             let url = this.baseUrl + "?user=" + user.id;
 
         return this.http.get(url, options)
-        .map((response: Response) => response.json().data)
-        .catch(this._handleErrorObservable);
+        .map((response: Response) => {
+            let mydata = response.json();
+            console.log(mydata);
+            return mydata.data;
+        }).catch(this._handleErrorObservable);
     }
     _handleErrorObservable(err:any){
            console.log("url.service _handleErrorObservable returned " + JSON.stringify(err));

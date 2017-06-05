@@ -5,6 +5,9 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const autoprefixer = require('autoprefixer');
 const postcssUrl = require('postcss-url');
 
+const UglifyJsPlugin           = require('webpack/lib/optimize/UglifyJsPlugin');
+
+
 const {NoEmitOnErrorsPlugin, LoaderOptionsPlugin, ContextReplacementPlugin, DefinePlugin} = require('webpack');
 const {GlobCopyWebpackPlugin} = require('copy-globs-webpack-plugin');
 const {BaseHrefWebpackPlugin} = require('base-href-webpack-plugin');
@@ -243,7 +246,7 @@ module.exports = {
       "showErrors": true,
       "chunks": "all",
       "excludeChunks": [],
-      "title": "Webpack App",
+      "title": "UrlMgr",
       "xhtml": true,
       "chunksSortMode": function sort(left, right) {
         let leftIndex = entryPoints.indexOf(left.names[0]);
@@ -316,6 +319,15 @@ module.exports = {
           // your Angular Async Route paths relative to this root directory
         }
       ),
+
+    // Uglify prevents easy debugging in chrome so 
+    // comment this out to debug  
+    /*
+    new UglifyJsPlugin({
+      compress: {screw_ie8 : true},
+      mangle: {screw_ie8 : true}
+    })
+    */
 
   /*
   new AotPlugin({

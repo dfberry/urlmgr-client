@@ -3,13 +3,16 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "build": "npm run build:clean && npm run build:all",
-    "build:all": "webpack --config ./webpack.config.js",
-    "build:clean": "rimraf .org* pulse-* ts-node* dist*",
-    "serve": "npm run serve:dist",
+    "clean": "rimraf karma-* .org* pulse-* ts-node* dist*",
 
-    "serve:dist": "http-server -p 3000 dist -c-1 --cors",
-    
+    "build": "npm run build:platforms",
+    "build:platforms": "npm run clean && npm run build:dev",
+    "build:dev": "webpack --config ./webpack.config.js",
+
+    "serve": "npm run serve:platforms",
+    "serve:platforms": "npm run serve:dist",
+    "serve:dev": "http-server -p 3000 dist -c-1 --cors",
+
     "test": "npm-run-all -p -r test:unit test:e2e",
     "test:unit": "karma start ./angular2-karma.conf",
     "test:e2e": "npm run build && npm run test:serve:protractor",
@@ -18,6 +21,7 @@
     "test:jasmine-in-browser": "karma start ./angular2-karma.serve-only.conf ",
 
     "lint": "tslint",
+
     "postinstall": "npm run webdriver:update",
     "prepree2e": "npm start",
     "pree2e": "webdriver-manager update --standalone false --gecko false --quiet",
@@ -44,6 +48,7 @@
     "awesome-typescript-loader": "^3.1.2",
     "bootstrap": "^3.3.7",
     "cheerio": "^0.22.0",
+    "compression-webpack-plugin": "^0.4.0",
     "core-js": "^2.4.1",
     "imports-loader": "^0.7.1",
     "istanbul-lib-coverage": "^1.0.2",
