@@ -1,8 +1,11 @@
 import {Injectable} from '@angular/core';
 import { Url } from './url/url/url.model';
-import { User } from './user';
+import { User, UserEvent } from './user';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Rx';
+import { ConfigService } from './config/config.service';
+import { ServerAuthenticationService } from './services';
+import { ServerUserEvent } from './events';
 
 export interface IAppState {
   urls : Url[];
@@ -11,21 +14,31 @@ export interface IAppState {
 @Injectable()
 export class AppState implements IAppState{
   urls: Url[];
-  user: User;
+  user: User = new User();
+  config: {};
+  verifyCredentialsUrl: string;
 
-  constructor(private store: Store<AppState>){
+  constructor(
+    private store: Store<AppState>,
+    private serverAuthenticationService: ServerAuthenticationService,
+    private configService: ConfigService,
+    private serverUserEvent: ServerUserEvent,
+    private userEvent: UserEvent
+  ){
     this.user = new User();
+    this.config = configService.getAll();
+    this.verifyCredentialsUrl = this.config["base"] + "/auth";
   }
 
   public setUser(user: User){
-    this.user = user;
-    if(user && user.isAuthenticated){
+    this.user = user; // in case there are public sections of site
+    if(this.user.isAuthenticated){
       this.store.dispatch({type: UserActions.USER_LOGIN, payload: user});
     }
   }
   public clearUser(){
     this.user = new User();
-    this.store.dispatch({type: UserActions.USER_CLEAR, payload: undefined});
+    this.store.dispatch({type: UserActions.USER_LOGOUT, payload: undefined});
   }
   public getCurrentUser(): Observable<User>{
     return this.store.select(state => state.user);
@@ -39,23 +52,112 @@ export class AppState implements IAppState{
   public clearUrls(){
     this.store.dispatch({type: UrlActions.URL_CLEAR, payload: []});
   }
+  public verifyCredentials(credentials:any){
+    console.log("verifyCredentials");
+    let self = this;
+
+    return this.serverAuthenticationService.authenticateToServer(credentials,this.verifyCredentialsUrl).then( json => {
+
+      console.log("user credentials verfied " + JSON.stringify(json));
+
+      if(!json || !json.data || !json.data.user) throw Error("user not returned");
+
+      self.user.transform(json.data.user);
+
+      if(!self.user.isAuthenticated) throw Error("user returned but not authorized");
+
+      // only put user in state if user if authenticated
+      self.setUser(self.user);
+      self.userEvent.fire('USER_LOGON_RESPONSE_SUCCESS',self.user);
+    }).catch((err: any) => {
+        console.log("user credentials failed ");
+        console.log(err);
+        self.userEvent.fire('USER_LOGON_RESPONSE_FAILURE',err);
+    });
+  }
+  // when app starts up, but no user is logged on, clear up any leftovers
+  public logout(user:User){
+    console.log("verifyCredentials");
+    let self = this;
+
+    if(!user || !user.id) return;
+
+    return this.serverAuthenticationService.deAuthenticateToServer(user, this.config["base"] + '/users/' + user.id + '/tokens').then( json => {
+        console.log("logout succeeded " + JSON.stringify(json));
+        self.clearUser();
+        self.userEvent.fire('USER_LOGOUT_RESPONSE_SUCCESS',self.user);
+      }).catch((err: any) => {
+        console.log("logout failed ");
+        console.log(err);
+        self.userEvent.fire('USER_LOGOUT_RESPONSE_FAILURE',err);
+    });
+    
+  }
+  public isAuthenticated(){
+    return this.user.isAuthenticated; 
+  }
+  /*
+  user = {
+      email,
+      password,
+      lastName,
+      firstName
+  }
+  */
+  public register(user:any){
+    console.log("register");
+    let self = this;
+
+    if(!user || !user.email || !user.password) return;
+
+    return this.serverAuthenticationService.registerToServer(user, this.config["base"] + '/users/').then( json => {
+        console.log("registration succeeded " + JSON.stringify(json));
+        self.userEvent.fire('USER_REGISTRATION_RESPONSE_SUCCESS',self.user);
+      }).catch((err: any) => {
+        console.log("registration failed ");
+        console.log(err);
+        self.userEvent.fire('USER_REGISTRATION_RESPONSE_FAILURE',err);
+    });
+  }
+  public saveProfile(user:any){
+    console.log("saveProfile");
+    let self = this;
+    let err=null;
+
+    if(!user || !user.email || !user.password) return;
+    console.log("app state, saveProfile is not implemented");
+    self.userEvent.fire('USER_PROFILE_SAVE_RESPONSE_SUCCESS',err);
+
+    return this.serverAuthenticationService.profileChangeToServer(user, this.config["base"] + '/users/').then( json => {
+        console.log("registration succeeded " + JSON.stringify(json));
+        self.userEvent.fire('USER_PROFILE_SAVE_RESPONSE_SUCCESS',self.user);
+      }).catch((err: any) => {
+        console.log("registration failed ");
+        console.log(err);
+        self.userEvent.fire('USER_PROFILE_SAVE_RESPONSE_FAILURE',err);
+    });
+
+  }
 };
+
 export const UserActions = {
       USER_LOGIN : '[User] Authorized',
-      USER_CLEAR : '[User] Initialized'
+      USER_LOGOUT : '[User] Initialized'
   };
 
 export function UserState(state=new User(), action) {
 
+    console.log("user state changed");
+    console.log(action);
+
       let user:User = new User();
 
       switch (action.type) {
-          case UserActions.USER_CLEAR:
+          case UserActions.USER_LOGOUT:
             return new User();       
 
           case UserActions.USER_LOGIN:
               user = action.payload;
-              user.isAuthenticated = true;
             return user;   
                 
           default:
@@ -73,6 +175,9 @@ export const UrlActions = {
   };
 
 export function UrlState (state = [], action) {
+
+    console.log("url state changed");
+    console.log(action);
 
      switch (action.type) {
         case UrlActions.URL_ADD_1:

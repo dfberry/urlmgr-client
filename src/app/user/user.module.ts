@@ -1,41 +1,46 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule }   from '@angular/forms';
+import { ReactiveFormsModule }   from '@angular/forms';
 import 'rxjs/Rx';
-
-import { AuthenticationComponent } from './auth.component';
+import { UserAuthGuard } from './';
+import { UserComponent } from './user.component';
 import { LoginComponent } from './login/index';
 import { RegisterComponent } from './register/index';
-import { ProfileComponent } from './profile/profile.component';
+import { ProfileComponent } from './profile/index';
 import { UserRoutes } from './user.routes';
-import { ServerAuthenticationService, ClientAuthenticationService,UserEvent  } from './services/index';
-import { User } from './user.model';
+import { ClientAuthenticationService,UserEvent  } from './services/index';
+import { User, BroadcastLogoffData, BroadcastLogonData, BroadcastRegistrationData } from './user.model';
+import { Token } from './token.model';
 import { Configuration } from './config/index';
 
 @NgModule({
   imports: [
     CommonModule,
     UserRoutes,
-    FormsModule
+    ReactiveFormsModule
   ],
   declarations: [
     LoginComponent,
     RegisterComponent,
     ProfileComponent,
-    AuthenticationComponent
+    UserComponent
   ],
   providers: [
     ClientAuthenticationService,
     User,
+    BroadcastRegistrationData,
+    BroadcastLogonData,
+    BroadcastLogoffData,
+    Token,
     UserEvent,
     Configuration,
-    ServerAuthenticationService
+    UserAuthGuard
   ],
   exports: [
-    LoginComponent, 
+    LoginComponent,
+    ProfileComponent,
     RegisterComponent, 
-    ProfileComponent, 
-    AuthenticationComponent
+    UserComponent
   ]
 })
 export class UserModule {
@@ -47,8 +52,11 @@ export class UserModule {
       providers: [
         ClientAuthenticationService,
         User,
+        Token,
         UserEvent,
-        ServerAuthenticationService
+        BroadcastRegistrationData,
+        BroadcastLogonData,
+        BroadcastLogoffData
       ]
     }
   }

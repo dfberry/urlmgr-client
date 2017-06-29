@@ -15,14 +15,14 @@ import { AppState, UrlActions, UserActions } from '../app.state';
   selector: 'dashboard',
   template: `
    <div class="dashboard">
-   <url-mgr-component [urls]="urls" [user]="user"></url-mgr-component>
+      <url-mgr-component [urls]="urls" [user]="user"></url-mgr-component>
    </div>
   `
 })
 export class DashboardComponent {
 
   urls: Url[]=[];
-  user: User;
+  user: User = new User();
 
   constructor(
     private userEvent: UserEvent,

@@ -10,7 +10,7 @@ import { HttpModule, Http, BaseRequestOptions, XHRBackend, ResponseOptions } fro
 
 // Load the implementations that should be tested
 import { ProfileComponent } from './profile.component';
-import { ServerAuthenticationService, ClientAuthenticationService, UserEvent } from '../services';
+import { ClientAuthenticationService, UserEvent } from '../services';
 import { Router, RouterModule, ActivatedRoute, Params } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ReflectiveInjector } from '@angular/core';
@@ -68,7 +68,9 @@ describe(`User Profile Component Method`, () => {
     //routerSpy = spyOn(routerService,'navigate');
 
     component.user = new User();
-    component.user.isAuthenticated = true;
+    
+    // TBD: fix to use valid token and user.isAuthenticated()
+    //component.user.isAuthenticated = true;
 
     // login user
     //component.logout();

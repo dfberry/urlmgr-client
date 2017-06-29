@@ -60,7 +60,9 @@ describe(`Dashboard Component Method`, () => {
 
     user = new User();
     user.id = '123';
-    user.isAuthenticated = true;
+    
+    // TBD: fix to use valid token and user.isAuthenticated()
+    //user.isAuthenticated = true;
 
   }));
   it('should define everything', () => {

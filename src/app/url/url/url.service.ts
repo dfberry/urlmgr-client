@@ -53,7 +53,7 @@ export class UrlService  {
             this.user = user;
 
             let headers = new Headers();
-            headers.set('x-access-token', user.token);
+            headers.set('x-access-token', user.token.token);
 
             let options:RequestOptionsArgs = {
                 headers : headers
@@ -132,7 +132,7 @@ export class UrlService  {
             item["user"] = self.user.id
 
             let headers = new Headers();
-            headers.set('x-access-token', user['token']);
+            headers.set('x-access-token', user.token.token);
             headers.set('Content-Type', 'application/json');
 
             let options:RequestOptionsArgs = {
@@ -180,7 +180,7 @@ export class UrlService  {
             };
 
             let headers = new Headers();
-            headers.set('x-access-token', self.user['token']);
+            headers.set('x-access-token', self.user.token.token);
 
             let options:RequestOptionsArgs = {
                 headers : headers,

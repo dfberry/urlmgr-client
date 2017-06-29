@@ -16,8 +16,8 @@ import { User} from '../user';
           </div>
           <div *ngIf="user.isAuthenticated" class="col-md-9">
             <a routerLink="/profile" routerLinkActive="active">{{ user.email }} Profile</a> |
-            <a routerLink="/login" [queryParams]="{logout: 'true'}" routerLinkActive="active">Logout</a> | 
-            <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+            <a routerLink="/logout"  routerLinkActive="active">Logout</a> | 
+            <a routerLink="/" routerLinkActive="active">Home</a>
           </div>   
           {{currentRoute}}        
         </div>

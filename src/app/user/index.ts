@@ -3,5 +3,6 @@ export * from './profile';
 export * from './register';
 export * from './services';
 
-export * from './auth.component';
+export * from './user.component';
 export * from './user.model';
+export * from './user.authguard';

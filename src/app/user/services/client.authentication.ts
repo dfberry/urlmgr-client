@@ -8,7 +8,7 @@ import { User } from '../';
 export class ClientAuthenticationService{
 
     instatiatedDateTime : Date ;
-    currentUser: User;
+    private currentUser: User;
 
     constructor(){
 
@@ -19,6 +19,7 @@ export class ClientAuthenticationService{
 
     public getCurrentUser(): Observable<User>{
         let newUser = localStorage.getItem('currentUser');
+        if(!newUser) return Observable.of(new User());
         if(newUser) this.currentUser =  JSON.parse(newUser);
         console.log("ClientAuthenticationService " + JSON.stringify(newUser));
         return Observable.of(this.currentUser);
@@ -30,6 +31,7 @@ export class ClientAuthenticationService{
     public removeCurrentUser(){
       localStorage.removeItem('currentUser');
       this.currentUser = new User();
+      console.log("user cleared on client-side");
     }
     public isAuthenticated(): Boolean {
       if(this.currentUser)return this.currentUser.isAuthenticated;
@@ -38,7 +40,10 @@ export class ClientAuthenticationService{
     public setCurrentAuthenticatedUserFromJson(jsonUser){
         let user = new User();
         user.transform(jsonUser);
-        user.isAuthenticated=true;
+        
+        // TBD: fix to use valid token and user.isAuthenticated()
+        //user.isAuthenticated=true;
+        
         console.log("authorized set to true");
         this.setCurrentUser(user);
     }

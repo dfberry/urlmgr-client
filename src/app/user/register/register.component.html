@@ -1,0 +1,31 @@
+      <div class="col-md-6">
+          <h2>Register</h2>
+          <form [formGroup]="formModel" (ngSubmit)="register()" >
+              <div class="form-group email">
+                  <label for="email">Email</label>
+                  <input type="email" class="form-control" id="email" name="email" formControlName="email"
+                     required email (blur)="validateEmail()"
+                    placeholder="Your email here" />
+                  <span  [ngClass]="{
+                      'alert alert-danger': emailError, 
+                      'alert  alert-success': !emailError 
+                    }" *ngIf="emailError">Email with proper format is required</span>
+                   </div>
+              <div class="form-group password" >
+                  <label for="password">Password</label>
+                  <input type="password" class="form-control" id="password" name="password" formControlName="password"
+                     required (blur)="validatePassword()"
+                    placeholder="Your password here" />
+                  <span [ngClass]="{
+                      'alert alert-danger': passwordError, 
+                      'alert  alert-success': !passwordError 
+                    }"  *ngIf="passwordError">Password (4 characters or more) is required</span>
+              </div>          
+              <div class="form-group submit">
+                  <button type="submit" 
+                  class="btn btn-default" id="submit" name="submit" 
+                  [disabled] = "!formModel.valid"
+                  >Register</button>
+              </div>
+          </form>
+      </div>

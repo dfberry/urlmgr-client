@@ -27,8 +27,11 @@ import {
 import { 
   HttpDataService, 
   Broadcaster,
-  Utils 
+  Utils,
+  ServerAuthenticationService 
 } from './services/index';
+
+import { ServerUserEvent } from './events';
 
 import { AppComponent } from './app.component';
 import { AppRoutes } from './app.routing';
@@ -67,7 +70,11 @@ let urlModule = UrlModule.forRoot();
             position: 'right'
           })
         }),
-        StoreLogMonitorModule
+    //StoreDevtoolsModule.instrumentOnlyWithExtension({
+    //  maxAge: 5
+    //}),
+
+    StoreLogMonitorModule
     ],
   declarations: [ 
         AppComponent,
@@ -75,9 +82,11 @@ let urlModule = UrlModule.forRoot();
         DashboardComponent
      ],
   providers: [
+    ServerAuthenticationService,
     HttpDataService, 
     ConfigService, 
     Broadcaster,
+    ServerUserEvent,
     AuthGuard,
     Title,
     AppState,

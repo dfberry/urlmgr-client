@@ -1,5 +1,5 @@
 {
   "clientHost": "localhost:3000",
-  "apiUrl": "http://api.xyz.com/v1/",
+  "apiUrl": "http://localhost:3003/v1/",
   "title": "Url Manager"
 }
