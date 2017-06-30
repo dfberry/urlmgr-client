@@ -40,7 +40,9 @@ export class AppComponent implements OnInit {
         private userEvent: UserEvent,
         private serverUserEvent:ServerUserEvent
         
-    ){}
+    ){
+        localStorage.clear();
+    }
     // when app begins, let's get user from client localStorage
     ngOnInit() {
         console.log("AppComponent loaded"); 
