@@ -61,9 +61,9 @@ export class DashboardComponent {
     
     if(!this.user) return;
 
-    this.urlService.loadItems(this.user).subscribe(urls => {
-      this.urls = urls;
-      this.appState.setUrls(urls);
+    this.urlService.loadItems(this.user).subscribe(data => {
+      this.urls = data.urls;
+      this.appState.setUrls(this.urls);
     });
   }
   handleErrorObservable(err:any){ 

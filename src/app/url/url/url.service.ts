@@ -145,7 +145,7 @@ export class UrlService  {
                     // how would I should the error? 
 
                     // reload
-                    self.urlEvent.fire('URL_ADD_1'); 
+                    self.urlEvent.fire('URL_ADD_1',data); 
 
                     // TBD: is this the server-side mongo doc for the item? 
                     resolve(data);  
@@ -195,7 +195,7 @@ export class UrlService  {
                     // how would I should the error? 
 
                     // reload
-                    self.urlEvent.fire('URL_ADD_1'); 
+                    self.urlEvent.fire('URL_ADD_1', data); 
 
                     // TBD: what is data? 
                     resolve(data);  

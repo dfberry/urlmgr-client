@@ -95,7 +95,7 @@ import { User } from '../../user';
 <div *ngIf="!user" >user is empty</div>
 -->
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  //changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UrlDataTableComponent  implements OnChanges {
     
@@ -118,7 +118,7 @@ export class UrlDataTableComponent  implements OnChanges {
       let cur  = JSON.stringify(chng.currentValue);
       let prev = JSON.stringify(chng.previousValue);
 
-      //console.log(`dt.component::angular2DataTableComponent - ngOnChanges - ${propName}: currentValue = ${cur}, previousValue = ${prev}`);
+      //console.log(`ngOnChanges - ${propName}: currentValue = ${cur}, previousValue = ${prev}`);
     }
   }
 

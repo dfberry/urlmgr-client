@@ -12,7 +12,7 @@ import { ClientAuthenticationService, UserEvent } from './services';
     selector: 'user',
     template: ` 
         
-        <register *ngIf="show=='registration'" [serverError]="serverError"></register>
+        <register *ngIf="show=='register'" [serverError]="serverError"></register>
         <login *ngIf="show=='login'" [user]="user" [serverError]="serverError"></login>
         <profile *ngIf="show=='profile'" [user]="user" [serverError]="serverError"></profile>
 `
@@ -31,9 +31,7 @@ export class UserComponent {
         private activatedRoute: ActivatedRoute,
         private broadcaster: Broadcaster
     ){
-        if(activatedRoute && activatedRoute.snapshot) {
-            this.parseActivatedRouteSnapshow(activatedRoute.snapshot);
-        }
+
 
     }    
     ngOnInit() {
@@ -41,7 +39,9 @@ export class UserComponent {
             console.log("user  " + JSON.stringify(user));
             this.user = user;
         }); 
-
+        if(this.activatedRoute && this.activatedRoute.snapshot) {
+            this.parseActivatedRouteSnapshow(this.activatedRoute.snapshot);
+        }
         this.registerBroadcastReceiver();
     }
     registerBroadcastReceiver() {
@@ -133,6 +133,7 @@ export class UserComponent {
     }
     logout(){
         console.log("logout called");
+        console.log("this.user");
         if(this.user && this.user.id ){   
             console.log("logout requested and user found");
             this.userEvent.fire('USER_LOGOUT_REQUESTED',this.user);

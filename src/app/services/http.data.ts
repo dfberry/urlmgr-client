@@ -46,7 +46,7 @@ export class HttpDataService{
 
             // headers
             let headers = new Headers();
-            headers.set('x-access-token', user['token']);
+            headers.set('x-access-token', user['token'].token);
             headers.set('Content-Type', 'application/json');
 
             let options: RequestOptionsArgs = {

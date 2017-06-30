@@ -6,9 +6,10 @@ import {Broadcaster} from '../../services';
 export class UrlEvent {
   constructor(private broadcaster: Broadcaster) {}
 
-  fire(data: string): void {
+  fire(event: string, data: any): void {
+    console.log("UrlEvent.fire " + event + " " + JSON.stringify(data));
 
-    this.broadcaster.broadcast(MessageEvent, data);
+    this.broadcaster.broadcast(MessageEvent, { event: event, data:data});
   }
 
   on(): Observable<string> {
