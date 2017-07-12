@@ -85,17 +85,20 @@ export class ServerAuthenticationService{
     }
 
     private errMsg(err){
-        if(!err) return "unable to determine server authentication error";
+        if(!err) return Error("unable to determine server authentication error");
 
-        if(!err.hasOwnProperty("_body")) return "unable to determine server authentication error message";
+        if(!err.hasOwnProperty("_body")) return Error("unable to determine server authentication error message");
 
+        // api server is down
+        if(err.status === 0) return Error("server is unreachable");
+        
         let data;
 
         typeof err._body === "object" ? data = err._body : data = JSON.parse(err._body);
 
         // expected error from server
-        if(data && data.api && data.api.error && data.api.error.message) return data.api.error.message;
+        if(data && data.api && data.api.error && data.api.error.message) return Error(data.api.error.message);
 
-        return data;
+        return Error(data);
     }
 }
