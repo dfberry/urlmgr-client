@@ -12,11 +12,19 @@ export class MockAppState {
   public getCurrentUser(){return Observable.of(this.u);}
   public setUrls(){}
   public clearUrls(){}
+  public verifyCredentials(){}
+  public logout(){}  
+  public register(){}
+  public saveProfile(){}
+  public isAuthenticated(){}
 } 
 export class MockUserService {
   user: MockUser;
   public userLogon(x:MockUser){this.user = x;}
 }
+
+
+
 export class MockStore {
 
 }
@@ -96,14 +104,28 @@ export class MockTitleService {
 export class MockRouter {
   navigate(){}
 }
+export class mockUserMessage{
+  event: string;
+  data: any;
+}
 export class MockUserEvent{
-  on (){ return Observable.of({a:1});}
-  fire(){}
+  on (): Observable<mockUserMessage>{ 
+    let message = new mockUserMessage();
+    message.data = {"mock":"mock user event data"};
+    message.event = "USER_LOGOUT_REQUESTED";
+    return Observable.of(message);
+  }
+  fire(event: string, emailNPassword: any):void{}
 }
 export class MockUrlEvent{
   on (){ return Observable.of({a:1});}
 }
+export class MockServerUserEvent {
+  on (){ return Observable.of({a:1});}
+  fire(){}
+}
 export class MockUrlService{
+  public name: string ="Mock UrlService Class";
   public constructor(){console.log("mockUrlService ctor");}
   public loadItems(){console.log("mockUrlServer.loadItems");}
   public clearUrls(){console.log("mockUrlServer.clearUrls");}

@@ -20,9 +20,9 @@ module.exports = function (config) {
     // list of files to exclude
     exclude: [],
 
-    //client: {
-    //  captureConsole: true
-    //},
+    client: {
+      captureConsole: true
+    },
 
     /*
      * list of files / patterns to load in the browser
