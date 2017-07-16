@@ -8,7 +8,6 @@ import { ClientAuthenticationService, User, UserEvent } from './user';
 import { environment } from '../environments/environment';
 import { ConfigService } from './config/config.service';
 import { AppState } from './app.state';
-import { ServerUserEvent } from './events';
 
 // components included in 
 import { RouterModule, Routes } from '@angular/router';
@@ -37,8 +36,7 @@ export class AppComponent implements OnInit {
         private configService: ConfigService,
         private appState: AppState,
         private titleService: Title,
-        private userEvent: UserEvent,
-        private serverUserEvent:ServerUserEvent
+        private userEvent: UserEvent
         
     ){
         localStorage.clear();
@@ -102,57 +100,11 @@ export class AppComponent implements OnInit {
                 console.log("USER_PROFILE_SAVE_REQUESTED");
                 this.appState.saveProfile(message.data);
                 return;
+            default:
+                console.log()
             }
         });
     }
-    /*
-        Going back to User Module
-    */
-    /*
-    registerServerResponseToUserModule() {
-        this.serverUserEvent.on()
-        .subscribe(message => {
-
-            console.log("registerServerResponseToUserModule message");
-            console.log(message);
-
-            if (!message || !message.event || !message.data) throw Error("malformed serverUserEvent");
-            switch (message.event) {
-            case "USER_LOGON_RESPONSE_SUCCESS":
-                // received message the user logged on
-                // need to set state to that user
-                console.log("app.component USER_LOGON_RESPONSE_SUCCESS"  + JSON.stringify(message));
-                return;
-            case "USER_LOGON_RESPONSE_FAILURE":
-                console.log("app.component USER_LOGON_RESPONSE_FAILURE");
-                return; 
-            case "USER_LOGOUT_RESPONSE_SUCCESS":
-                // received message the user logged out
-                // need to set state to that user
-                //this.store.dispatch({type: UserActions.USER_LOGOUT, payload: undefined});
-                console.log("app.component USER_LOGOUT_RESPONSE_SUCCESS");
-                return;
-            case "USER_LOGOUT_RESPONSE_FAILURE":
-                // received message the user logged out
-                // need to set state to that user
-                //this.store.dispatch({type: UserActions.USER_LOGOUT, payload: undefined});
-                console.log("app.component USER_LOGOUT_RESPONSE_FAILURE");
-                return;
-            case "USER_REGISTRATION_RESPONSE_SUCCESS":
-                // received message the user logged out
-                // need to set state to that user
-                //this.store.dispatch({type: UserActions.USER_LOGOUT, payload: undefined});
-                console.log("app.component USER_REGISTRATION_RESPONSE_SUCCESS");
-                return;
-            case "USER_REGISTRATION_RESPONSE_FAILURE":
-                // received message the user logged out
-                // need to set state to that user
-                //this.store.dispatch({type: UserActions.USER_LOGOUT, payload: undefined});
-                console.log("app.component USER_REGISTRATION_RESPONSE_FAILURE");
-                return;
-            }
-        });
-    }*/
 }
 
 

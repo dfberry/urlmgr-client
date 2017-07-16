@@ -5,7 +5,7 @@ import {
   TestBed,
   ComponentFixture
 } from '@angular/core/testing';
-
+import { ServerUserEvent } from './events';
 import { Title, By } from '@angular/platform-browser';
 import { Store } from '@ngrx/store';
 
@@ -16,7 +16,7 @@ import { ClientAuthenticationService, UserEvent} from './user';
 import { ConfigService } from './config/config.service';
 import { AppState } from './app.state';
 import { User } from './user/user.model';
-import { MockUserEvent, MockLocalStorage, MockConfigService, MockAppState, MockTitleService} from './utils/mocks';
+import { MockServerUserEvent, MockUserEvent, MockLocalStorage, MockConfigService, MockAppState, MockTitleService} from './utils/mocks';
 
 describe(`App`, () => {
   let comp: AppComponent;

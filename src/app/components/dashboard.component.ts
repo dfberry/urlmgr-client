@@ -59,11 +59,15 @@ export class DashboardComponent {
   }
   loadUrls(){
     
-    if(!this.user) return;
+    if(!this.user) {
+        return;
+    }
 
     this.urlService.loadItems(this.user).subscribe(data => {
-      this.urls = data.urls;
-      this.appState.setUrls(this.urls);
+      if(data && data.urls){
+        this.urls = data.urls;
+        this.appState.setUrls(this.urls);
+      }
     });
   }
   handleErrorObservable(err:any){ 

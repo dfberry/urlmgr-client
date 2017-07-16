@@ -6,96 +6,99 @@ import { By } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { HttpModule, Http, BaseRequestOptions, XHRBackend, ResponseOptions } from '@angular/http';
 
-
-
+import {Broadcaster} from '../services/broadcast';
+import { ActionReducer, Action, Store } from '@ngrx/store';
 // Load the implementations that should be tested
 import { DashboardComponent } from './dashboard.component';
 import { Router, RouterModule, ActivatedRoute, Params } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ReflectiveInjector } from '@angular/core';
-import { MockUrlService, MockData, MockUrlEvent, MockStore, MockAppState, MockLocalStorage, MockActivatedRoute, MockUserEvent } from '../utils/mocks';
+import { MockData, MockUrlEvent, MockStore, MockAppState, MockLocalStorage, MockActivatedRoute, MockUserEvent } from '../utils/mocks';
 import { User, UserEvent } from '../user';
-import { UrlEvent, UrlService } from '../url';
+import { UrlEvent, UrlService, UrlMgrComponent } from '../url';
 import { AppState, UrlActions, UserActions } from '../app.state';
+
+class MockUrlService{
+  urls:any;
+  loadItems(){}
+}
+class MockAppStateService{
+  clearUrls(){}
+  setUrls(urls){}
+}
+class MockEvent{}
 
 describe(`Dashboard Component Method`, () => {
   let component: DashboardComponent;
   let fixture: ComponentFixture<DashboardComponent>;
 
-  let mockUrlList1 = MockData.UrlList();
+  let service: UrlService;
+  let state: AppState;
 
-  let urlServiceSpy;
-  let urlServiceMock;
-
-  let appStateServiceSpy;
-  let appStateServiceMock;
+  let spyService:any;
+  let spyState:any;
 
   let user:User;
 
   beforeEach(() => {
-
-
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
-        { provide: UserEvent, useValue: MockUserEvent },
-        { provide: UrlEvent, useValue: MockUrlEvent },
-        { provide: UrlService, useClass: MockUrlService },
-        { provide: AppState, useClass: MockAppState }
+        {provide: UserEvent, useClass: MockEvent},
+        {provide: UrlEvent, useClass: MockEvent},
+        {provide: UrlService, useClass: MockUrlService},
+        {provide: AppState, useClass: MockAppStateService} 
       ],
-      imports: [HttpModule, RouterTestingModule],
-      declarations: [DashboardComponent],
+      declarations: [
+        DashboardComponent, UrlMgrComponent
+      ]
     }).compileComponents();
-  });
-
-  // fakeAsync so I can use tick
-  beforeEach(fakeAsync(() => {
+    
     fixture = TestBed.createComponent(DashboardComponent);
     component = fixture.componentInstance;
 
-    console.log(mockUrlList1);
-
-    urlServiceMock = fixture.debugElement.injector.get(UrlService);
-    appStateServiceMock = fixture.debugElement.injector.get(AppState);
+    service = TestBed.get(UrlService); 
+    state = TestBed.get(AppState);
 
     user = new User();
     user.id = '123';
-    
-    // TBD: fix to use valid token and user.isAuthenticated()
-    //user.isAuthenticated = true;
+  });
 
-  }));
-  it('should define everything', () => {
-    expect(component.loadUrls).toBeDefined();
+  it('should define everything', () => { 
     expect(fixture).toBeDefined();
     expect(component).toBeDefined();
+    expect(service).toBeDefined();
+    expect(state).toBeDefined();
   });  
+  
   it('should return html from component', () =>{
       let de = fixture.debugElement.query(By.css('.dashboard'));
 
       expect(de).toBeDefined();
   });
   it('should load user\'s urls into this.urls', () => {
-    urlServiceSpy = spyOn(urlServiceMock, "loadItems")
-      .and.returnValue(Observable.of(mockUrlList1));
-    appStateServiceSpy = spyOn(appStateServiceMock, "setUrls");
+
+    let testData = MockData.UrlList();
+
+    spyService = spyOn(service, "loadItems")
+      .and.returnValue(Observable.of({'urls': testData}));
 
     component.user = user;
     component.loadUrls();
-    
-    expect(urlServiceSpy).toHaveBeenCalled();
-    expect(appStateServiceSpy).toHaveBeenCalled();
-    expect(JSON.stringify(component.urls)).toEqual(JSON.stringify(mockUrlList1));
+
+    expect(spyService).toHaveBeenCalled();
+    expect(JSON.stringify(component.urls)).toEqual(JSON.stringify(testData));
     expect(JSON.stringify(component.user)).toEqual(JSON.stringify(user));
-  });
+  }); 
   it('should clear urls', () => {
-    appStateServiceSpy = spyOn(appStateServiceMock, "clearUrls");
+    spyState = spyOn(state, "clearUrls");
 
     component.user = user;
     component.clearUrls();
     
-    expect(appStateServiceSpy).toHaveBeenCalled();
+    expect(spyState).toHaveBeenCalled();
     expect(component.urls).toEqual([]);
     expect(JSON.stringify(component.user)).toEqual(JSON.stringify(user));
   });
+  
 });

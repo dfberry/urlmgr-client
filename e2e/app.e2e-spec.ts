@@ -5,7 +5,7 @@ describe('App', () => {
   beforeEach(() => {
     browser.get('/')
   });
-  fit('should have page source', () => {
+  it('should have page source', () => {
     browser.getPageSource()
     .then( (txt) => {
         console.log(txt);

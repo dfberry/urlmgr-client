@@ -118,7 +118,7 @@ class mockClass {
   get(){}
 }
 
-fdescribe('Component: Jasmine Spy Test', () => { 
+describe('Component: Jasmine Spy Test', () => { 
   let component: DashboardComponent;
   let component2: ChildComponent;
   let fixture: ComponentFixture<DashboardComponent>;
@@ -170,6 +170,6 @@ fdescribe('Component: Jasmine Spy Test', () => {
 
       console.log("results = " + results);
       expect(results).toBe(expectResults);
-       
+      expect(spy).toHaveBeenCalled(); 
   });
 });
