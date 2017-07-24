@@ -1,93 +1,127 @@
-import { NO_ERRORS_SCHEMA, DebugElement } from '@angular/core';
-import { Observable } from 'rxjs/Rx';
-import { inject, async, TestBed, ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
-import { Location } from '@angular/common';
+import { ViewChild, Component, CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
-import { HttpModule, Http, BaseRequestOptions, XHRBackend, ResponseOptions } from '@angular/http';
-
-
-
-// Load the implementations that should be tested
+import { fakeAsync, async, tick, ComponentFixture, TestBed } from '@angular/core/testing';
+import { AbstractControl, FormGroup, FormControl, Validators, FormBuilder, 
+    ReactiveFormsModule, FormsModule} from '@angular/forms';
 import { ProfileComponent } from './profile.component';
-import { ClientAuthenticationService, UserEvent } from '../services';
-import { Router, RouterModule, ActivatedRoute, Params } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
-import { ReflectiveInjector } from '@angular/core';
 import { User } from '../user.model';
+import { ClientAuthenticationService, UserEvent } from '../services';
+import { Broadcaster } from '../../services';
+import { Configuration } from '../config';
+import { RouterModule, Routes, Router } from '@angular/router'; 
+import { Observable } from 'rxjs/Rx';
 
-import { MockLocalStorage } from '../../utils/mocks';
+describe('Profile Component', () => { 
+  let testHostComponent: TestHostComponent;
+  let testHostFixture: ComponentFixture<TestHostComponent>;
+  let profileFixture: ComponentFixture<ProfileComponent>;
+  let profileComponent: ProfileComponent;
 
-describe(`User Profile Component Method`, () => {
-  let component: ProfileComponent;
-  let fixture: ComponentFixture<ProfileComponent>;
+  let authService:ClientAuthenticationService;   
+  let routerService:Router;
+  let userEvent:UserEvent;
+  let broadcaster:Broadcaster;
 
-  let email;
-  let password = "1234";
-  let emailPost = ".bobjones@rprofiletest.com";
-
-  let baseJsonResponse={
-    commit: "123456"
-  };
-
-  let localStorageService;
-  let localStorageServiceSpy;
-
-  beforeEach(() => {
+  let newUser:User;
+  let userEventSpy:any;
 
 
+  @Component({
+    selector: `host-component`,
+    template: `<profile #child [user]="user" [serverError]="serverError"></profile>`
+  })
+  class TestHostComponent {
+    @ViewChild('child')
+    public componentUnderTestComponent: ProfileComponent;
+    private user: User;
+
+    setInput(newInput) {
+      this.user = newInput;
+    }
+    getInput(){
+      return this.user;
+    }
+  }
+
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
-      schemas: [NO_ERRORS_SCHEMA],
+
+      imports: [ReactiveFormsModule],
+      declarations: [ProfileComponent, TestHostComponent],
       providers: [
-        /*{ provide: ActivatedRoute, useClass: MockActivatedRoute},
-        { provide: UserEvent, useValue: userEventStub },
-        { provide: ServerAuthenticationService, useValue: authServiceStub },
-        { provide: Router, useValue: routerStub },
-        */
-        { provide: ClientAuthenticationService, useClass: MockLocalStorage }
-      ],
-      imports: [RouterTestingModule],
-      declarations: [ProfileComponent],
+        { provide: ClientAuthenticationService, useClass: 
+            class MockClientAuth{ 
+              public name:String="MockClientAuth";
+              getCurrentUser(){ 
+                return Observable.of({})}}},
+        { provide: Router, useValue: function(){}},
+        { provide: UserEvent, useClass: class MockEvent{
+          constructor(){console.log("MockEvent constructor");}
+          public name:String = "MockEvent";
+          fire(eventname, user){
+            console.log("mock eventname " + eventname);
+            console.log("mock user " + JSON.stringify(user));
+          }
+        }},
+        { provide: Broadcaster, useValue: function(){}}
+      ]
     }).compileComponents();
+  }));
+  beforeEach(() => {
+    testHostFixture = TestBed.createComponent(TestHostComponent);
+    testHostComponent = testHostFixture.componentInstance;
+    profileFixture = TestBed.createComponent(ProfileComponent);
+    profileComponent = profileFixture.componentInstance;
+
+    authService = profileFixture.debugElement.injector.get(ClientAuthenticationService);   
+    routerService = profileFixture.debugElement.injector.get(Router);
+    userEvent = profileFixture.debugElement.injector.get(UserEvent);
+    broadcaster = profileFixture.debugElement.injector.get(Broadcaster);
+
+    userEventSpy = spyOn(userEvent, 'fire');
+
+    newUser = new User();
+    newUser.firstName = "UT-1-first-2";
+    newUser.lastName = 'UT-1-Last-2';
+
   });
+  it('should define parent fixture and component', () => { 
+    expect(testHostFixture).toBeDefined();
+    expect(testHostComponent).toBeDefined();
+    expect(testHostComponent).toBeTruthy();
+  });
+  it('should define DI ', () => {
+    expect(authService).toBeDefined();
+    expect(authService.name).toBe("MockClientAuth"); // crazy ivan
+    expect(routerService).toBeDefined();
+    expect(userEvent).toBeDefined();
+    expect(broadcaster).toBeDefined();
+  });
+  it('should pass correct input', async(() =>{
 
-  // fakeAsync so I can use tick
-  beforeEach(fakeAsync(() => {
-    fixture = TestBed.createComponent(ProfileComponent);
-    component = fixture.componentInstance;
+      // set in parent component
+      testHostComponent.setInput(newUser);
 
-    //authService = fixture.debugElement.injector.get(ServerAuthenticationService);   
-    //routerService = fixture.debugElement.injector.get(Router);
-    localStorageService = fixture.debugElement.injector.get(ClientAuthenticationService);
+      testHostFixture.detectChanges();
 
-    //authServiceSpy = spyOn(authService, 'deAuthenticateToServer')
-    //      .and.returnValue(Promise.resolve()); //returns empty promise
+      // check form in child component
+      expect(testHostComponent.componentUnderTestComponent.getInput()).toBe(newUser);
+      expect(testHostComponent.componentUnderTestComponent.formModel.controls['firstName'].value).toBe(newUser.firstName);
+      expect(testHostComponent.componentUnderTestComponent.formModel.controls['lastName'].value).toBe(newUser.lastName);
+  }));
+  it('should broadcast save with data', async(() =>{
 
-    localStorageServiceSpy = spyOn(localStorageService, 'removeCurrentUser' );
+      testHostComponent.setInput(newUser);
+      testHostFixture.detectChanges();
 
-    //routerSpy = spyOn(routerService,'navigate');
+      // set in parent component
+      testHostComponent.componentUnderTestComponent.save();
+      testHostFixture.detectChanges();
 
-    component.user = new User();
-    
-    // TBD: fix to use valid token and user.isAuthenticated()
-    //component.user.isAuthenticated = true;
-
-    // login user
-    //component.logout();
+      expect(userEventSpy).toHaveBeenCalledWith('USER_PROFILE_SAVE_REQUESTED', newUser);
+      expect(testHostComponent.componentUnderTestComponent.getInput()).toBe(newUser);
+      expect(testHostComponent.componentUnderTestComponent.formModel.controls['firstName'].value).toBe(newUser.firstName);
+      expect(testHostComponent.componentUnderTestComponent.formModel.controls['lastName'].value).toBe(newUser.lastName);
 
   }));
-  it('should define everything', () => {
-    expect(localStorageService).toBeDefined();
-  });
-  /*
-  it('should call services from logout', () => {
-    expect(authServiceSpy).toHaveBeenCalled();
-    expect(localStorageServiceSpy).toHaveBeenCalled();
-    expect(routerSpy).toHaveBeenCalled();
-  });
-  it('should set user property to new user', () => {
-    expect(JSON.stringify(component.user)).toEqual(JSON.stringify(new User()));
-  });
-*/
-  
 });

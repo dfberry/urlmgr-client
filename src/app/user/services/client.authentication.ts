@@ -7,6 +7,7 @@ import { User } from '../';
 @Injectable()
 export class ClientAuthenticationService{
 
+    public name:String = "ClientAuthenticationService";
     instatiatedDateTime : Date ;
     private currentUser: User;
 

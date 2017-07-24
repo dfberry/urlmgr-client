@@ -6,6 +6,7 @@ import { User } from '../user.model';
 describe('User Service: UserEvent', () => {
 
   let customEventName = 'UNIT_TEST_EVENT';
+  let user = new User();
 
   let service: UserEvent;
   beforeEach(async(() => {
@@ -22,11 +23,10 @@ describe('User Service: UserEvent', () => {
 
   it('should emit user event', (done) => {
       service.on().subscribe(g => {
-          expect(g).toEqual(customEventName);
+          expect(g.event).toEqual(customEventName);
+          expect(g.data).toEqual(user);
           done();
       });
-
-      let user = new User();
 
       service.fire(customEventName,user);
   });

@@ -108,11 +108,13 @@ export class AppState implements IAppState{
     console.log("register");
     let self = this;
 
+    // once user is registered with password, need to forget password on client-side
     if(!user || !user.email || !user.password) return;
 
     return this.serverAuthenticationService.registerToServer(user, this.config["base"] + '/users/').then( json => {
         console.log("registration succeeded " + JSON.stringify(json));
-        self.userEvent.fire('USER_REGISTRATION_RESPONSE_SUCCESS',self.user);
+        delete user.password;
+        self.userEvent.fire('USER_REGISTRATION_RESPONSE_SUCCESS',user);
       }).catch((err: any) => {
         console.log("registration failed ");
         console.log(err);
@@ -124,16 +126,12 @@ export class AppState implements IAppState{
     let self = this;
     let err=null;
 
-    if(!user || !user.email || !user.password) return;
-    console.log("app state, saveProfile is not implemented");
-    self.userEvent.fire('USER_PROFILE_SAVE_RESPONSE_SUCCESS',err);
+    // ignore password - as password should never be in client-side object
+    if(!user || !user.email || !user.id) return;
 
     return this.serverAuthenticationService.profileChangeToServer(user, this.config["base"] + '/users/').then( json => {
-        console.log("registration succeeded " + JSON.stringify(json));
-        self.userEvent.fire('USER_PROFILE_SAVE_RESPONSE_SUCCESS',self.user);
+        self.userEvent.fire('USER_PROFILE_SAVE_RESPONSE_SUCCESS',user);
       }).catch((err: any) => {
-        console.log("registration failed ");
-        console.log(err);
         self.userEvent.fire('USER_PROFILE_SAVE_RESPONSE_FAILURE',err);
     });
 

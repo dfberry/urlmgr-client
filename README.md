@@ -114,3 +114,10 @@ http://embed.plnkr.co/rXSepV1PpxaHNfBdwUEW/
 
   mediator (pub/sub master)
   https://addyosmani.com/largescalejavascript/#facadepattern
+
+  testing child components
+  //https://github.com/Aik-Master/ComponentInputTest
+  //https://medium.com/@AikoPath/testing-angular-components-with-input-3bd6c07cfaf6
+  //https://yakovfain.com/2016/04/19/angular-2-exposing-child-components-api/
+  //https://github.com/Aik-Master/ComponentInputTest
+//https://medium.com/@AikoPath/testing-angular-components-with-input-3bd6c07cfaf6

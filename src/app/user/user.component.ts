@@ -36,7 +36,6 @@ export class UserComponent {
     }    
     ngOnInit() {
         this.clientAuthService.getCurrentUser().subscribe(user => {
-            console.log("user  " + JSON.stringify(user));
             this.user = user;
         }); 
         if(this.activatedRoute && this.activatedRoute.snapshot) {
@@ -49,13 +48,9 @@ export class UserComponent {
         this.broadcaster.on<any>(MessageEvent)
         .subscribe(message => {
 
-            console.log("user.component registerBroadcastReceiver message");
-            console.log(message);
-
             if (!message || !message.event || !message.data) throw Error("malformed server message");
             switch (message.event) {
             case "USER_LOGON_RESPONSE_SUCCESS":
-                console.log("user.component USER_LOGON_RESPONSE_SUCCESS");
                 this.clientAuthService.setCurrentAuthenticatedUserFromJson(message.data);
                 this.clientAuthService.getCurrentUser().subscribe(user => {
                     console.log("user  " + JSON.stringify(user));
@@ -64,38 +59,30 @@ export class UserComponent {
                 this.router.navigate(['/']);
                 return;
             case "USER_LOGON_RESPONSE_FAILURE":
-                console.log("user.component USER_LOGON_RESPONSE_FAILURE");
-                console.log(message.data);
                 this.serverError = message.data;
                 this.show='login';
                 return;
             case "USER_LOGOUT_RESPONSE_SUCCESS":
-                console.log("user.component USER_LOGOUT_RESPONSE_SUCCESS");
                 this.clientAuthService.removeCurrentUser();
                 this.user = new User();
                 this.router.navigate(['/']);
                 return;
             case "USER_LOGOUT_RESPONSE_FAILURE":
-                console.log("user.component USER_LOGOUT_RESPONSE_FAILURE");
                 this.serverError = message.data;
                 return;
             case "USER_REGISTRATION_RESPONSE_SUCCESS":
-                console.log("user.component USER_REGISTRATION_RESPONSE_SUCCESS");
                 this.router.navigate(['/login']);
                 this.show='login';
                 return;
             case "USER_REGISTRATION_RESPONSE_FAILURE":
-                console.log("user.component USER_REGISTRATION_RESPONSE_FAILURE");
                 this.serverError = message.data;
                 this.show='registration';
                 return;
             case "USER_PROFILE_SAVE_RESPONSE_SUCCESS":
-                console.log("user.component USER_PROFILE_SAVE_RESPONSE_SUCCESS");
-                this.serverError = message.data;
+                this.user = message.data;
                 this.show='profile';
                 return;  
             case "USER_PROFILE_SAVE_RESPONSE_FAILURE":
-                console.log("user.component USER_PROFILE_SAVE_RESPONSE_FAILURE");
                 this.serverError = message.data;
                 this.show='profile';
                 return;               
@@ -129,11 +116,8 @@ export class UserComponent {
         } else {
             this.show = "login";
         }
-        console.log("show = " + this.show);
     }
     logout(){
-        console.log("logout called");
-        console.log("this.user");
         if(this.user && this.user.id ){   
             console.log("logout requested and user found");
             this.userEvent.fire('USER_LOGOUT_REQUESTED',this.user);

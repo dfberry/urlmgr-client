@@ -81,7 +81,7 @@ export class ServerAuthenticationService{
             });
     }
     public profileChangeToServer(userObj, ServerUrl){
-        return Promise.resolve(null);
+        return Promise.resolve("services/authentication::profileChangeToServer not implemented");
     }
 
     private errMsg(err){
