@@ -1,7 +1,7 @@
 import { TestBed, async, inject } from '@angular/core/testing';
-import { ServerAuthenticationService } from './server.authentication';
+import { ServerAuthenticationService } from './authentication';
 
-import { Configuration } from '../config';
+//import { Configuration } from '../config/index';
 import { MockBackend } from '@angular/http/testing';
 import { HttpModule, Http, BaseRequestOptions, XHRBackend, ResponseOptions } from '@angular/http';
 
@@ -13,15 +13,14 @@ if it errors and returns a status of 0 => the server is not available
 
 */
 
-describe('User Service: ServerAuthenticationService', () => {
+fdescribe('User Service: ServerAuthenticationService', () => {
   let service: ServerAuthenticationService;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpModule],
       providers: [ 
         ServerAuthenticationService,
-        BaseRequestOptions,
-        Configuration
+        BaseRequestOptions
       ]
     });
     service = TestBed.get(ServerAuthenticationService);
@@ -39,7 +38,7 @@ describe('User Service: ServerAuthenticationService', () => {
             password: "1@1.com"
       };
 
-      const url = Configuration.urls.base + "/auth";
+      const url = "http://localhost:3003/v1/auth";
 
       let authService = TestBed.get(ServerAuthenticationService);
 
@@ -47,6 +46,8 @@ describe('User Service: ServerAuthenticationService', () => {
       authService.authenticateToServer(userObj, url)
       .then(json => {
         
+          console.log(json);
+
           console.log(json.branch);
           console.log(json.commit);
           console.log(json.data.token);
