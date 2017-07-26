@@ -125,10 +125,10 @@ export class UrlService  {
         var self = this;
         return new Promise<Object>((resolve, reject) => {
 
-            if(!user || !user.id) reject("invalid user");
+            if(!user || !user.id) reject("invalid user " + JSON.stringify(user));
             self.user = user;
 
-            if(!item || !item.user) reject("invalid item");
+            if(!item || !item.user) reject("invalid item " + JSON.stringify(item));
             item["user"] = self.user.id
 
             let headers = new Headers();
