@@ -7,6 +7,7 @@ import { IUrl, Url } from './url.model';
 import { UrlEvent } from './url.event';
 import { UrlService } from './url.service';
 
+import { TagInputComponent, TagInputItemComponent} from '../tags'
 let validUrl = require('valid-url');
 
 @Component({
@@ -18,6 +19,18 @@ let validUrl = require('valid-url');
         <p *ngIf="httpUrlValue.hasError('required')">Url is required</p>
         <p *ngIf="httpUrlValue.hasError('invalidUrl')">Url is not valid</p>
       </div>
+
+
+      <tag-input
+        placeholder="Add a tag"
+        [(ngModel)]="tags"
+        delimiterCode="188"
+        (onTagListChanged)='onTagListChanged($event)'
+        [ngModelOptions]="{standalone: true}"
+        >
+      </tag-input>
+
+
       <button type="submit" [disabled]="!newForm.valid">Add</button>
       <!--
       <div *ngIf="user" >user.id = {{user.id}}</div>
@@ -36,7 +49,7 @@ export class UrlNewComponent  implements OnChanges{
   newForm: FormGroup;
   url: Url = new Url();
   httpUrlValue: AbstractControl;
-
+  tags: string[];
 
   constructor(
       private urlService: UrlService, 
@@ -71,20 +84,46 @@ export class UrlNewComponent  implements OnChanges{
     if (this.validForm()){
 
       this.url.url = this.httpUrlValue.value;
+      this.url.tags = this.tags;
 
-      if(this.url.url && this.user.id && this.user.token){
-        this.urlService.getUrlProperties(this.url.url, this.user)
-        .then(properties => {
-          
-          if(properties["feed"]) this.url["feeds"] = properties["feed"];
-          if(properties["title"]) this.url["title"] = properties["title"];
-
-          this.urlService.insertItem(this.user, this.url)
-          .then(data => console.log("save data = " + JSON.stringify(data)))
-          .catch(err => console.log("save err = " + JSON.stringify(err)));
-        }).catch(error => console.log(error));
+      if(!this.url || !this.url.url || !this.user.id || !this.user.token){
+        console.log("can't save url");
+        throw ("can't save url");
       }
+
+    this.getUrlProperties(this.url.url, this.user)
+      .then(properties => {
+        
+        if(properties && properties["feed"]) this.url["feeds"] = properties["feed"];
+        if(properties && properties["title"]) this.url["title"] = properties["title"];
+
+        return this.insertItem(this.user, this.url);
+      }).then( newUrl => {
+        console.log("save url = " + JSON.stringify(newUrl));
+        return newUrl;
+      }).catch(error => console.log(error));
+
     }
+  }
+  insertItem(user, url){
+    return this.urlService.insertItem(user, url)
+      .then(data => {
+        console.log("insertItem data = " + JSON.stringify(data));
+        return data;
+      }).catch(err => {
+        console.log("new url, insertItem err " + JSON.stringify(err));
+        throw (err);
+      });
+  }
+
+  getUrlProperties(url, user){
+    return this.urlService.getUrlProperties(url, user)
+    .then(properties => {
+      return properties;
+    }).catch(err => {
+      console.log("new url, getUrlProperties err " + JSON.stringify(err));
+      return {}; 
+    });
   }
   // valid url
   checkIfUrl(fieldControl: FormControl){
@@ -94,6 +133,10 @@ export class UrlNewComponent  implements OnChanges{
       let isValid = validUrl.isUri(thisUrl);
       //console.log(thisUrl + " isValid = " + isValid);
       return isValid ? null : { invalidUrl: true }; 
-    }
-
+  }
+  onTagListChanged(list) {
+    console.log("UrlNewComponent onTagListChanged");
+    this.tags = list;
+    console.log("UrlNewComponent tags = " + JSON.stringify(this.tags));
+  }
 }

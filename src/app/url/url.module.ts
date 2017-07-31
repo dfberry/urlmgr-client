@@ -13,7 +13,7 @@ import { UrlDataTableComponent } from './url/url.datatable.component';
 import { UrlNewComponent } from './url/url.new.component';
 import { UrlRemoveComponent } from './url/url.remove.component';
 import { DataFilterPipe } from './data.filter.pipe';
-
+import { TagMainComponent, TagInputComponent,  TagInputItemComponent } from './tags';
 import { IUrl, Url } from './url/url.model';
 import { UrlEvent } from './url/url.event';
 import { UrlService } from './url/url.service';
@@ -32,7 +32,10 @@ import { UrlService } from './url/url.service';
     UrlRemoveComponent,
     UrlNewComponent,
     UrlDataTableComponent,
-    DataFilterPipe
+    DataFilterPipe,
+    TagInputComponent,
+    TagInputItemComponent,
+    TagMainComponent
   ],
   providers: [
 // services
