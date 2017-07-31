@@ -11,7 +11,7 @@ import { Broadcaster } from '../../services';
 
 @Component({
     selector: 'login',
-    templateUrl: './login.component.html'
+    templateUrl: './login.html'
 })
 export class LoginComponent   {
 
@@ -25,7 +25,6 @@ export class LoginComponent   {
 
     constructor(
         //public authHttpService: ServerAuthenticationService /* for server auth */,
-        private router: Router,
         private userEvent: UserEvent, /* for state events */  
         private broadcaster: Broadcaster,
         private activatedRoute: ActivatedRoute 

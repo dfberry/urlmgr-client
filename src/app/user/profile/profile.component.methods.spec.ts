@@ -3,13 +3,16 @@ import { By } from '@angular/platform-browser';
 import { fakeAsync, async, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { AbstractControl, FormGroup, FormControl, Validators, FormBuilder, 
     ReactiveFormsModule, FormsModule} from '@angular/forms';
+import { Observable } from 'rxjs/Rx';
+import { RouterModule, Routes, Router } from '@angular/router'; 
+
 import { ProfileComponent } from './profile.component';
 import { User } from '../user.model';
 import { ClientAuthenticationService, UserEvent } from '../services';
 import { Broadcaster } from '../../services';
 import { Configuration } from '../config';
-import { RouterModule, Routes, Router } from '@angular/router'; 
-import { Observable } from 'rxjs/Rx';
+
+
 
 describe('Profile Component', () => { 
   let testHostComponent: TestHostComponent;

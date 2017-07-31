@@ -13,7 +13,7 @@ if it errors and returns a status of 0 => the server is not available
 
 */
 
-fdescribe('User Service: ServerAuthenticationService', () => {
+describe('User Service: ServerAuthenticationService', () => {
   let service: ServerAuthenticationService;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
