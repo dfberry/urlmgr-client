@@ -13,6 +13,7 @@
     "start:server": "node ../urlmgr-api/dist/index.js",
     "start:all": "concurrently \"npm run start:server\" \"npm run start:client\" ",
     "start:client": "npm run clean && npm run build:dev && npm run serve:dev",
+    "start": "npm run start:client",
     "test": "npm-run-all -p -r test:unit test:e2e",
     "test:unit": "karma start ./angular2-karma.conf",
     "test:e2e": "npm run build && npm run test:serve:protractor",
