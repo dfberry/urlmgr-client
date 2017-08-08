@@ -35,7 +35,7 @@ describe(`Login Component`, () => {
     commit: "123456"
   };
 
-  let routerService: Router;
+  let activatedRoute;
   let userEvent;
   let userEventSpy;
   let broadcaster;
@@ -80,7 +80,7 @@ describe(`Login Component`, () => {
            
       
       ],
-      declarations: [LoginComponent],
+      declarations: [LoginComponent, TestHostComponent],
     }).compileComponents();
   }));
 
@@ -90,11 +90,12 @@ describe(`Login Component`, () => {
     loginFixture = TestBed.createComponent(LoginComponent);
     loginComponent = loginFixture.componentInstance;
 
+    activatedRoute = loginFixture.debugElement.injector.get(ActivatedRoute);
     userEvent = loginFixture.debugElement.injector.get(UserEvent);
     broadcaster = loginFixture.debugElement.injector.get(Broadcaster);
 
     userEventSpy = spyOn(userEvent, 'fire');
-
+    
     /*
     authService = loginFixture.debugElement.injector.get(ClientAuthenticationService);   
     routerService = profileFixture.debugElement.injector.get(Router);
@@ -128,35 +129,53 @@ describe(`Login Component`, () => {
 
   }));
   */
-  fit('should define parent fixture and component', () => {
+  it('should define parent fixture and component', () => {
     expect(testHostFixture).toBeDefined();
     expect(testHostComponent).toBeDefined();
     expect(testHostComponent).toBeTruthy();
   });
-  fit('should define DI ', () => {
-    expect(routerService).toBeDefined();
+  it('should define DI ', () => {
+    expect(activatedRoute).toBeDefined();
     expect(userEvent).toBeDefined();
     expect(broadcaster).toBeDefined();
   });
   it('should call services from login', async(() => {
 
-    let newUser = new User();
-    newUser.firstName = "UT-1-first-2";
-    newUser.lastName = 'UT-1-Last-2';
+    // login is after UX validation so even though 
+    // no pwd is set, the login should call userEvent
 
-    component.login();
+    let newUser = new User();
+    newUser.email = "fake@fake.com";
+    newUser.id="fakeid";
+
+    let password = 'fakePassword';
+
+    loginComponent.formModel =  new FormGroup({
+            'email': new FormControl(newUser.email), 
+            'password': new FormControl(password)
+        });
     testHostFixture.detectChanges();
 
-    expect(userEventSpy).toHaveBeenCalledWith('USER_LOGON_REQUESTED', newUser);
+    loginComponent.login();
+    testHostFixture.detectChanges();
+
+    expect(userEventSpy).toHaveBeenCalledWith('USER_LOGON_REQUESTED', 
+      {'email':newUser.email, 'password': password });
 
   }));
+  // this test doesn't test routing - that is fine for 
+  // now but eventually need to cover that as well
   it('should call services from logout', () => {
 
     let newUser = new User();
-    newUser.firstName = "UT-1-first-2";
-    newUser.lastName = 'UT-1-Last-2';
+    newUser.email = "fake@fake.com";
+    newUser.id="fakeid";
 
-    component.logout(newUser);
+    // set in parent component
+    testHostComponent.setInput(newUser);
+    testHostFixture.detectChanges();
+
+    loginComponent.logout(newUser);
     testHostFixture.detectChanges();
 
     expect(userEventSpy).toHaveBeenCalledWith('USER_LOGOUT_REQUESTED', newUser);

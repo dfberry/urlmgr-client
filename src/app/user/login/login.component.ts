@@ -1,4 +1,4 @@
-import { Component, ViewChild, AfterViewChecked, KeyValueDiffers, DoCheck, Input} from '@angular/core';
+import { Component, ViewChild, AfterViewChecked, KeyValueDiffers, DoCheck, Input, OnChanges, SimpleChanges} from '@angular/core';
 import { AbstractControl, NgForm, FormGroup, FormControl, Validators, FormBuilder, ReactiveFormsModule} from '@angular/forms';
 import { RouterModule, Routes, Router, ActivatedRoute } from '@angular/router'; 
 import { Http, Response, URLSearchParams, Headers, RequestOptions} from '@angular/http';
@@ -13,13 +13,16 @@ import { Broadcaster } from '../../services';
     selector: 'login',
     templateUrl: './login.html'
 })
-export class LoginComponent   {
+export class LoginComponent  implements OnChanges {
 
     @Input() user: User; //only needed for logout
     @Input() serverError: string; // returned from server - for registration process
 
     emailError: Boolean=false;
     passwordError: Boolean=false;
+
+    email: string='';
+    password: string='';
 
     formModel: FormGroup; 
 
@@ -49,6 +52,22 @@ export class LoginComponent   {
                 Validators.minLength(4)])
         });
 
+    }
+    // when point from parent changes
+    ngOnChanges(changes: SimpleChanges) {
+        for (let propName in changes) {  
+            let change = changes[propName];
+            
+            let curVal  = JSON.stringify(change.currentValue);
+            let prevVal = JSON.stringify(change.previousValue);
+            let changeLog = `${propName}: currentValue = ${curVal}, previousValue = ${prevVal}`;
+            
+            if (propName === 'user') {
+                console.log("change user email in ngOnChanges");
+
+                // password is NEVER set from parent
+            } 
+        }
     }
     validateEmail() {
         if (this.formModel.controls['email'].dirty) console.log("email is dirty");
@@ -81,16 +100,26 @@ export class LoginComponent   {
         }
     }
     login() {
-        this.serverError = "";
-        this.userEvent.fire('USER_LOGON_REQUESTED',this.formModel.value);
+        console.log("login");
+        console.log(this.formModel.value);
+
+        const formModel = this.formModel.value;
+        this.userEvent.fire('USER_LOGON_REQUESTED',formModel);
     }
     logout(user) {
-        if(user && user.id ){   
-            console.log("logout requested and user found");
-            this.userEvent.fire('USER_LOGOUT_REQUESTED',user);
-        } else {
-            throw Error("logout requested but user not found");
-        }
+        
+        if(!user || user.id ){   
+            console.log("logout requested, user isn't valid");
+            console.log(user);
+        } 
+        console.log("logout requested and user found");
+        
+        // even though user isn't valid - send the event anyway.
+        // when the server side error comes back - the client-side
+        // code should still delete the user from local storage           
+        // TBD: make sure there an a test to handle e2e for this
+
+        this.userEvent.fire('USER_LOGOUT_REQUESTED',user);
     }
     needToLogout(snapshot){
 
@@ -103,5 +132,25 @@ export class LoginComponent   {
             }
 
         return false;
+    }
+    // is this only for testing? if yes, delete these next 4 functions
+    setForm(){
+        this.formModel.patchValue({
+            email:    this.user.email
+        });
+    }
+    clearForm(){
+        this.formModel.reset({
+            email: '',
+            password: ''
+        });
+    }
+
+    // used for tests
+    setInput(newInput) {
+      this.user = newInput;
+    }
+    getInput(){
+      return this.user;
     }
 }
