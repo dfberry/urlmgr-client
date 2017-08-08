@@ -128,7 +128,7 @@ export class UrlService  {
             if(!user || !user.id) reject("invalid user " + JSON.stringify(user));
             self.user = user;
 
-            if(!item || !item.user) reject("invalid item " + JSON.stringify(item));
+            if(!item || !item.url) reject("invalid item " + JSON.stringify(item));
             item["user"] = self.user.id
 
             let headers = new Headers();
