@@ -1,4 +1,4 @@
-import {Component, HostBinding, Input, Output, Provider, forwardRef, EventEmitter} from '@angular/core';
+import {OnChanges, Component, HostBinding, Input, Output, Provider, forwardRef, EventEmitter, SimpleChanges} from '@angular/core';
 import {NgControl} from '@angular/forms';
 
 import {TagInputItemComponent} from './tag.input.item.component';
@@ -12,12 +12,13 @@ function isBlank(txt){
 @Component({
   selector: 'tag-input',
   template:
-  `<tag-input-item
+  ` 
+    <tag-input-item
     [text]="tag"
     [index]="index"
     [selected]="selectedTag === index"
     (tagRemoved)="_removeTag($event)"
-    *ngFor="let tag of tagsList; let index = index">
+    *ngFor="let tag of ngModel; let index = index">
   </tag-input-item>
   <input
     class="ng2-tag-input-field"
@@ -49,7 +50,7 @@ function isBlank(txt){
 })
 export class TagInputComponent {
   @Input() placeholder: string = 'Add a tag';
-  @Input() ngModel: string[];
+  @Input() ngModel: string[]; //incoming tags
   @Input() delimiterCode: string = '188';
   @Input() addOnBlur: boolean = true;
   @Input() addOnEnter: boolean = true;
@@ -60,7 +61,7 @@ export class TagInputComponent {
 
   @HostBinding('class.ng2-tag-input-focus') isFocussed;
 
-  public tagsList: string[];
+  //public tagsList: string[];
   public inputValue: string = '';
   public delimiter: number;
   public selectedTag: number;
@@ -69,22 +70,39 @@ export class TagInputComponent {
     console.log("TagInputComponent constructor");
     this._ngControl.valueAccessor = this;
   }
-
+/*
   ngOnInit() {
     console.log("TagInputComponent ngOnInit");
     if (this.ngModel) this.tagsList = this.ngModel;
     this.onChange(this.tagsList);
     this.delimiter = parseInt(this.delimiterCode);
+  }*/
+  ngOnInit() {
+    console.log("TagInputComponent ngOnInit");
+    //if (this.ngModel) this.tagsList = this.ngModel;
+    this.onChange(this.ngModel);
+    this.delimiter = parseInt(this.delimiterCode);
+  }
+  ngOnChanges(changes: SimpleChanges) {
+    //console.log("feeds.component.ts::FeedListComponent - ngOnChanges");
+    for (let propName in changes) {
+      let chng = changes[propName];
+      let cur  = JSON.stringify(chng.currentValue);
+      let prev = JSON.stringify(chng.previousValue);
+
+      console.log(`TagInputComponent::ngOnChanges - ${propName}: currentValue = ${cur}, previousValue = ${prev}`);
+     
+    }
   }
 
   ngAfterViewInit() {
     console.log("TagInputComponent ngAfterViewInit");
     // If the user passes an undefined variable to ngModel this will warn
     // and set the value to an empty array
-    if (!this.tagsList) {
+    if (!this.ngModel) {
       console.warn('TagInputComponent was passed an undefined value in ngModel. Please make sure the variable is defined.');
-      this.tagsList = [];
-      this.onChange(this.tagsList);
+      this.ngModel = [];
+      this.onChange(this.ngModel);
     }
   }
 
@@ -147,35 +165,35 @@ export class TagInputComponent {
   private _addTags(tags: string[]) {
     console.log("TagInputComponent _addTags");
     let validTags = tags.filter((tag) => this._isTagValid(tag));
-    this.tagsList = this.tagsList.concat(validTags);
+    this.ngModel = this.ngModel.concat(validTags);
     this._resetSelected();
     this._resetInput();
-    this.onChange(this.tagsList);
+    this.onChange(this.ngModel);
 
     // emit to parent
-    this.onTagListChanged.emit(this.tagsList);
+    this.onTagListChanged.emit(this.ngModel);
 
   }
 
   private _removeTag(tagIndexToRemove) {
     console.log("TagInputComponent _removeTag");
-    this.tagsList.splice(tagIndexToRemove, 1);
+    this.ngModel.splice(tagIndexToRemove, 1);
     this._resetSelected();
-    this.onChange(this.tagsList);
+    this.onChange(this.ngModel);
 
     //emit to parent
-    this.onTagListChanged.emit(this.tagsList);
+    this.onTagListChanged.emit(this.ngModel);
 
   }
 
   private _handleBackspace() {
     console.log("TagInputComponent _handleBackspace");
-    if (!this.inputValue.length && this.tagsList.length) {
+    if (!this.inputValue.length && this.ngModel.length) {
       if (!isBlank(this.selectedTag)) {
         this._removeTag(this.selectedTag);
       }
       else {
-        this.selectedTag = this.tagsList.length - 1;
+        this.selectedTag = this.ngModel.length - 1;
       }
     }
   }

@@ -100,6 +100,7 @@ export class UrlNewComponent  implements OnChanges{
         return this.insertItem(this.user, this.url);
       }).then( newUrl => {
         console.log("save url = " + JSON.stringify(newUrl));
+        this.clearInputs();
         return newUrl;
       }).catch(error => console.log(error));
 
@@ -138,5 +139,12 @@ export class UrlNewComponent  implements OnChanges{
     console.log("UrlNewComponent onTagListChanged");
     this.tags = list;
     console.log("UrlNewComponent tags = " + JSON.stringify(this.tags));
+  }
+  clearInputs(){
+    this.tags = [];
+    this.newForm.reset({
+        url: '',
+        tags: []
+    });
   }
 }
