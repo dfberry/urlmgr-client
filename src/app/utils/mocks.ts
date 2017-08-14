@@ -6,9 +6,9 @@ import { Router, RouterModule, ActivatedRoute, Params } from '@angular/router';
 
 export class MockAppState {
   public mock: string = "mock";
-  public u: MockUser = new MockUser();
+  public u: User = new User();
 
-  public setUser(u:MockUser){ this.u = u;}
+  public setUser(u:User){ this.u = u;}
   public getCurrentUser(){return Observable.of(this.u);}
   public setUrls(){}
   public clearUrls(){}
@@ -19,8 +19,8 @@ export class MockAppState {
   public isAuthenticated(){}
 } 
 export class MockUserService {
-  user: MockUser;
-  public userLogon(x:MockUser){this.user = x;}
+  user: User;
+  public userLogon(x:User){this.user = x;}
 }
 
 
@@ -28,31 +28,7 @@ export class MockUserService {
 export class MockStore {
 
 }
-export class MockUser {
-  id: string="";
-  email: string="";
-  firstName: string="";
-  lastName: string="";
-  token: string="";
-  roles: string[];
-  expires: string="0";
-  //public isAuthenticated: boolean=false;
-  lastLogin:string = "0";
 
-  public transform(user: any){
-    if(!user)return;
-
-    if(user.hasOwnProperty("id")) this.id = user.id;
-    if(user.hasOwnProperty("email")) this.email = user.email;
-    if(user.hasOwnProperty("firstName")) this.firstName = user.firstName;
-    if(user.hasOwnProperty("lastName")) this.lastName = user.lastName;
-    if(user.hasOwnProperty("token")) this.token = user.token;
-    if(user.hasOwnProperty("roles")) this.roles = user.roles;
-    if(user.hasOwnProperty("expires")) this.expires = user.expires;
-    //if(user.hasOwnProperty("isAuthenticated")) this.isAuthenticated = user.isAuthenticated;
-    if(user.hasOwnProperty("lastLogin")) this.lastLogin = user.lastLogin;
-  }
-}
 export class MockConfigService {
   public config: any={};
   public get(key:any){return this.config[key];}
@@ -63,7 +39,7 @@ export class MockConfigService {
 
 
 export class MockLocalStorage  {
-      isAuthenticated(){}
+
       getItem(){}
       setCurrentAuthenticatedUserFromJson(){};
       setCurrentUser(){};
@@ -73,7 +49,6 @@ export class MockLocalStorage  {
         let mockUser = new User();
         mockUser.id = '111';
         mockUser.email = 'profileLogout@test.com';
-        //mockUser.isAuthenticated = true;
         mockUser.token.token = "ABCDEF";
         mockUser.lastName = "testLastName";
         mockUser.firstName = "testFirstName";

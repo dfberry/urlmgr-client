@@ -16,7 +16,7 @@ export class UserAuthGuard implements CanActivate {
       }
 
   canActivate():boolean {
-    if (!this.clientAuthService.isAuthenticated()) {
+    if (!this.clientAuthService.authGuardIsUserAuthenticated) {
       console.log("user is not client-side authorized");
       this.router.navigate(['/login']);
       return false;

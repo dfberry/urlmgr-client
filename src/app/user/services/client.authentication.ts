@@ -34,18 +34,14 @@ export class ClientAuthenticationService{
       this.currentUser = new User();
       console.log("user cleared on client-side");
     }
-    public isAuthenticated(): Boolean {
-      if(this.currentUser)return this.currentUser.isAuthenticated;
-      throw new Error("clientAuthService - user isn't initialized");
+    public authGuardIsUserAuthenticated(){
+      return this.currentUser.isAuthenticated;
     }
     public setCurrentAuthenticatedUserFromJson(jsonUser){
-        let user = new User();
+        let user:User = new User();
         user.transform(jsonUser);
-        
-        // TBD: fix to use valid token and user.isAuthenticated()
-        //user.isAuthenticated=true;
         
         console.log("authorized set to true");
         this.setCurrentUser(user);
     }
-}
+  }

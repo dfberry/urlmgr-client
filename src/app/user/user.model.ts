@@ -28,7 +28,8 @@ export class User {
   token: Token = new Token();
   roles: string[];
   expires: string="0";
-  isAuthenticated: boolean=false;
+  isAuthenticated: Boolean=false;
+  isAdmin: Boolean=false;
   lastLogin:string = "0";
 
   public transform(user: any){
@@ -43,7 +44,13 @@ export class User {
     if(user.hasOwnProperty("token")) this.token.transform(user.token);
     if(user.hasOwnProperty("roles")) this.roles = user.roles;
     if(user.hasOwnProperty("expires")) this.expires = user.expires;
-    if (this.token && this.token.token && (!this.token.revoked)) this.isAuthenticated = true;
     if(user.hasOwnProperty("lastLogin")) this.lastLogin = user.lastLogin;
+
+    // isAuthenticated
+    this.isAuthenticated = (user.hasOwnProperty("token") && user.token.hasOwnProperty("token") && (!this.token.revoked)) ? true : false;
+    
+    // isAdmin
+    this.isAdmin = (user.hasOwnProperty("roles") && user.roles.includes("admin")) ? true : false;
+    
   }
 }
