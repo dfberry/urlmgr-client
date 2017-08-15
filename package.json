@@ -19,7 +19,7 @@
     "test:e2e": "npm run build && npm run test:serve:protractor",
     "test:serve:protractor": "npm-run-all -p -r serve test:protractor",
     "test:protractor": "protractor ./protractor.conf.js",
-    "test:jasmine-in-browser": "karma start ./angular2-karma.serve-only.conf ",
+    "test:unit-in-browser": "karma start ./angular2-karma.serve-only.conf ",
     "lint": "tslint",
     "postinstall": "npm run webdriver:update",
     "prepree2e": "npm start",
