@@ -27,7 +27,7 @@ export class AppState implements IAppState{
   ){
     this.user = new User();
     this.config = configService.getAll();
-    this.verifyCredentialsUrl = this.config["base"] + "/auth";
+    this.verifyCredentialsUrl = this.config["apiUrl"] + "auth";
   }
 
   public setUser(user: User){
@@ -82,7 +82,7 @@ export class AppState implements IAppState{
 
     if(!user || !user.id) return;
 
-    return this.serverAuthenticationService.deAuthenticateToServer(user, this.config["base"] + '/users/' + user.id + '/tokens').then( json => {
+    return this.serverAuthenticationService.deAuthenticateToServer(user, this.config["apiUrl"] + 'users/' + user.id + '/tokens').then( json => {
         console.log("logout succeeded " + JSON.stringify(json));
         self.clearUser();
         self.userEvent.fire('USER_LOGOUT_RESPONSE_SUCCESS',self.user);
@@ -111,7 +111,7 @@ export class AppState implements IAppState{
     // once user is registered with password, need to forget password on client-side
     if(!user || !user.email || !user.password) return;
 
-    return this.serverAuthenticationService.registerToServer(user, this.config["base"] + '/users/').then( json => {
+    return this.serverAuthenticationService.registerToServer(user, this.config["apiUrl"] + 'users/').then( json => {
         console.log("registration succeeded " + JSON.stringify(json));
         delete user.password;
         self.userEvent.fire('USER_REGISTRATION_RESPONSE_SUCCESS',user);
@@ -129,7 +129,7 @@ export class AppState implements IAppState{
     // ignore password - as password should never be in client-side object
     if(!user || !user.email || !user.id) return;
 
-    return this.serverAuthenticationService.profileChangeToServer(user, this.config["base"] + '/users/').then( json => {
+    return this.serverAuthenticationService.profileChangeToServer(user, this.config["apiUrl"] + 'users/').then( json => {
         self.userEvent.fire('USER_PROFILE_SAVE_RESPONSE_SUCCESS',user);
       }).catch((err: any) => {
         self.userEvent.fire('USER_PROFILE_SAVE_RESPONSE_FAILURE',err);

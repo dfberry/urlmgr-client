@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class Configuration {
   public static urls = {
-    base:"http://localhost:3003/v1",
+    apiUrl:"http://localhost:3003/v1",
     auth: ['login', 'register', 'logout']
   };
 }
