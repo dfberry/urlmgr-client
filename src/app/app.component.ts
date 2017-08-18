@@ -30,6 +30,7 @@ import { NavigationComponent } from './components/navigation.component'
 export class AppComponent implements OnInit {
     public title: string = "";
     user:User = new User();
+    config: any;
 
     constructor(
         private clientAuthService: ClientAuthenticationService,     

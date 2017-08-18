@@ -136,6 +136,10 @@ export class AppState implements IAppState{
     });
 
   }
+  public getConfig(config){
+    console.log("getConfig");
+    return this.config;
+  }
 };
 
 export const UserActions = {

@@ -13,10 +13,10 @@ import { UrlDataTableComponent } from './url/url.datatable.component';
 import { UrlNewComponent } from './url/url.new.component';
 import { UrlRemoveComponent } from './url/url.remove.component';
 import { DataFilterPipe } from './data.filter.pipe';
-import { TagMainComponent, TagInputComponent,  TagInputItemComponent } from './tags';
 import { IUrl, Url } from './url/url.model';
 import { UrlEvent } from './url/url.event';
 import { UrlService } from './url/url.service';
+import { TagService, TagsAllComponent, TagMainComponent, TagInputComponent,  TagInputItemComponent } from './tags/index';
 
 @NgModule({
   imports: [
@@ -35,17 +35,20 @@ import { UrlService } from './url/url.service';
     DataFilterPipe,
     TagInputComponent,
     TagInputItemComponent,
-    TagMainComponent
+    TagMainComponent,
+    TagsAllComponent
   ],
   providers: [
 // services
     Url,
     UrlEvent,
     UrlService,
+    TagService
   ],
   exports: [
 // exported components
-    UrlMgrComponent
+    UrlMgrComponent,
+    TagsAllComponent
   ]
 })
 export class UrlModule {

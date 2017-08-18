@@ -25,13 +25,25 @@ export class MockUserService {
 
 
 
-export class MockStore {
-
-}
+export class MockStore {}
 
 export class MockConfigService {
-  public config: any={};
-  public get(key:any){return this.config[key];}
+
+  private config:any;
+
+  constructor(){
+    this.config={
+      "name": "mockConfigObject",
+      "clientHost": "localhost:3000",
+      "apiUrl": "http://localhost:3003/v1/",
+      "title": "Url Manager"   
+    };
+  }
+  public get(key:any){
+    console.log("key requested " + key);
+    console.log("value returned for key " + this.config[key]);
+    return this.config[key];
+  }
   public getAll(){return this.config};
   public load(data){this.config = data;}
 
