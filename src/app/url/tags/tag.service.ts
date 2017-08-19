@@ -20,5 +20,47 @@ export class TagService {
       .get(url)
       .map((response: Response) => response.json());
 
-    }
   }
+ 
+  /*
+      determine weight
+  */
+  prepTagsForCloud(tags){
+    if(tags && tags.length>0){
+
+      // sort from biggest to smallest count
+      // ignoring text of tag 
+      tags.sort(function(a,b){
+        return  b.count - a.count;
+      });
+
+      //if more than 20 items, take top 20 
+      //more items doesn't make sense in a tag cloud
+      if(tags.length>20) tags = tags.slice(0,19);
+
+      // 20% slice - 5 levels of font size
+      let slice = Math.ceil(tags.length / 5) ;
+      let sliceWeight = 25;
+      let currentSlice = slice;
+      
+      // right now the link doesn't mean anything because it is all private links
+      tags.forEach((tag,index) => {
+        
+        if (index<currentSlice){
+          tag.weight = sliceWeight;
+          tag.text = tag.tag;
+          //tag.link = "http://";
+        } else {
+          currentSlice += slice;
+          sliceWeight -= slice;
+
+          tag.weight = sliceWeight;
+          tag.text = tag.tag;
+          //tag.link = "http://";
+        }
+      });
+
+      return tags;
+    } 
+  }
+}

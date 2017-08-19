@@ -1,7 +1,7 @@
 
 /* You can add global styles to this file, and also import other style files */
 /*    * { box-shadow: inset 0 0 0 1px red }*/
-@import '~bootstrap/dist/css/bootstrap.min.css';
+@import '~bootstrap/dist/css/bootstrap.css';
 
 @import '~jqcloud2/dist/jqcloud.css';
 
