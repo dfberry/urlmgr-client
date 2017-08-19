@@ -1,3 +1,4 @@
+console.log("angular2-webpack-starter.test.js");
 /**
  * @author: @AngularClass
  */

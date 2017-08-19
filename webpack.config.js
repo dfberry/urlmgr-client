@@ -1,3 +1,5 @@
+console.log("webpack.config.js");
+
 const path = require('path');
 const ProgressPlugin = require('webpack/lib/ProgressPlugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');

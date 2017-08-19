@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule }   from '@angular/forms';
 import 'rxjs/Rx';
 import { DataTableModule } from "angular2-datatable";
 import 'cheerio';
+import 'jqcloud2';
 
 
 //import * as URL_MODULE from './index';

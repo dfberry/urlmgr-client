@@ -25,4 +25,5 @@ import 'angular2-datatable';
 import 'valid-url';
 import 'lodash';
 import 'reselect';
+import 'jqcloud2';
 
