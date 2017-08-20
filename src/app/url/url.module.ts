@@ -17,7 +17,7 @@ import { DataFilterPipe } from './data.filter.pipe';
 import { IUrl, Url } from './url/url.model';
 import { UrlEvent } from './url/url.event';
 import { UrlService } from './url/url.service';
-import { TagService, TagsAllComponent, TagMainComponent, TagInputComponent,  TagInputItemComponent } from './tags/index';
+import { TagService, TagMainComponent, TagInputComponent,  TagInputItemComponent } from './tags/index';
 
 @NgModule({
   imports: [
@@ -36,8 +36,7 @@ import { TagService, TagsAllComponent, TagMainComponent, TagInputComponent,  Tag
     DataFilterPipe,
     TagInputComponent,
     TagInputItemComponent,
-    TagMainComponent,
-    TagsAllComponent
+    TagMainComponent
   ],
   providers: [
 // services
@@ -48,8 +47,7 @@ import { TagService, TagsAllComponent, TagMainComponent, TagInputComponent,  Tag
   ],
   exports: [
 // exported components
-    UrlMgrComponent,
-    TagsAllComponent
+    UrlMgrComponent
   ]
 })
 export class UrlModule {

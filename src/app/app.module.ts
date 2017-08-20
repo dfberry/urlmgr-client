@@ -21,7 +21,8 @@ import { DataTableModule } from "angular2-datatable";
 // this app
 import {   
   NavigationComponent,
-  DashboardComponent
+  DashboardComponent,
+  TagCloudComponent
 } from './components/index';
 
 import { 
@@ -37,8 +38,8 @@ import { AppComponent } from './app.component';
 import { AppRoutes } from './app.routing';
 import { AppState, UserState, UserActions, UrlState, UrlActions } from './app.state';
 import { AuthGuard} from './app.routing.authguard';
-import { UserModule} from './user/user.module';
-import { UrlModule } from './url/url.module';
+import { UserModule } from './user/user.module';
+import { UrlModule  } from './url/url.module';
 import { ConfigService } from './config/config.service';
 //import { StateService } from './state/index';
 
@@ -79,7 +80,8 @@ let urlModule = UrlModule.forRoot();
   declarations: [ 
         AppComponent,
         NavigationComponent,
-        DashboardComponent
+        DashboardComponent,
+        TagCloudComponent
      ],
   providers: [
     ServerAuthenticationService,

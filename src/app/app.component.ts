@@ -8,7 +8,7 @@ import { ClientAuthenticationService, User, UserEvent } from './user';
 import { environment } from '../environments/environment';
 import { ConfigService } from './config/config.service';
 import { AppState } from './app.state';
-
+import { TagCloudComponent } from './components/tag.cloud';
 // components included in 
 import { RouterModule, Routes } from '@angular/router';
 import { NavigationComponent } from './components/navigation.component'
@@ -20,9 +20,10 @@ import { NavigationComponent } from './components/navigation.component'
     selector: 'app-root',
     template: ` 
     <div class="container">
-    <ngrx-store-log-monitor toggleCommand="ctrl-h" positionCommand="ctrl-m"></ngrx-store-log-monitor>
+        <ngrx-store-log-monitor toggleCommand="ctrl-h" positionCommand="ctrl-m"></ngrx-store-log-monitor>
         <navigation [user]="user"></navigation>
         <router-outlet ></router-outlet>
+        <tag-cloud></tag-cloud>
         
     </div>
     `
