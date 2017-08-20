@@ -56,7 +56,7 @@ export class UserComponent {
                     console.log("user  " + JSON.stringify(user));
                     this.user = user;
                 }); 
-                this.router.navigate(['/']);
+                this.router.navigate(['/dashboard']);
                 return;
             case "USER_LOGON_RESPONSE_FAILURE":
                 this.serverError = message.data;

@@ -3,11 +3,11 @@ import { Routes, RouterModule, Router, CanActivate, ActivatedRouteSnapshot, Rout
 
 import { DashboardComponent } from './components/index';
 import { AuthGuard } from './app.routing.authguard';
-
+import { HomeComponent } from './components/';
 let appRoutes: Routes = [
-  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
-  //{ path: '', component: DashboardComponent, canActivate: [AuthGuard] },
+  { path: 'home', component: HomeComponent},
 
 ];
 

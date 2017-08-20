@@ -23,7 +23,7 @@ import { NavigationComponent } from './components/navigation.component'
         <ngrx-store-log-monitor toggleCommand="ctrl-h" positionCommand="ctrl-m"></ngrx-store-log-monitor>
         <navigation [user]="user"></navigation>
         <router-outlet ></router-outlet>
-        <tag-cloud></tag-cloud>
+        
         
     </div>
     `

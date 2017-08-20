@@ -22,7 +22,8 @@ import { DataTableModule } from "angular2-datatable";
 import {   
   NavigationComponent,
   DashboardComponent,
-  TagCloudComponent
+  TagCloudComponent,
+  HomeComponent
 } from './components/index';
 
 import { 
@@ -81,7 +82,8 @@ let urlModule = UrlModule.forRoot();
         AppComponent,
         NavigationComponent,
         DashboardComponent,
-        TagCloudComponent
+        TagCloudComponent,
+        HomeComponent
      ],
   providers: [
     ServerAuthenticationService,
