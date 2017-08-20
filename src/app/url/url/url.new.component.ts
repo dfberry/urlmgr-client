@@ -14,7 +14,7 @@ let validUrl = require('valid-url');
   selector: 'url-new',
   template: `  
   <form [formGroup]="newForm" (submit)="save()">
-      <input id="httpUrlValue" type="text" formControlName="httpUrlValue" placeholder="Add a url" />
+      <input id="httpUrlValue" type="text" formControlName="httpUrlValue" placeholder="url?" />
       <div *ngIf="(!httpUrlValue.valid && !httpUrlValue.pristine)">
         <p *ngIf="httpUrlValue.hasError('required')">Url is required</p>
         <p *ngIf="httpUrlValue.hasError('invalidUrl')">Url is not valid</p>
@@ -22,7 +22,7 @@ let validUrl = require('valid-url');
 
 
       <tag-input
-        placeholder="Add a tag"
+        placeholder="tag?"
         [(ngModel)]="tags"
         delimiterCode="188"
         (onTagListChanged)='onTagListChanged($event)'
@@ -32,10 +32,7 @@ let validUrl = require('valid-url');
 
 
       <button type="submit" [disabled]="!newForm.valid">Add</button>
-      <!--
-      <div *ngIf="user" >user.id = {{user.id}}</div>
-      <div *ngIf="!user" >user is empty</div>
-      -->
+
   </form>
   `,
   providers: []

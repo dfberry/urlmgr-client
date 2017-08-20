@@ -53,9 +53,6 @@ import { User } from '../../user';
                         <mfDefaultSorter by="title">Title</mfDefaultSorter>
                     </th>
                     <th>
-                        Url
-                    </th>
-                    <th>
                         Feeds
                     </th>
                 </tr>
@@ -67,10 +64,16 @@ import { User } from '../../user';
                         <url-remove [user]="user" [url]="item">x</url-remove>
                     </td>
                         
-                    <td>{{ item.title }}
-                    </td>
                     <td>
-                        <a href='{{item.url}}'>site</a>
+                        <a href='{{item.url}}'>{{ item.title }}</a>
+                        <tag-input
+                        placeholder="Add a tag"
+                        [(ngModel)]="item.tags"
+                        delimiterCode="188"
+                        (onTagListChanged)='onTagListChanged($event)'
+                        [ngModelOptions]="{standalone: true}"
+                        >
+                      </tag-input>
                     </td>
                     <td>
                         <div *ngFor="let feed of item.feeds; let idx = index;">
