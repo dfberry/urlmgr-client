@@ -18,9 +18,11 @@ function isBlank(txt){
     [index]="index"
     [selected]="selectedTag === index"
     (tagRemoved)="_removeTag($event)"
+    [config]="config"
     *ngFor="let tag of ngModel; let index = index">
   </tag-input-item>
   <input
+    *ngIf="config.show.input"
     class="ng2-tag-input-field"
     type="text"
     [placeholder]="placeholder"
@@ -57,6 +59,8 @@ export class TagInputComponent {
   @Input() addOnPaste: boolean = true;
   @Input() allowedTagsPattern: RegExp = /.+/;
 
+  @Input() config={};
+
   @Output() onTagListChanged = new EventEmitter<string[]>();  
 
   @HostBinding('class.ng2-tag-input-focus') isFocussed;
@@ -82,9 +86,11 @@ export class TagInputComponent {
     //if (this.ngModel) this.tagsList = this.ngModel;
     this.onChange(this.ngModel);
     this.delimiter = parseInt(this.delimiterCode);
+    console.log(this.config);
   }
   ngOnChanges(changes: SimpleChanges) {
     //console.log("feeds.component.ts::FeedListComponent - ngOnChanges");
+    console.log(this.config);
     for (let propName in changes) {
       let chng = changes[propName];
       let cur  = JSON.stringify(chng.currentValue);
@@ -104,6 +110,7 @@ export class TagInputComponent {
       this.ngModel = [];
       this.onChange(this.ngModel);
     }
+    console.log(this.config);
   }
 
   inputChanged(event) {
@@ -119,6 +126,7 @@ export class TagInputComponent {
         break;
 
       case this.delimiter:
+        console.log("delimiter selected");
         this._addTags([this.inputValue]);
         event.preventDefault();
         break;

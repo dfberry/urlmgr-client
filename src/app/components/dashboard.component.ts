@@ -15,6 +15,7 @@ import { AppState, UrlActions, UserActions } from '../app.state';
   selector: 'dashboard',
   template: `
    <div class="dashboard">
+      <navigation [user]="user"></navigation>
       <url-mgr-component [urls]="urls" [user]="user"></url-mgr-component>
    </div>
   `

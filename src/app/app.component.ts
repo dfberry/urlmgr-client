@@ -20,11 +20,7 @@ import { NavigationComponent } from './components/navigation.component'
     selector: 'app-root',
     template: ` 
     <div class="container">
-        <ngrx-store-log-monitor toggleCommand="ctrl-h" positionCommand="ctrl-m"></ngrx-store-log-monitor>
-        <navigation [user]="user"></navigation>
         <router-outlet ></router-outlet>
-        
-        
     </div>
     `
 })

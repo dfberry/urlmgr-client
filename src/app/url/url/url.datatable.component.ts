@@ -68,6 +68,7 @@ import { User } from '../../user';
                         <a href='{{item.url}}'>{{ item.title }}</a>
                         <tag-input
                         placeholder="Add a tag"
+                        [config]="existingItemConfig"
                         [(ngModel)]="item.tags"
                         delimiterCode="188"
                         (onTagListChanged)='onTagListChanged($event)'
@@ -109,6 +110,8 @@ export class UrlDataTableComponent  implements OnChanges {
     public rowsOnPage = 10;
     public sortBy = "email";
     public sortOrder = "asc";
+
+    existingItemConfig={"readonly":true,"caller":"UrlDataTableComponent","show":{"input":false},"delete":false};
 
   constructor(){}
   ngOnInit() {

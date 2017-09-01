@@ -5,11 +5,14 @@
   "scripts": {
     "clean": "rimraf karma-* .org* pulse-* ts-node* dist*",
     "build": "npm run build:platforms",
-    "build:platforms": "npm run clean && npm run build:dev",
+    "build:platforms": "npm run clean && npm run build:dev && npm run build:prod",
     "build:dev": "webpack --config ./webpack.config.js",
+    "build:prod": "webpack --config ./webpack.config.prod.js",
+    "build:prod:old": "webpack --config ./webpack.prod.config.old.js",
     "serve": "npm run serve:platforms",
     "serve:platforms": "npm run serve:dist",
     "serve:dev": "./node-modules/http-server/bin/http-server -p 3000 dist -c-1 --cors",
+    "serve:prod:baddocker": "http-server -p 3000 dist_prod -c-1 --cors",
     "serve:dev:baddocker": "http-server -p 3000 dist -c-1 --cors",
     "start:server": "node ../urlmgr-api/dist/index.js",
     "start:all": "concurrently \"npm run start:server\" \"npm run start:client\" ",
@@ -33,8 +36,7 @@
   "private": true,
   "dependencies": {
     "@angular/common": "^4.0.0",
-    "@angular/compiler": "^4.0.0",
-    "@angular/compiler-cli": "^4.0.2",
+
     "@angular/core": "^4.0.0",
     "@angular/forms": "^4.0.0",
     "@angular/http": "^4.0.0",
@@ -71,9 +73,12 @@
     "rxjs": "^5.1.0",
     "valid-url": "^1.0.9",
     "webpack-bundle-analyzer": "^2.4.0",
+    "webpack-clear-console": "^1.0.3",
     "zone.js": "^0.8.4"
   },
   "devDependencies": {
+    "@angular/compiler": "^4.0.0",
+    "@angular/compiler-cli": "^4.0.2",
     "@types/jasmine": "2.5.38",
     "@types/node": "~6.0.60",
     "angular2-template-loader": "^0.6.2",

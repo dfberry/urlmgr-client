@@ -5,6 +5,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   template:
   `{{text}}
   <span
+  *ngIf="config.delete"
   class="ng2-tag-input-remove"
   (click)="removeTag()">&times;</span>`,
   
@@ -37,11 +38,13 @@ export class TagInputItemComponent {
   @Input() text: string;
   @Input() index: number;
   @Output() tagRemoved: EventEmitter<number> = new EventEmitter();
+  @Input() config;
 
   constructor() { }
 
   removeTag() {
     console.log("removeTag");
+    console.log(this.config);
     this.tagRemoved.emit(this.index);
   }
 }

@@ -14,7 +14,7 @@ let validUrl = require('valid-url');
   selector: 'url-new',
   template: `  
   <form [formGroup]="newForm" (submit)="save()">
-      <input id="httpUrlValue" type="text" formControlName="httpUrlValue" placeholder="url?" />
+      <input id="httpUrlValue" type="text" formControlName="httpUrlValue" placeholder="url" />
       <div *ngIf="(!httpUrlValue.valid && !httpUrlValue.pristine)">
         <p *ngIf="httpUrlValue.hasError('required')">Url is required</p>
         <p *ngIf="httpUrlValue.hasError('invalidUrl')">Url is not valid</p>
@@ -22,8 +22,9 @@ let validUrl = require('valid-url');
 
 
       <tag-input
-        placeholder="tag?"
+        placeholder="tag"
         [(ngModel)]="tags"
+        [config]="newItemConfig"
         delimiterCode="188"
         (onTagListChanged)='onTagListChanged($event)'
         [ngModelOptions]="{standalone: true}"
@@ -41,6 +42,8 @@ export class UrlNewComponent  implements OnChanges{
   //name:string = '';
   //itemtype:string = "Url";
   @Input() user: User;
+
+  newItemConfig={"readonly":false,"caller":"UrlNewComponent","show":{"input":true},"delete":true};
   
   differ: any;
   newForm: FormGroup;

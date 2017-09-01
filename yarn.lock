@@ -5470,6 +5470,10 @@ webpack-bundle-analyzer@^2.4.0:
     mkdirp "^0.5.1"
     opener "^1.4.3"
 
+webpack-clear-console@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/webpack-clear-console/-/webpack-clear-console-1.0.3.tgz#86f0eefe96199527d667f2e37e30fc5b1c2b4359"
+
 webpack-dev-middleware@^1.0.11, webpack-dev-middleware@^1.9.0:
   version "1.10.1"
   resolved "https://registry.yarnpkg.com/webpack-dev-middleware/-/webpack-dev-middleware-1.10.1.tgz#c6b4cf428139cf1aefbe06a0c00fdb4f8da2f893"

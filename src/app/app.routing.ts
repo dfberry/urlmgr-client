@@ -3,9 +3,12 @@ import { Routes, RouterModule, Router, CanActivate, ActivatedRouteSnapshot, Rout
 
 import { DashboardComponent } from './components/index';
 import { AuthGuard } from './app.routing.authguard';
-import { HomeComponent } from './components/';
+import { HomeComponent, TagListComponent } from './components/';
+
+
 let appRoutes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: 'public/tag-list', component: TagListComponent },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
   { path: 'home', component: HomeComponent},
 

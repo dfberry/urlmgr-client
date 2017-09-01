@@ -6,6 +6,7 @@
 import { Input, ElementRef, OnInit, OnDestroy, Directive, Component, SimpleChanges, ChangeDetectorRef} from '@angular/core';
 import { TagService } from '../url/index';
 import { ConfigService } from '../config/config.service';
+
 import * as $ from 'jquery';
 
 @Component({
@@ -41,6 +42,7 @@ export class TagCloudComponent {
   ngOnInit() {
     
     console.log("AllTagsComponent ngOnInit");
+
     this.tagService.load(this.config).subscribe( response => {
 
       if(!response || !response.data || !response.data.tags || (response.data.tags.length===0)) console.log("tag cloud is empty");

@@ -68,6 +68,33 @@ export class UrlService  {
             return mydata.data;
         }).catch(this._handleErrorObservable);
     }
+    // public url list
+    loadPublicItems(): Observable<any>{
+
+        let url = this.baseUrl + "public/";
+        let options = undefined;
+
+        return this.http.get(url, options)
+        .map((response: Response) => {
+            let mydata = response.json();
+            console.log(mydata);
+            return mydata.data;
+        }).catch(this._handleErrorObservable);
+    }
+    // public url list
+    // array of tags
+    loadUrlsByTag(tags): Observable<any>{
+
+        let url = this.baseUrl + "tags";
+        let options = undefined;        
+
+        return this.http.post(url, {tags: tags})
+        .map((response: Response) => {
+            let mydata = response.json();
+            console.log(mydata);
+            return mydata.data;
+        }).catch(this._handleErrorObservable);
+    }
     _handleErrorObservable(err:any){
            console.log("url.service _handleErrorObservable returned " + JSON.stringify(err));
  

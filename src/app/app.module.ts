@@ -23,7 +23,10 @@ import {
   NavigationComponent,
   DashboardComponent,
   TagCloudComponent,
-  HomeComponent
+  TagListComponent,
+  HomeComponent,
+  UrlPublicListComponent,
+  ContactComponent
 } from './components/index';
 
 import { 
@@ -83,7 +86,10 @@ let urlModule = UrlModule.forRoot();
         NavigationComponent,
         DashboardComponent,
         TagCloudComponent,
-        HomeComponent
+        TagListComponent,
+        HomeComponent,
+        UrlPublicListComponent,
+        ContactComponent
      ],
   providers: [
     ServerAuthenticationService,
