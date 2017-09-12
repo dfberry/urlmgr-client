@@ -1,4 +1,4 @@
-console.log("webpack.prod.config.js");
+console.log("webpack.prod.config.old.js");
 
 const path                     = require('path');
 const webpack                  = require('webpack');

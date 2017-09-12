@@ -11,7 +11,7 @@
     "build:prod:old": "webpack --config ./webpack.prod.config.old.js",
     "serve": "npm run serve:platforms",
     "serve:platforms": "npm run serve:dist",
-    "serve:dev": "./node-modules/http-server/bin/http-server -p 3000 dist -c-1 --cors",
+    "serve:dev": "http-server -p 3000 dist -c-1 --cors",
     "serve:prod:baddocker": "http-server -p 3000 dist_prod -c-1 --cors",
     "serve:dev:baddocker": "http-server -p 3000 dist -c-1 --cors",
     "start:server": "node ../urlmgr-api/dist/index.js",
